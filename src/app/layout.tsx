@@ -1,5 +1,5 @@
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
-import ReactQueryWrapper from '@/utils/\bReactQueryWrapper';
+import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import '../styles/global.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
