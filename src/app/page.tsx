@@ -110,10 +110,38 @@ const Home = () => {
             ))}
           </div>
         </div>
-        <div className="flex h-[386px] flex-col justify-between">
+        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+          <div className="flex items-center justify-between">
+            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 굿즈</h3>
+            <StyledButton
+              label="More+"
+              onClick={() => null}
+              className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
+            />
+          </div>
           <div className="flex justify-between">
-            <h2 className="p-2 prose-h4 border-b-[3px] border-orange2">인기 공구</h2>
-            <button>More</button>
+            {mockData.map((el: MockData, idx: number) => (
+              <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
+                {el.title}
+                {el.artist}
+                {el.place}
+                {el.date}
+                {el.location}
+                {el.like}
+                {el.view}
+                {el.comment}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+          <div className="flex items-center justify-between">
+            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 공구</h3>
+            <StyledButton
+              label="More+"
+              onClick={() => null}
+              className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
+            />
           </div>
           <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
