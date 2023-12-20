@@ -12,7 +12,7 @@ export default function Home() {
           </div>
           <div className="flex justify-between">
             <Card
-              cardType={'event'}
+              cardType={'events'}
               cardTitle={'방탄소년단 생일 카페'}
               cardArt={'방탄소년단'}
               cardLocation={'용산 슈퍼스타 떡볶이'}

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import logo from '../../public/images/logo.png';
 
 interface CardProps {
-  cardType: string;
+  cardType: 'events' | 'goods' | 'sales';
   cardTitle: string;
   cardArt: string;
   cardLocation?: string;
@@ -35,10 +35,10 @@ const Card = ({
       <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
         <span className="prose-h6">{cardTitle}</span>
         <span className="prose-body-S text-orange2">{cardArt}</span>
-        {cardType === 'event' && <span className="prose-body-S">{cardLocation}</span>}
+        {cardType === 'events' && <span className="prose-body-S">{cardLocation}</span>}
         <span className="prose-body-XS">{`${cardStart} ~ ${cardEnd}`}</span>
         <div className="flex w-full flex-row justify-between text-gray5">
-          {cardType === 'event' ? (
+          {cardType === 'events' ? (
             <span className="prose-body-XXS">{cardAddress}</span>
           ) : (
             <span className="prose-body-XXS">참여중인 인원 {joinMember}명</span>
