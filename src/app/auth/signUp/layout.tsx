@@ -1,4 +1,4 @@
-export default function RootLayout() {
+export default function SignUpLayout() {
   return (
     <html lang="en">
       <body>

@@ -10,7 +10,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <RecoilRootWrapper>
-          <ReactQueryWrapper>{children}</ReactQueryWrapper>
+          <ReactQueryWrapper>
+            {children}
+            {/* <div id="global-modal"></div> */}
+          </ReactQueryWrapper>
         </RecoilRootWrapper>
       </body>
     </html>

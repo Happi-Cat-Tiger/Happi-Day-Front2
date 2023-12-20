@@ -192,7 +192,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [typography],
+  plugins: [require('tailwind-scrollbar'), typography],
 };
 
 export default config;
