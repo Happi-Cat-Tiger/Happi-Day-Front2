@@ -1,14 +1,16 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { Component, ReactNode, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import PrimaryButton from '../Button/PrimaryButton';
 
 interface ModalProps {
-  isOpen?: boolean;
+  isOpen: boolean;
   onClose?: () => void;
   children: ReactNode;
   title?: string;
-  buttonText: string;
+  buttonLabel?: string;
+  buttonDisabled?: boolean;
 }
 
 /*  1. isOpen 값으로 true를 넘기면 모달창이 보입니다
@@ -29,9 +31,10 @@ interface ModalProps {
 
     4. 버튼 두개가 필요한 모달창은 필요한 분께서 따로 만들어주세요
 
-    5. 모달 컨텐츠 wid
+    5. submitButton이 필요하면 children으로 같이 넘겨줘야합니다.
+
 */
-const Modal = ({ isOpen, onClose, children, title, buttonText }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }: ModalProps) => {
   const [open, setOpen] = useState(isOpen);
   const handleCloseModal = () => {
     setOpen(false);
@@ -42,8 +45,8 @@ const Modal = ({ isOpen, onClose, children, title, buttonText }: ModalProps) => 
 
   return (
     <Dialog as="div" className="fixed inset-0 z-10  " onClose={() => setOpen(false)} open={open}>
-      <div className="min-h-screen px-10 text-center max-h-[500px] md:max-h-[700px]">
-        <Dialog.Overlay className="fixed inset-0 " />
+      <div className="px-10 text-center max-h-[500px] md:max-h-[700px] ">
+        <Dialog.Overlay className="fixed inset-0" />
 
         <span className="inline-block h-screen align-middle" aria-hidden="true">
           &#8203;
@@ -53,17 +56,15 @@ const Modal = ({ isOpen, onClose, children, title, buttonText }: ModalProps) => 
           <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 mb-5">
             {title}
           </Dialog.Title>
-          <div className="mt-2  mb-8 ">
-            <div className="text-sm text-gray-500 max-h-[400px] md:max-h-[600px] overflow-y-auto">{children}</div>
+          <div className="mt-2 mb-8 ">
+            <div className="text-sm text-gray-500 min-w-[210px] max-h-[400px] md:max-h-[600px] md:min-w-[250px] overflow-y-auto">
+              {children}
+            </div>
           </div>
-
-          <div className="mt-4 ">
-            <button
-              type="button"
-              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              onClick={() => handleCloseModal()}>
-              {buttonText}
-            </button>
+          <div className="mt-4">
+            {buttonLabel && (
+              <PrimaryButton onClick={() => handleCloseModal()} label={buttonLabel} disabled={buttonDisabled} />
+            )}
           </div>
         </div>
       </div>
