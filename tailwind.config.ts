@@ -1,12 +1,6 @@
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 
-const pxToRem = (px: number, base: number = 16): string => `${px / base}rem`;
-const spacing: Record<string, string> = {};
-for (let i = 1; i <= 100; i++) {
-  spacing[`${i}px`] = pxToRem(i);
-}
-
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -202,7 +196,6 @@ const config: Config = {
         },
       },
     },
-    spacing: spacing,
   },
   plugins: [require('tailwind-scrollbar'), typography],
 };
