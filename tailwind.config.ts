@@ -204,7 +204,7 @@ const config: Config = {
     },
     spacing: spacing,
   },
-  plugins: [typography],
+  plugins: [require('tailwind-scrollbar'), typography],
 };
 
 export default config;
