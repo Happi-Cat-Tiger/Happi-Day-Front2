@@ -3,7 +3,7 @@ import StyledButton from '@/components/Button/StyledButton';
 
 export default function Home() {
   return (
-    <div className="my-10 h-auto w-screen">
+    <div className="my-10 h-auto">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1024px]">
         <div className="h-[200px] bg-orange-100 md:max-w-[1024px]">구독 배너</div>
         <div className="flex h-[386px] flex-col justify-between gap-[35px]">
