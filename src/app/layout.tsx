@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import '../styles/global.css';
-import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
