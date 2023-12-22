@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import '../styles/global.css';
+import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
   title: 'Happi Day',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* <div id="global-modal"></div> */}
           </ReactQueryWrapper>
         </RecoilRootWrapper>
+        <Footer />
       </body>
     </html>
   );
