@@ -22,6 +22,7 @@ interface CardProps {
 }
 
 const Card = ({
+  id,
   cardType,
   thumbnailUrl,
   title,
@@ -38,6 +39,7 @@ const Card = ({
   const router = useRouter();
   return (
     <div
+      key={id}
       onClick={() => router.push(cardType)}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-xl">
       <Image src={logo} alt="thumbnail" className="flex-1" />
