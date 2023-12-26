@@ -6,53 +6,56 @@ import logo from '../../public/images/logo.png';
 import { useRouter } from 'next/navigation';
 
 interface CardProps {
+  id: number;
   cardType: 'events' | 'goods' | 'sales';
-  cardTitle: string;
-  cardArt: string;
-  cardLocation?: string;
-  cardStart: string;
-  cardEnd: string;
-  cardAddress?: string;
+  thumbnailUrl: string;
+  title: string;
+  artist: string;
+  location?: string;
+  startTime: string;
+  endTime: string;
+  address?: string;
   joinMember?: number;
-  cardLike: number;
-  cardComments: number;
-  cardView: number;
+  likiCount: number;
+  commentCount: number;
+  viewCount: number;
 }
 
 const Card = ({
   cardType,
-  cardTitle,
-  cardArt,
-  cardLocation,
-  cardStart,
-  cardEnd,
-  cardAddress,
+  thumbnailUrl,
+  title,
+  artist,
+  location,
+  startTime,
+  endTime,
+  address,
   joinMember,
-  cardLike,
-  cardComments,
-  cardView,
+  likiCount,
+  commentCount,
+  viewCount,
 }: CardProps) => {
   const router = useRouter();
   return (
     <div
       onClick={() => router.push(cardType)}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-xl">
-      <Image src={logo} alt="card" className="flex-1" />
+      <Image src={logo} alt="thumbnail" className="flex-1" />
       <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
-        <span className="prose-h6">{cardTitle}</span>
-        <span className="prose-body-S text-orange2">{cardArt}</span>
-        {cardType === 'events' && <span className="prose-body-S">{cardLocation}</span>}
-        <span className="prose-body-XS">{`${cardStart} ~ ${cardEnd}`}</span>
+        <span className="prose-h6">{title}</span>
+        <span className="prose-body-S text-orange2">{artist}</span>
+        {cardType === 'events' && <span className="prose-body-S">{location}</span>}
+        <span className="prose-body-XS">{`${startTime} ~ ${endTime}`}</span>
         <div className="flex w-full flex-row justify-between text-gray5">
           {cardType === 'events' ? (
-            <span className="prose-body-XXS">{cardAddress}</span>
+            <span className="prose-body-XXS">{address}</span>
           ) : (
             <span className="prose-body-XXS">참여중인 인원 {joinMember}명</span>
           )}
           <div className="prose-body-XXS flex gap-[8px]">
-            <span>♥️{cardLike}</span>
-            <span>💬{cardComments}</span>
-            <span>👁️{cardView}</span>
+            <span>♥️{likiCount}</span>
+            <span>💬{commentCount}</span>
+            <span>👁️{viewCount}</span>
           </div>
         </div>
       </div>
