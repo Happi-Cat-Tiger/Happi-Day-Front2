@@ -16,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT.css" rel="stylesheet" />
       </head>
       <body>
+        {/*<Nav/> */}
         <RecoilRootWrapper>
           <ReactQueryWrapper>
             {children}
