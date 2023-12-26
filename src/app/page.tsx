@@ -1,5 +1,6 @@
 'use client';
 import StyledButton from '@/components/Button/StyledButton';
+<<<<<<< HEAD
 import HappiDayBanner from '../../public/images/happiDayBanner.png';
 import SubBanner from '../../public/images/subscriptionBanner.png';
 import Image from 'next/image';
@@ -18,6 +19,26 @@ interface MockData {
 }
 
 const Home = () => {
+=======
+import HappiDayBanner from '../../public/images/HAPPi DAY 배너 image.png';
+import SubBanner from '../../public/images/구독 배너 image.png';
+import Image from 'next/image';
+
+interface MockData {
+  id: number;
+  title: string;
+  artist: string;
+  place: string;
+  date: string;
+  location: string;
+  like: number;
+  comment: number;
+  view: number;
+  joinCount: number;
+}
+
+export default function Home() {
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
   const mockData = [
     {
       id: 1,
@@ -67,6 +88,7 @@ const Home = () => {
       view: 4,
       joinCount: 4,
     },
+<<<<<<< HEAD
     {
       id: 5,
       title: '방탄소년단 생일 카페5',
@@ -85,6 +107,14 @@ const Home = () => {
       <div className="gap-16 m-auto flex flex-col md:max-w-[1280px]">
         <div className="md:w-[1280px]">
           <Image src={SubBanner} alt="구독 배너" className="w-[1280px]" />
+=======
+  ];
+  return (
+    <div className="my-32 h-auto">
+      <div className="m-auto flex flex-col gap-16 md:max-w-[1024px]">
+        <div className="md:w-[1024px]">
+          <Image src={SubBanner} alt="구독 배너" className="w-[1024px]" />
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
@@ -95,7 +125,11 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
+<<<<<<< HEAD
           <div className="flex justify-between">
+=======
+          <div className="grid md:grid-cols-4">
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -119,7 +153,11 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
+<<<<<<< HEAD
           <div className="flex justify-between">
+=======
+          <div className="grid md:grid-cols-4">
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -143,7 +181,11 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
+<<<<<<< HEAD
           <div className="flex justify-between">
+=======
+          <div className="grid md:grid-cols-4">
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -160,7 +202,11 @@ const Home = () => {
         </div>
         <div className="flex h-[476px] w-full gap-[24px]">
           <div className="flex w-[870px] flex-col items-start gap-[35px]">
+<<<<<<< HEAD
             <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h3>
+=======
+            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h2>
+>>>>>>> e39d7be (ADD: 배너 이미지 추가 / mock-up 데이터 추가)
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
                 <div className="flex w-full flex-row gap-[8px]">
