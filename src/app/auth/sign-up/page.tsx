@@ -2,7 +2,7 @@ import Footer from '@/components/Footer/Footer';
 import AuthInput from '@/components/Auth/AuthInput';
 import { AiOutlineUser, AiOutlineLock, AiOutlinePhone } from 'react-icons/ai';
 
-export default function RootLayout() {
+export default function signUp() {
   const inputPlaceHolder = [
     { title: '아이디', icon: AiOutlineUser, content: 'example@happiday.com' },
     { title: '비밀번호', icon: AiOutlineLock, content: '********' },
