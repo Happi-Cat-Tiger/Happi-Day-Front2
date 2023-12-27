@@ -16,7 +16,7 @@ interface CardProps {
   endTime: string;
   address?: string;
   joinMember?: number;
-  likiCount: number;
+  likeCount: number;
   commentCount: number;
   viewCount: number;
 }
@@ -32,7 +32,7 @@ const Card = ({
   endTime,
   address,
   joinMember,
-  likiCount,
+  likeCount,
   commentCount,
   viewCount,
 }: CardProps) => {
@@ -55,7 +55,7 @@ const Card = ({
             <span className="prose-body-XXS">참여중인 인원 {joinMember}명</span>
           )}
           <div className="prose-body-XXS flex gap-[8px]">
-            <span>♥️{likiCount}</span>
+            <span>♥️{likeCount}</span>
             <span>💬{commentCount}</span>
             <span>👁️{viewCount}</span>
           </div>
