@@ -67,12 +67,24 @@ export default function Home() {
       view: 4,
       joinCount: 4,
     },
+    {
+      id: 5,
+      title: '방탄소년단 생일 카페5',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      date: '2023.12.04 ~ 2023.12.05',
+      location: '서울시 용산구',
+      like: 5,
+      comment: 5,
+      view: 5,
+      joinCount: 5,
+    },
   ];
   return (
     <div className="my-32 h-auto">
-      <div className="m-auto flex flex-col gap-16 md:max-w-[1024px]">
-        <div className="md:w-[1024px]">
-          <Image src={SubBanner} alt="구독 배너" className="w-[1024px]" />
+      <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
+        <div className="md:w-[1280px]">
+          <Image src={SubBanner} alt="구독 배너" className="w-[1280px]" />
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
@@ -83,7 +95,7 @@ export default function Home() {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -107,7 +119,7 @@ export default function Home() {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -131,7 +143,7 @@ export default function Home() {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
