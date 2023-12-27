@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer/Footer';
 import { IoCheckboxOutline, IoCheckbox } from 'react-icons/io5';
 
-export default function RootLayout() {
+const terms = () => {
   return (
     <>
       <div className="px-2 gap-4 pt-10 m-auto flex w-[360px] flex-col items-center py-[18px] pb-[130px] md:w-[752px] md:px-[26px] md:py-[60px]">
@@ -53,4 +53,5 @@ export default function RootLayout() {
       <Footer />
     </>
   );
-}
+};
+export default terms;
