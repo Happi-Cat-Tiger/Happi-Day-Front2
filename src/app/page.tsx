@@ -17,7 +17,7 @@ interface MockData {
   joinCount: number;
 }
 
-export default function Home() {
+const Home = () => {
   const mockData = [
     {
       id: 1,
@@ -224,4 +224,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;
