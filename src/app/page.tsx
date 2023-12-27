@@ -14,7 +14,7 @@ export default function Home() {
         endTime="종료일"
         address="주소"
         joinMember={1}
-        likiCount={1}
+        likeCount={1}
         commentCount={1}
         viewCount={1}
       />
