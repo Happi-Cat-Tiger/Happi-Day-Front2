@@ -112,7 +112,7 @@ const Home = () => {
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
-            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 굿즈</h2>
+            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 굿즈</h3>
             <StyledButton
               label="More+"
               onClick={() => null}
@@ -136,7 +136,7 @@ const Home = () => {
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
-            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 공구</h2>
+            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 공구</h3>
             <StyledButton
               label="More+"
               onClick={() => null}
@@ -160,7 +160,7 @@ const Home = () => {
         </div>
         <div className="flex h-[476px] w-full gap-[24px]">
           <div className="flex w-[870px] flex-col items-start gap-[35px]">
-            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h2>
+            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h3>
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
                 <div className="flex w-full flex-row gap-[8px]">
