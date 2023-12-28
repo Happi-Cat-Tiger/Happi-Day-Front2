@@ -82,7 +82,7 @@ const Home = () => {
   ];
   return (
     <div className="my-32 h-auto">
-      <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
+      <div className="gap-16 m-auto flex flex-col md:max-w-[1280px]">
         <div className="md:w-[1280px]">
           <Image src={SubBanner} alt="구독 배너" className="w-[1280px]" />
         </div>
