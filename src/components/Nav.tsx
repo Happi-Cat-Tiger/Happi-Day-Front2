@@ -8,7 +8,7 @@ const Nav = () => {
   const navLink = ['/board', '/events', '/sales', '/auth/login'];
 
   return (
-    <div className="w-screen border-b-2 border-orange2">
+    <div className="w-full border-b-2 border-orange2">
       <div className="m-auto flex h-[60px] w-[1024px] flex-row items-center justify-between">
         <Link href="/">
           <Image src={logo} alt="logo" className="h-[29px] w-[131px] cursor-pointer" />
