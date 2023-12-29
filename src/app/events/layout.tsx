@@ -1,10 +1,11 @@
 import React from 'react';
 import EventGuide from '@/containers/events/EventGuide';
 import Link from 'next/link';
+import InputElements from '@/containers/events/InputElements';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="m-auto h-screen md:max-w-[1280px]">
+    <div className="m-auto md:max-w-[1280px]">
       <EventGuide />
       <div className="my-[60px] text-right">
         <span className="prose-subtitle-M mr-[10px]">주최 관련 이벤트도 보고싶다면?</span>
@@ -12,6 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           주최 게시판 바로가기
         </Link>
       </div>
+      <InputElements />
       {children}
     </div>
   );
