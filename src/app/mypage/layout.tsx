@@ -2,7 +2,7 @@ import React from 'react';
 import SideMenu from '@/containers/mypage/SideMenu';
 import Title from '@/containers/mypage/Title';
 
-export default function MypageLayout({ children }: { children: React.ReactNode }) {
+const MypageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Title />
@@ -12,4 +12,6 @@ export default function MypageLayout({ children }: { children: React.ReactNode }
       </div>
     </div>
   );
-}
+};
+
+export default MypageLayout;
