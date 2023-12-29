@@ -3,7 +3,7 @@ import React from 'react';
 const page = () => {
   return (
     <div>
-      <div>Event Page</div>
+      <div>이벤트 카드 들어갈 자리!</div>
     </div>
   );
 };
