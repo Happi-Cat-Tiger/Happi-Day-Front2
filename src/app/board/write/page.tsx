@@ -1,6 +1,7 @@
 'use client';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import PrimaryButton from '@/components/Button/PrimaryButton';
+import CustomEditor from '@/components/Tool/CustomEditor';
 import AddressInput from '@/components/WriteForm/AddressInput';
 import BankAccountInput from '@/components/WriteForm/BankAccountInput';
 import DurationInput from '@/components/WriteForm/DurationInput';
@@ -29,7 +30,9 @@ const WritePage = () => {
             className="w-full rounded-md border border-gray3 px-1.5 py-1 focus:border-orange1 focus:outline-none "
             placeholder="제목"
           />
-          <div className="h-full w-full bg-gray-100">에디터 자리</div>
+          <div className="h-full w-full">
+            <CustomEditor initialData="<h1>Hello, world!</h1>" />
+          </div>
         </div>
       )}
       {step === 2 && (
