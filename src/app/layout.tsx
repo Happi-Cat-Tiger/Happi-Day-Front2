@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import '../styles/global.css';
+import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
@@ -16,12 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT.css" rel="stylesheet" />
       </head>
       <body>
-        {/*<Nav/> */}
+        <Nav />
         <RecoilRootWrapper>
-          <ReactQueryWrapper>
-            {children}
-            {/* <div id="global-modal"></div> */}
-          </ReactQueryWrapper>
+          <ReactQueryWrapper>{children}</ReactQueryWrapper>
         </RecoilRootWrapper>
         <Footer />
       </body>
