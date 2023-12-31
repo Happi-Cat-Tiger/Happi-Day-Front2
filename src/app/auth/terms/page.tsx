@@ -1,7 +1,9 @@
-import Footer from '@/components/Footer/Footer';
+import PrimaryButton from '@/components/Button/PrimaryButton';
 import { IoCheckboxOutline, IoCheckbox } from 'react-icons/io5';
 
 const terms = () => {
+  const handleButtonClick = {};
+
   return (
     <>
       <div className="px-2 gap-4 pt-10 m-auto flex w-[360px] flex-col items-center py-[18px] pb-[130px] md:w-[752px] md:px-[26px] md:py-[60px]">
@@ -48,9 +50,8 @@ const terms = () => {
             </div>
           </div>
         </div>
-        <button>다음 단계</button>
+        <PrimaryButton label="다음 단계" disabled={true} onClick={handleButtonClick} />
       </div>
-      <Footer />
     </>
   );
 };
