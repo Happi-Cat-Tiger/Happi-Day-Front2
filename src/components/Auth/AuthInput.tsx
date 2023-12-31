@@ -10,10 +10,10 @@ interface AuthInputProps {
   inputPlaceHolder: InputPlaceholder[];
 }
 
-function AuthInput(props: AuthInputProps) {
+const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
   return (
     <div className="flex-column items-end self-stretch">
-      {props.inputPlaceHolder.map((item, index) => (
+      {inputPlaceHolder.map((item, index) => (
         <div key={index} className="mb-1 md:mb-3 flex w-full items-center justify-between self-stretch">
           <div className="prose-subtitle-S text-gray1 md:prose-subtitle-M">{item.title}</div>
           <div className="px-2 py-2.5 gap-2.5 border-[1px]-gray-5 border-gray-5 flex h-[44px] w-[200px] items-center rounded-lg border-[1px] md:w-[300px]">
@@ -24,6 +24,6 @@ function AuthInput(props: AuthInputProps) {
       ))}
     </div>
   );
-}
+};
 
 export default AuthInput;
