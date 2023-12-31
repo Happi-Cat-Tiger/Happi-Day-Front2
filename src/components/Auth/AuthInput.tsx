@@ -10,7 +10,7 @@ interface AuthInputProps {
   inputPlaceHolder: InputPlaceholder[];
 }
 
-export default function AuthInput({ inputPlaceHolder }: AuthInputProps) {
+const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
   return (
     <div className="flex-column items-end self-stretch">
       {inputPlaceHolder.map((item, index) => (
@@ -24,4 +24,6 @@ export default function AuthInput({ inputPlaceHolder }: AuthInputProps) {
       ))}
     </div>
   );
-}
+};
+
+export default AuthInput;
