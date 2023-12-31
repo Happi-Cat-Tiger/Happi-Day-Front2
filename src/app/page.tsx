@@ -95,7 +95,7 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -119,7 +119,7 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -143,7 +143,7 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="grid md:grid-cols-4">
+          <div className="flex justify-between">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
