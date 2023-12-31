@@ -95,7 +95,7 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="flex justify-between">
+          <div className="grid md:grid-cols-4">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -110,12 +110,40 @@ const Home = () => {
             ))}
           </div>
         </div>
-        <div className="flex h-[386px] flex-col justify-between">
-          <div className="flex justify-between">
-            <h2 className="p-2 prose-h4 border-b-[3px] border-orange2">인기 공구</h2>
-            <button>More</button>
+        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+          <div className="flex items-center justify-between">
+            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 굿즈</h2>
+            <StyledButton
+              label="More+"
+              onClick={() => null}
+              className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
+            />
           </div>
-          <div className="flex justify-between">
+          <div className="grid md:grid-cols-4">
+            {mockData.map((el: MockData, idx: number) => (
+              <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
+                {el.title}
+                {el.artist}
+                {el.place}
+                {el.date}
+                {el.location}
+                {el.like}
+                {el.view}
+                {el.comment}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+          <div className="flex items-center justify-between">
+            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 공구</h2>
+            <StyledButton
+              label="More+"
+              onClick={() => null}
+              className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
+            />
+          </div>
+          <div className="grid md:grid-cols-4">
             {mockData.map((el: MockData, idx: number) => (
               <div key={idx} className="h-[300px] w-[224px] border-2 border-black">
                 {el.title}
@@ -132,7 +160,7 @@ const Home = () => {
         </div>
         <div className="flex h-[476px] w-full gap-[24px]">
           <div className="flex w-[870px] flex-col items-start gap-[35px]">
-            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h3>
+            <h2 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h2>
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
                 <div className="flex w-full flex-row gap-[8px]">
