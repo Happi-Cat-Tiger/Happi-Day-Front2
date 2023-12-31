@@ -3,7 +3,10 @@ import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import '../styles/global.css';
 import Nav from '@/components/Nav';
+<<<<<<< HEAD
 import Footer from '@/components/Footer/Footer';
+=======
+>>>>>>> 31289ff (FIX : comflict 해결)
 
 export const metadata: Metadata = {
   title: 'Happi Day',
