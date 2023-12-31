@@ -3,14 +3,15 @@ import typography from '@tailwindcss/typography';
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/containers/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+
   theme: {
     screens: {
       sm: { min: '360px' },
-      md: { min: '768px', max: '1280px' },
+      md: { min: '768px' },
     },
     extend: {
       colors: {
@@ -197,7 +198,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [typography],
+  plugins: [require('tailwind-scrollbar'), typography],
 };
 
 export default config;
