@@ -1,6 +1,6 @@
 'use client';
 import PrimaryButton from '@/components/Button/PrimaryButton';
-import CheckBox from '@/hooks/Checkbox';
+import CheckBox from '@/hooks/CheckBox';
 
 const terms = () => {
   const handleButtonClick = {};
@@ -29,9 +29,7 @@ const terms = () => {
           {checkBoxInnerText.map((item, index) => {
             return (
               <div key={index} className="gap-1.5 flex flex-shrink-0 flex-col items-start justify-center self-stretch">
-                <div className="gap-2 flex items-center">
-                  <CheckBox index={index} title={item.title} />
-                </div>
+                <CheckBox index={index} title={item.title} />
                 {item.title !== '전체 동의하기' ? (
                   <div className="py-2.5 gap-2.5 whitespace-wrap flex h-[100px] w-[304px] flex-shrink-0 items-start justify-center overflow-y-auto rounded-lg border-[1px] border-gray5 px-[15px] md:h-[130px] md:w-[660px]">
                     <div className="prose-body-S flex-[1_1_0%] flex-shrink-0 text-gray4 md:prose-body-M">
