@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { checkBoxState } from '@/atom/atom';
+import { allAgreeState, singleAgreeState } from '@/atom/atom';
 import { IoCheckboxOutline, IoCheckbox } from 'react-icons/io5';
 
 interface CheckBoxProps {
@@ -8,16 +8,17 @@ interface CheckBoxProps {
 }
 
 const CheckBox = ({ index, title }: CheckBoxProps) => {
-  const [agreements, setAgreements] = useRecoilState(checkBoxState);
+  const [allAgreements, setAllAgreements] = useRecoilState(allAgreeState);
 
-  const toggleButtonClick = () => {
-    // agreements 상태를 토글하는 함수
-    setAgreements(!agreements);
+  const [singleAgreements, setSingleAgreements] = useRecoilState(singleAgreeState);
+
+  const handleButtonClick = () => {
+    setAllAgreements(!allAgreements);
   };
 
   return (
-    <div className="gap-2 flex cursor-pointer items-center" onClick={toggleButtonClick}>
-      {agreements ? (
+    <div className="gap-2 flex cursor-pointer items-center" onClick={handleButtonClick}>
+      {allAgreements ? (
         <IoCheckboxOutline className="h-6 w-6 absolute text-orange2" />
       ) : (
         <IoCheckbox className="h-6 w-6 text-orange2" />

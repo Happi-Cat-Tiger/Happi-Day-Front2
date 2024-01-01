@@ -1,6 +1,14 @@
 import { atom } from 'recoil';
 
-export const checkBoxState = atom({
-  key: 'checkBoxState',
-  default: true,
+export const allAgreeState = atom({
+  key: 'allAgreeState',
+  default: false,
+});
+
+export const singleAgreeState = atom({
+  key: 'singleAgreeState',
+  default: {
+    termsAgreed: false,
+    personalInfoAgreed: false,
+  },
 });
