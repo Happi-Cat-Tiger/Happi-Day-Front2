@@ -17,7 +17,6 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <InputElements />
       {children}
-      <div className="my-[100px] text-center">페이지네이션</div>
       <div className="text-right">
         <PrimaryButton label="글쓰기" onClick={() => null} />
       </div>

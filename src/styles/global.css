@@ -39,3 +39,22 @@ body {
   border-radius: 14px;
   border: 3px solid var(--primary);
 }
+
+/* Pagination Style */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.pagination li {
+  padding: 5px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.active {
+  background-color: orange;
+  color: white;
+}
