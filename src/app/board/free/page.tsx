@@ -1,3 +1,16 @@
-export default function FreePage() {
-  return <h1>Hello, FreePage!</h1>;
-}
+import ArticleList from '@/components/List/ArticleList';
+
+const FreePage = () => {
+  return (
+    <div>
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+    </div>
+  );
+};
+
+export default FreePage;
