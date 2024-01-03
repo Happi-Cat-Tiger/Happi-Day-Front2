@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { AiOutlineSmile, AiTwotoneCalendar, AiTwotoneEye } from 'react-icons/ai';
 
@@ -10,9 +12,11 @@ const ArticleList = () => {
   const view = 50;
 
   return (
-    <div className="flex w-full items-center justify-between gap-2 border-b border-gray4 p-4">
+    <div
+      className="flex w-full cursor-pointer items-center justify-between gap-2 border-b border-gray4 p-4"
+      onClick={() => {}}>
       <div className="prose-body-M rounded-lg bg-gray5 px-3 py-1 text-white md:prose-body-L">{category}</div>
-      <div className="prose-body-M flex-1 md:prose-btn-L ">
+      <div className="prose-body-M flex-1 md:prose-btn-L">
         <span>{title}</span>
         <span className="text-light-purple">({comments})</span>
       </div>
