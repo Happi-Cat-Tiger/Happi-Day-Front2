@@ -1,3 +1,16 @@
-export default function FriendshipPage() {
-  return <h1>Hello, FriendshipPage!</h1>;
-}
+import ArticleList from '@/components/List/ArticleList';
+
+const FriendshipPage = () => {
+  return (
+    <div>
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+      <ArticleList />
+    </div>
+  );
+};
+
+export default FriendshipPage;
