@@ -40,11 +40,11 @@ const CustomEditor = ({ initialData }: { initialData: string }) => {
   return (
     <ReactQuill
       theme="snow"
-      value={editValue}
+      defaultValue={editValue}
       onChange={setEditValue}
       modules={modules}
       formats={formats}
-      className=" mx-auto mt-4 h-[600px] w-full"
+      className=" mx-auto mt-4 h-full w-full"
     />
   );
 };

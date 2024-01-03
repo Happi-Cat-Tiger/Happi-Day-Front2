@@ -17,7 +17,7 @@ const WritePage = () => {
   const [step, setStep] = useState<number>(1);
 
   return (
-    <section className="flex h-full w-screen max-w-[996px] flex-col items-center gap-4">
+    <section className="mx-auto flex h-full w-full max-w-[996px] flex-col items-center justify-center gap-4">
       <StepProgressBar step={step} />
       <div className="flex w-full justify-between">
         <PrimaryButton label="이전" disabled={step <= 1} onClick={() => setStep(step - 1)} />
@@ -30,9 +30,7 @@ const WritePage = () => {
             className="w-full rounded-md border border-gray3 px-1.5 py-1 focus:border-orange1 focus:outline-none "
             placeholder="제목"
           />
-          <div className="h-full w-full">
-            <CustomEditor initialData="<h1>Hello, world!</h1>" />
-          </div>
+          <CustomEditor initialData="<h1>Hello, world!</h1>" />
         </div>
       )}
       {step === 2 && (
