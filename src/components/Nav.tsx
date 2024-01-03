@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Nav = () => {
   const navList = ['게시판', '이벤트', '굿즈/공구', '로그인'];
-  const navLink = ['/board', '/events', '/sales', '/auth/login'];
+  const navLink = ['/board/all', '/events', '/sales', '/auth/login'];
 
   return (
     <div className="w-full border-b-2 border-orange2">
