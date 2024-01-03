@@ -19,7 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Nav />
         <RecoilRootWrapper>
-          <ReactQueryWrapper>{children}</ReactQueryWrapper>
+          <ReactQueryWrapper>
+            <Nav />
+            {children}
+            <Footer />
+          </ReactQueryWrapper>
         </RecoilRootWrapper>
         <Footer />
       </body>
