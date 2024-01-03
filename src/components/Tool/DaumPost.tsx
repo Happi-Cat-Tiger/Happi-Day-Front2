@@ -33,6 +33,7 @@ const DaumPost = () => {
           className="prose-body-S w-full flex-1 rounded-md border border-gray3 px-3 py-3 focus:border-orange1 focus:outline-none "
           placeholder="주소"
           value={address}
+          readOnly
         />
         <StyledButton
           label="주소 검색"
