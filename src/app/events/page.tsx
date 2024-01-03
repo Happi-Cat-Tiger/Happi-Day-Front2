@@ -1,14 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Card from '@/components/Card';
 import Pagination from 'react-js-pagination';
 import PaginationComponent from '@/components/Pagenation/PaginationComponent';
 import '../../styles/global.css';
-
-interface BoardType {
-  id: number;
-  page: number;
-}
 
 const page = () => {
   const paginationMock = [
@@ -30,7 +25,6 @@ const page = () => {
   ];
 
   const [page, setPage] = useState(1);
-  const [currentPost, setCurrentPost] = useState<BoardType[]>(paginationMock);
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
@@ -38,12 +32,8 @@ const page = () => {
   const [loading, setLoading] = useState(false);
 
   const pageChange = (page: number) => {
-    return setPage(page);
+    setPage(page);
   };
-
-  useEffect(() => {
-    setCurrentPost(paginationMock.slice(indexOfFirstPost, indexOfLastPost));
-  }, [page]);
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -52,7 +42,7 @@ const page = () => {
   return (
     <div>
       <div className="grid grid-cols-5 grid-rows-2 gap-10">
-        {currentPost.map((el) => (
+        {paginationMock.slice(indexOfFirstPost, indexOfLastPost).map((el) => (
           <Card
             key={el.id}
             id={el.page}
@@ -71,15 +61,7 @@ const page = () => {
         ))}
       </div>
       <div className="my-[100px] text-center">
-        <Pagination
-          activePage={page}
-          itemsCountPerPage={postPerPage}
-          totalItemsCount={paginationMock.length}
-          pageRangeDisplayed={5}
-          prevPageText={'<'}
-          nextPageText={'>'}
-          onChange={pageChange}
-        />
+        <PaginationComponent page={page} totalItemsCount={paginationMock.length} pageChange={pageChange} />
       </div>
     </div>
   );
