@@ -54,7 +54,12 @@ body {
   cursor: pointer;
 }
 
+.pagination li:first-child a,
+.pagination li:last-child a {
+  display: none;
+}
+
 .active {
-  background-color: orange;
+  background-color: #ffb866;
   color: white;
 }

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import Card from '@/components/Card';
-import Pagination from 'react-js-pagination';
 import PaginationComponent from '@/components/Pagenation/PaginationComponent';
 import '../../styles/global.css';
 
