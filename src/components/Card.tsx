@@ -40,7 +40,7 @@ const Card = ({
   return (
     <div
       key={id}
-      onClick={() => (cardType === 'sales' ? router.push(`${cardType}/${id}`) : router.push(cardType))}
+      onClick={() => router.push(`${cardType}/${id}`)}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-xl">
       <Image src={logo} alt="thumbnail" className="flex-1" />
       <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
