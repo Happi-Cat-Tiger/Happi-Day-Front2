@@ -3,8 +3,9 @@ import Card from '@/components/Card';
 export default function EventsPage() {
   return (
     <div className="grid grid-cols-2 place-items-center md:grid-cols-5">
-      {new Array(10).fill(0).map((v) => (
+      {new Array(10).fill(0).map((v, i) => (
         <Card
+          key={i}
           id={1}
           cardType="events"
           thumbnailUrl=""
