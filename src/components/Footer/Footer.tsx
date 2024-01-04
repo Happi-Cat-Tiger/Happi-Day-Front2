@@ -11,7 +11,7 @@ export default function Footer() {
           <div>이메일문의</div>
           <div>모바일버전</div>
         </div>
-        <div className="gap-5 flex items-center justify-center">
+        <div className="flex items-center justify-center gap-5">
           <FiInstagram className="h-5 w-5" />
           <FaFacebookF className="h-5 w-5" />
         </div>

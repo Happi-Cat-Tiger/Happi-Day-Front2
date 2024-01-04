@@ -10,7 +10,7 @@ const HorizontalLinkList = ({ category }: HorizontalLinkListProps) => {
   const pathname = usePathname();
 
   return (
-    <div className="flex gap-2 md:gap-4">
+    <div className="flex flex-wrap gap-2 md:gap-4">
       {category.map((page, i) => (
         <Link key={i} href={page.navigate}>
           <p
