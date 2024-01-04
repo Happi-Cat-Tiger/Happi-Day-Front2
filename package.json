@@ -16,11 +16,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
-<<<<<<< HEAD
     "react-js-pagination": "^3.0.3",
-=======
     "react-quill": "^2.0.0",
->>>>>>> bbcb520cf17f4b5b6624313aa95bd99c261bf026
     "recoil": "^0.7.7"
   },
   "devDependencies": {
