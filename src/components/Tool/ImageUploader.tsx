@@ -65,7 +65,7 @@ const ImageUploader = () => {
         {uploadedImage ? (
           <img src={uploadedImage.imageUrl} className="mx-auto h-auto w-[250px]" />
         ) : (
-          <p className="prose-body-S text-center text-gray-600">이미지 미리보기</p>
+          <p className="prose-body-XS text-center text-gray-600 md:prose-body-S">이미지 미리보기</p>
         )}
       </div>
     </div>

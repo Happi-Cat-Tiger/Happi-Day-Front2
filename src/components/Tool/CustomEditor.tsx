@@ -44,7 +44,7 @@ const CustomEditor = ({ initialData }: { initialData: string }) => {
       onChange={setEditValue}
       modules={modules}
       formats={formats}
-      className=" mx-auto mt-4 h-full w-full"
+      className="h-full w-full overflow-auto"
     />
   );
 };
