@@ -15,7 +15,11 @@ import { useState } from 'react';
 
 const WritePage = () => {
   const [step, setStep] = useState<number>(1);
+  const [articleTitle, setArticleTitle] = useState<string>('');
+  const initialData = '<h1>Hello, world!</h1>';
+  const [editValue, setEditValue] = useState<string>(initialData);
 
+  console.log(articleTitle, editValue);
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -26,11 +30,14 @@ const WritePage = () => {
       {step === 1 && (
         <div className="flex h-[560px] w-full flex-col gap-4 md:border md:border-gray-200 md:p-4">
           <input
+            defaultValue={articleTitle}
+            onChange={(e) => setArticleTitle(e.target.value)}
             type="text"
             className="w-full rounded-md border border-gray3 px-1.5 py-1 focus:border-orange1 focus:outline-none"
             placeholder="제목"
+            spellCheck="false"
           />
-          <CustomEditor initialData="<h1>Hello, world!</h1>" />
+          <CustomEditor editValue={editValue} setEditValue={setEditValue} />
         </div>
       )}
       {step === 2 && (
