@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import CheckBox from '@/hooks/CheckBox';
 
@@ -28,6 +29,7 @@ const Terms = () => {
   ]);
 
   const [allAgreed, setAllAgreed] = useState(false);
+  const router = useRouter();
 
   const handleAgreementChange = (id: number, isChecked: boolean) => {
     const updatedCheckBoxData = checkBoxData.map((item) => (item.id === id ? { ...item, isChecked } : item));
@@ -40,10 +42,6 @@ const Terms = () => {
     const updatedCheckBoxData = checkBoxData.map((item) => ({ ...item, isChecked: allChecked }));
     setCheckBoxData(updatedCheckBoxData);
     setAllAgreed(allChecked);
-  };
-
-  const handleButtonClick = () => {
-    // 버튼 클릭 시 처리
   };
 
   useEffect(() => {
@@ -94,7 +92,7 @@ const Terms = () => {
             </div>
           </div>
         </div>
-        <PrimaryButton label="다음 단계" disabled={!allAgreed} onClick={handleButtonClick} />
+        <PrimaryButton label="다음 단계" disabled={!allAgreed} onClick={() => router.push('/auth/sign-up')} />
       </div>
     </>
   );
