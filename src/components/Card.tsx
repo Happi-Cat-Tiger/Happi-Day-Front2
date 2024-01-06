@@ -43,7 +43,7 @@ const Card = ({
       onClick={() => (cardType === 'sales' ? router.push(`${cardType}/${id}`) : router.push(cardType))}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-xl">
       <Image src={logo} alt="thumbnail" className="flex-1" />
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
+      <div className="gap-1 flex flex-1 flex-col items-center justify-center border-t-[1px] border-black">
         <span className="prose-h6">{title}</span>
         <span className="prose-body-S text-orange2">{artist}</span>
         {cardType === 'events' && <span className="prose-body-S">{location}</span>}

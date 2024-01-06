@@ -1,14 +1,15 @@
+'use client';
 import AuthInput from '@/components/Auth/AuthInput';
 import LoginButton from '@/components/Button/LoginButton';
 import { AiOutlineUser, AiOutlineLock } from 'react-icons/ai';
 
-const signIn = () => {
+const SignIn = () => {
   const inputPlaceHolder = [
-    { title: '', icon: AiOutlineUser, content: 'example@happiday.com' },
-    { title: '', icon: AiOutlineLock, content: '비밀번호' },
+    { name: 'id', label: '', icon: AiOutlineUser, type: 'text', content: 'example@happiday.com' },
+    { name: 'password', label: '', type: 'password', icon: AiOutlineLock, content: '비밀번호' },
   ];
 
-  const handleButtonClick = {};
+  const handleButtonClick = () => {};
 
   return (
     <>
@@ -29,4 +30,4 @@ const signIn = () => {
     </>
   );
 };
-export default signIn;
+export default SignIn;

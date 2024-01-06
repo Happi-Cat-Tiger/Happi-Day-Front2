@@ -1,18 +1,19 @@
+'use client';
 import AuthInput from '@/components/Auth/AuthInput';
 import SubmitButton from '@/components/Button/SubmitButton';
 import { AiOutlineUser, AiOutlineLock, AiOutlinePhone } from 'react-icons/ai';
 
-const signUp = () => {
+const SignUp = () => {
   const inputPlaceHolder = [
-    { title: '아이디', icon: AiOutlineUser, content: 'example@happiday.com' },
-    { title: '비밀번호', icon: AiOutlineLock, content: '********' },
-    { title: '비밀번호 확인', icon: AiOutlineLock, content: '********' },
-    { title: '이름', icon: AiOutlineUser, content: '홍길동' },
-    { title: '휴대폰 번호', icon: AiOutlinePhone, content: '000-0000-0000' },
-    { title: '닉네임', icon: AiOutlineUser, content: 'ex)해피데이' },
+    { name: 'id', label: '아이디', type: 'text', icon: AiOutlineUser, content: 'example@happiday.com' },
+    { name: 'password', label: '비밀번호', type: 'password', icon: AiOutlineLock, content: '********' },
+    { name: 'verifyPassword', label: '비밀번호 확인', type: 'password', icon: AiOutlineLock, content: '********' },
+    { name: 'name', label: '이름', type: 'text', icon: AiOutlineUser, content: '홍길동' },
+    { name: 'phoneNumber', label: '휴대폰 번호', type: 'text', icon: AiOutlinePhone, content: '000-0000-0000' },
+    { name: 'nickName', label: '닉네임', type: 'text', icon: AiOutlineUser, content: 'ex)해피데이' },
   ];
 
-  const handleButtonClick = {};
+  const handleButtonClick = () => {};
 
   return (
     <>
@@ -25,4 +26,4 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default SignUp;
