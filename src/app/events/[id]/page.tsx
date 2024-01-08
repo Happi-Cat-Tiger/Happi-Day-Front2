@@ -91,7 +91,7 @@ const page = () => {
             label="등록"
             onClick={() => null}
             disabled={false}
-            className="rounded-[16px] bg-gray5 px-[24px] py-[16px] text-white"
+            className="prose-btn-L rounded-[16px] bg-gray5 px-[24px] py-[16px] text-white"
           />
         </div>
       </div>
