@@ -6,7 +6,7 @@ import { QUILL_EDITOR } from '@/constants/editor';
 
 interface CustomEditorProps {
   editValue: string;
-  setEditValue: React.Dispatch<React.SetStateAction<string>>;
+  setEditValue: (value: string) => void;
 }
 const CustomEditor = ({ editValue, setEditValue }: CustomEditorProps) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
