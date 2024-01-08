@@ -1,7 +1,7 @@
 'use client';
+import { writingInfoState } from '@/atom/wrtie';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import PrimaryButton from '@/components/Button/PrimaryButton';
-import CustomEditor from '@/components/Tool/CustomEditor';
 import AddressInput from '@/components/WriteForm/AddressInput';
 import BankAccountInput from '@/components/WriteForm/BankAccountInput';
 import DurationInput from '@/components/WriteForm/DurationInput';
@@ -11,15 +11,24 @@ import PosterUploader from '@/components/WriteForm/PosterUploader';
 import ProductOptionsInput from '@/components/WriteForm/ProductOptionsInput';
 import ShippingOptionsInput from '@/components/WriteForm/ShippingOptionsInput';
 import ThumbnailUploader from '@/components/WriteForm/ThumbnailUploader';
-import { useState } from 'react';
+import WritingStep from '@/containers/write/WritingStep';
+import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 const WritePage = () => {
   const [step, setStep] = useState<number>(1);
-  const [articleTitle, setArticleTitle] = useState<string>('');
-  const initialData = '<h1>Hello, world!</h1>';
-  const [editValue, setEditValue] = useState<string>(initialData);
 
-  console.log(articleTitle, editValue);
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+
+  const { hashtag } = writingInfoValue;
+
+  const handleChangeHashtag = (value: string) => {
+    setWritingInfoValue({
+      ...writingInfoValue,
+      hashtag: value,
+    });
+  };
+
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -27,19 +36,7 @@ const WritePage = () => {
         <PrimaryButton label="이전" disabled={step <= 1} onClick={() => setStep(step - 1)} />
         <PrimaryButton label="다음" onClick={() => setStep(step + 1)} />
       </div>
-      {step === 1 && (
-        <div className="flex h-[560px] w-full flex-col gap-4 md:border md:border-gray-200 md:p-4">
-          <input
-            defaultValue={articleTitle}
-            onChange={(e) => setArticleTitle(e.target.value)}
-            type="text"
-            className="w-full rounded-md border border-gray3 px-1.5 py-1 focus:border-orange1 focus:outline-none"
-            placeholder="제목"
-            spellCheck="false"
-          />
-          <CustomEditor editValue={editValue} setEditValue={setEditValue} />
-        </div>
-      )}
+      {step === 1 && <WritingStep />}
       {step === 2 && (
         <div className="flex h-[660px] w-full flex-col gap-4 overflow-auto border border-gray-200 p-2 md:p-4">
           <HashtagInput />

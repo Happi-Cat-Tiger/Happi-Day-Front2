@@ -1,17 +1,11 @@
+import { writeState } from '@/atom/wrtie';
 import CategoryDropdown from '@/components/Dropdowns/CategoryDropdown';
 import CustomEditor from '@/components/Tool/CustomEditor';
 import React, { ChangeEvent } from 'react';
-import { atom, useRecoilState, RecoilEnv } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 const WritingStep = () => {
   const dropdownOpt = ['이벤트/홍보', '거래/교환/양도', '친목/동행', '자유', '주최 관련'];
-  const initialData = '<h1>Hello, world!</h1>';
-
-  const writeState = atom({
-    key: `writeState`,
-    default: { category: '카테고리|▼', articleTitle: '', editValue: initialData },
-  });
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
 
