@@ -13,7 +13,7 @@ const page = () => {
       <Link href="/events">
         <div className="cursor-pointer text-[30px]">←</div>
       </Link>
-      <div className="relative flex w-full flex-col items-center gap-[16px]">
+      <div className="relative mb-[100px] flex w-full flex-col items-center gap-[16px]">
         <h3 className="prose-h3">세븐틴 호시 생일 카페</h3>
         <ul className="prose-body-S flex gap-[16px] text-gray4">
           <li>🧑 닉네임</li>
@@ -46,7 +46,7 @@ const page = () => {
             이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
           </p>
         </div>
-        <div className="absolute right-[0] top-[50%] flex translate-x-[100%] translate-y-[-50%] flex-col items-center gap-[16px]">
+        <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0]">
           <div className="flex flex-col items-center">
             <h6 className="prose-h6 text-gray5">Place</h6>
             <p className="prose-body-S">카페 소공원</p>
