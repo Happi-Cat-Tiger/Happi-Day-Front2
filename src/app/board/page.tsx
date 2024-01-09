@@ -1,6 +1,7 @@
-'use client';
+import AllPage from './all/page';
+
 const BoardPage = () => {
-  return <h1>Hello, Dashboard Page!</h1>;
+  return <AllPage />;
 };
 
 export default BoardPage;

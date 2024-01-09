@@ -1,4 +1,4 @@
-import { writeState } from '@/atom/wrtie';
+import { writeState } from '@/atom/write';
 import CategoryDropdown from '@/components/Dropdowns/CategoryDropdown';
 import CustomEditor from '@/components/Tool/CustomEditor';
 import React, { ChangeEvent } from 'react';
