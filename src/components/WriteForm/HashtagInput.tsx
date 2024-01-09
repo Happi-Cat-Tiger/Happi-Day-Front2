@@ -21,7 +21,7 @@ const HashtagInput = () => {
         defaultValue={hashtag}
         onChange={(e) => handleChangeHashtag(e)}
         type="text"
-        className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+        className="text-input"
         placeholder="#해시태그를 입력해주세요 ex) #해시태그"
         spellCheck="false"
       />

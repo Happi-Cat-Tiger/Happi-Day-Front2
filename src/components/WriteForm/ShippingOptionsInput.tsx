@@ -31,14 +31,14 @@ const ShippingOptionsInput = () => {
           type="text"
           defaultValue={shippingValue.label}
           onChange={(e) => setShippingValue({ ...shippingValue, label: e.target.value })}
-          className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+          className="text-input"
           placeholder="배송 옵션을 등록해주세요. ex) 우체국 택배"
         />
         <input
           type="text"
           defaultValue={shippingValue.price}
           onChange={(e) => setShippingValue({ ...shippingValue, price: e.target.value })}
-          className="prose-body-XS w-[120px] rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none md:w-[200px] "
+          className="text-input w-[120px] md:w-[200px]"
           placeholder="배송비"
         />
         <button
