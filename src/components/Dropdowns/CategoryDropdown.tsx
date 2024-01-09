@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import StyledButton from '../Button/StyledButton';
 
 interface CategoryDropdownProps {
   dropdownOpt: string[];
@@ -12,11 +11,13 @@ const CategoryDropdown = ({ dropdownOpt, dropValue, handleChangeCategory }: Cate
 
   return (
     <>
-      <StyledButton
-        className=" w-[160px] truncate rounded-lg border border-orange2 bg-white py-2 hover:bg-[#F5F5F5]"
-        onClick={() => setIsDrop(!isDrop)}
-        label={dropValue}
-      />
+      <button
+        type="button"
+        className="prose-body-S relative w-[160px] truncate rounded-lg border border-orange2 bg-white px-2 py-2 text-left hover:bg-[#F5F5F5]"
+        onClick={() => setIsDrop(!isDrop)}>
+        {dropValue}
+        <div className="absolute inset-y-2 right-1">▼</div>
+      </button>
       <div
         className={`absolute top-0 z-10 w-[160px] translate-y-12 divide-y divide-gray-100 rounded-lg bg-white shadow ${
           isDrop ? 'box' : 'hidden'
