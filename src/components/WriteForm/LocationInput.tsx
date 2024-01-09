@@ -1,6 +1,18 @@
+import { writingInfoState } from '@/atom/write';
+import { useRecoilState } from 'recoil';
 import React from 'react';
 
 const LocationInput = () => {
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+
+  const { location } = writingInfoValue;
+
+  const handleChangeLocation = (value: any) => {
+    setWritingInfoValue({
+      ...writingInfoValue,
+      location: value,
+    });
+  };
   return (
     <div className="flex flex-col gap-2">
       <div className="prose-h6 md:prose-h5">
@@ -8,6 +20,8 @@ const LocationInput = () => {
       </div>
       <input
         type="text"
+        defaultValue={location}
+        onChange={(e) => handleChangeLocation(e.target.value)}
         className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
         placeholder="이벤트가 진행되는 장소의 이름을 입력해주세요."
       />

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
-
-const ImageUploader = () => {
+interface Props {
+  handleChange: (value: any) => void;
+}
+const ImageUploader = ({ handleChange }: Props) => {
   const [isActive, setActive] = useState<boolean>(false);
 
   const [uploadedImage, setUploadedImage] = useState<any>(null);
@@ -32,15 +34,16 @@ const ImageUploader = () => {
 
     if (!isImage) {
       setUploadedImage({ name, size, type });
+      handleChange({ name, size, type });
       return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       setUploadedImage({ name, size, type, imageUrl: String(reader.result) });
+      handleChange({ name, size, type, imageUrl: String(reader.result) });
     };
     reader.readAsDataURL(file);
   };
-  console.log(isActive);
   return (
     <div className="flex w-full flex-col items-center justify-center gap-5">
       <label
