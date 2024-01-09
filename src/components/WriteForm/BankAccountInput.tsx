@@ -22,7 +22,7 @@ const BankAccountInput = () => {
               bankAccount: { ...bankAccount, bank: e.target.value },
             })
           }
-          className="prose-body-XS w-[300px] rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+          className="text-input w-[300px]"
           placeholder="은행 이름"
         />
         <input
@@ -34,7 +34,7 @@ const BankAccountInput = () => {
               bankAccount: { ...bankAccount, name: e.target.value },
             })
           }
-          className="prose-body-XS w-[100px] rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+          className="text-input w-[100px]"
           placeholder="예금주명"
         />
       </div>
@@ -47,7 +47,7 @@ const BankAccountInput = () => {
             bankAccount: { ...bankAccount, number: e.target.value },
           })
         }
-        className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+        className="text-input"
         placeholder={`계좌번호 ("-" 제외하고 숫자만 입력)`}
       />
     </div>

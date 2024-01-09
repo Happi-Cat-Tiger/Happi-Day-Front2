@@ -29,7 +29,7 @@ const ProductOptionsInput = () => {
         type="text"
         defaultValue={prdValue.label}
         onChange={(e) => setPrdValue({ ...prdValue, label: e.target.value })}
-        className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+        className="text-input"
         placeholder="상품 이름을 등록해 주세요."
       />
       <div className="flex items-center gap-2">
@@ -37,14 +37,14 @@ const ProductOptionsInput = () => {
           type="text"
           defaultValue={prdValue.stock}
           onChange={(e) => setPrdValue({ ...prdValue, stock: e.target.value })}
-          className="prose-body-XS w-full shrink rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none md:flex-1 "
+          className="text-input shrink md:flex-1 "
           placeholder="재고"
         />
         <input
           type="text"
           defaultValue={prdValue.price}
           onChange={(e) => setPrdValue({ ...prdValue, price: e.target.value })}
-          className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none md:flex-1 "
+          className="text-input md:flex-1 "
           placeholder="판매가격 (개당)"
         />
         <button

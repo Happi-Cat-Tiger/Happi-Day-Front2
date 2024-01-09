@@ -28,13 +28,7 @@ const DaumPost = ({ handleChangeAdress }: DaumPostProps) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-4">
-        <input
-          type="text"
-          className="prose-body-S w-full flex-1 rounded-md border border-gray3 px-3 py-3 focus:border-orange1 focus:outline-none "
-          placeholder="주소"
-          value={address}
-          readOnly
-        />
+        <input type="text" className="text-input flex-1" placeholder="주소" value={address} readOnly />
         <StyledButton
           label="주소 검색"
           onClick={() => open({ onComplete: handleComplete })}
@@ -48,7 +42,7 @@ const DaumPost = ({ handleChangeAdress }: DaumPostProps) => {
           setDetailAddress(e.target.value);
           handleChangeAdress(address + ' ' + e.target.value);
         }}
-        className="prose-body-S w-full flex-1 rounded-md border border-gray3 px-3 py-3 focus:border-orange1 focus:outline-none "
+        className="text-input flex-1"
         placeholder="상세주소"
       />
     </div>

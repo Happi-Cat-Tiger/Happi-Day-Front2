@@ -41,7 +41,7 @@ const WritingStep = () => {
           defaultValue={articleTitle}
           onChange={(e) => handleChangeArticle(e)}
           type="text"
-          className="w-full rounded-md border border-gray3 px-1.5 py-1 focus:border-orange1 focus:outline-none"
+          className="w-full rounded-md border border-gray3 px-1.5 py-1 hover:bg-[#A0C3FF]/[0.1] focus:border-orange1 focus:bg-[#A0C3FF]/[0.1] focus:outline-none"
           placeholder="제목"
           spellCheck="false"
         />

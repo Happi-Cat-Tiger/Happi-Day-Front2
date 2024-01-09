@@ -22,7 +22,7 @@ const LocationInput = () => {
         type="text"
         defaultValue={location}
         onChange={(e) => handleChangeLocation(e.target.value)}
-        className="prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S focus:border-orange1 focus:outline-none "
+        className="text-input"
         placeholder="이벤트가 진행되는 장소의 이름을 입력해주세요."
       />
     </div>
