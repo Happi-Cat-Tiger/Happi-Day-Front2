@@ -86,7 +86,7 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                     ...(item.name === 'phoneNumber' && {
                       pattern: {
                         value: /^[0-9]{1,11}$/,
-                        message: '전화번호를 다시 확인해주세요.',
+                        message: '하이픈(-)을 제외한 숫자만 입력해주세요.',
                       },
                     }),
                     ...(item.name === 'nickName' && {
