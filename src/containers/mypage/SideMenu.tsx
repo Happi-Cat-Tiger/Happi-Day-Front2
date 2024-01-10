@@ -3,8 +3,16 @@
 import React from 'react';
 import MenuItems from './MenuItems';
 
-const MenuList = [
-  { id: 0, title: '프로필', path: 'profile' },
+//TODO types 폴더가 없어서 pull 받은 후 추가 예정
+type MenuListItem = {
+  id: number;
+  title: string;
+  path: string;
+};
+
+//TODO contants 폴더가 없어서 pull 받은 후 추가 예정
+const MYPAGE_MENU_LIST: MenuListItem[] = [
+  { id: 0, title: '프로필 관리', path: 'profile' },
   { id: 1, title: '나의 게시글', path: 'my-posts' },
   { id: 2, title: '나의 굿즈', path: 'my-sales' },
   { id: 3, title: '나의 구독', path: 'my-subscribes' },
@@ -15,9 +23,9 @@ const MenuList = [
 const SideMenu = () => {
   return (
     <ul
-      className="prose-menu&tabs md: mx-auto my-5 flex flex-wrap justify-center px-5 md:w-[200px] md:flex-col md:flex-nowrap  md:justify-start
+      className="prose-menu&tabs md: mx-auto my-1 flex flex-wrap justify-center px-5 md:my-5 md:w-[200px] md:flex-col md:flex-nowrap  md:justify-start
     ">
-      {MenuList.map((item) => (
+      {MYPAGE_MENU_LIST.map((item) => (
         <MenuItems key={item.id} title={item.title} path={item.path} />
       ))}
     </ul>
