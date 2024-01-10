@@ -19,6 +19,7 @@ const config: Config = {
         orange2: '#ffb866',
         orange3: '#ffd8ab',
         pink: '#e85ecf',
+        pink2: '#ec1dc6',
         'light-purple': '#c688f6',
         'light-purple2': '#e4cfff',
         black: '#000',
