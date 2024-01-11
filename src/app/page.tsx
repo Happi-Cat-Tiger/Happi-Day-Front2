@@ -5,6 +5,7 @@ import SubBanner from '../../public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import Card from '@/components/Card';
 import { AiOutlineSmile, AiOutlineCalendar, AiOutlineEye } from 'react-icons/ai';
+import { useEffect, useState } from 'react';
 
 interface MockData {
   id: number;
@@ -96,16 +97,44 @@ const Home = () => {
       joinCount: 5,
     },
   ];
+  const [data, setData] = useState(mockData);
+
+  const dataLength = () => {
+    if (window.innerWidth > 1200) {
+      setData(data.slice(0, 5));
+    }
+    if (window.innerWidth <= 1200) {
+      setData(data.slice(0, 4));
+    }
+    if (window.innerWidth <= 930) {
+      setData(data.slice(0, 3));
+    }
+    if (window.innerWidth <= 700) {
+      setData(data.slice(0, 2));
+    }
+  };
+
+  const handleResize = () => {
+    dataLength();
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    dataLength();
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
-    <div className="my-32 h-auto">
+    <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
         <div className="max-w-[1280px]">
           <Image src={SubBanner} alt="구독 배너" className="w-[1280px]" />
         </div>
         <div className="flex h-[386px] max-w-[1280px] flex-col justify-between">
           <div className="flex items-center justify-between">
-            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 이벤트</h3>
+            <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 이벤트</h3>
             <StyledButton
               label="More+"
               onClick={() => null}
@@ -113,7 +142,7 @@ const Home = () => {
             />
           </div>
           <div className="flex justify-between">
-            {mockData.slice(0, 5).map((el: MockData, idx: number) => (
+            {data.map((el: MockData, idx: number) => (
               <Card
                 key={idx}
                 id={el.id}
@@ -134,7 +163,7 @@ const Home = () => {
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
-            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 굿즈</h3>
+            <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 굿즈</h3>
             <StyledButton
               label="More+"
               onClick={() => null}
@@ -142,7 +171,7 @@ const Home = () => {
             />
           </div>
           <div className="flex justify-between">
-            {mockData.slice(0, 5).map((el: MockData, idx: number) => (
+            {data.map((el: MockData, idx: number) => (
               <Card
                 key={idx}
                 id={el.id}
@@ -163,7 +192,7 @@ const Home = () => {
         </div>
         <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
           <div className="flex items-center justify-between">
-            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 공구</h3>
+            <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
             <StyledButton
               label="More+"
               onClick={() => null}
@@ -171,7 +200,7 @@ const Home = () => {
             />
           </div>
           <div className="flex justify-between">
-            {mockData.slice(0, 5).map((el: MockData, idx: number) => (
+            {data.map((el: MockData, idx: number) => (
               <Card
                 key={idx}
                 id={el.id}
@@ -191,8 +220,8 @@ const Home = () => {
           </div>
         </div>
         <div className="flex h-[476px] w-full gap-[24px]">
-          <div className="flex w-[870px] flex-col items-start gap-[35px]">
-            <h3 className="prose-h3 border-b-[3px] border-orange2 p-[8px]">인기 게시글</h3>
+          <div className="flex flex-col items-start gap-[35px] sm:w-full md:w-[65%]">
+            <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 게시글</h3>
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
                 <div className="flex w-full flex-row items-center gap-[8px]">
@@ -200,9 +229,9 @@ const Home = () => {
                     label="자유"
                     disabled={false}
                     onClick={() => null}
-                    className="prose-body-L rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white"
+                    className="rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
                   />
-                  <div className="prose-btn-L flex-1">
+                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
                     <span>콘서트 같이 가실분</span>
                     <span className="text-[#891BDF]">(1)</span>
                   </div>
@@ -228,9 +257,9 @@ const Home = () => {
                     label="자유"
                     disabled={false}
                     onClick={() => null}
-                    className="prose-body-L rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white"
+                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
                   />
-                  <div className="prose-btn-L flex-1">
+                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
                     <span>콘서트 같이 가실분</span>
                     <span className="text-[#891BDF]">(1)</span>
                   </div>
@@ -256,9 +285,9 @@ const Home = () => {
                     label="자유"
                     disabled={false}
                     onClick={() => null}
-                    className="prose-body-L rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white"
+                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
                   />
-                  <div className="prose-btn-L flex-1">
+                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
                     <span>콘서트 같이 가실분</span>
                     <span className="text-[#891BDF]">(1)</span>
                   </div>
@@ -284,9 +313,9 @@ const Home = () => {
                     label="자유"
                     disabled={false}
                     onClick={() => null}
-                    className="prose-body-L rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white"
+                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
                   />
-                  <div className="prose-btn-L flex-1">
+                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
                     <span>콘서트 같이 가실분</span>
                     <span className="text-[#891BDF]">(1)</span>
                   </div>
@@ -312,9 +341,9 @@ const Home = () => {
                     label="자유"
                     disabled={false}
                     onClick={() => null}
-                    className="prose-body-L rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white"
+                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
                   />
-                  <div className="prose-btn-L flex-1">
+                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
                     <span>콘서트 같이 가실분</span>
                     <span className="text-[#891BDF]">(1)</span>
                   </div>
@@ -336,7 +365,11 @@ const Home = () => {
               </li>
             </ul>
           </div>
-          <Image src={HappiDayBanner} alt="Happi Day 배너" className="sm:hidden md:block md:h-[300px] md:w-[400px]" />
+          <Image
+            src={HappiDayBanner}
+            alt="Happi Day 배너"
+            className="sm:hidden md:block md:min-w-[350px] lg:w-[450px]"
+          />
         </div>
       </div>
     </div>
