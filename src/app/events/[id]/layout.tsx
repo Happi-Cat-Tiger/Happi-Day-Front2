@@ -1,8 +1,7 @@
-'use client';
 import React from 'react';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="m-auto md:max-w-[1280px]">{children}</div>;
+  return <div className="h-full w-full">{children}</div>;
 };
 
 export default layout;
