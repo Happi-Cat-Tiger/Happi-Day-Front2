@@ -1,49 +1,19 @@
-import React, { useState } from 'react';
+import useUploadImage from '@/hooks/useUploadImage';
+import React, { useState, useEffect } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 interface Props {
   handleChange: (value: any) => void;
 }
 const ImageUploader = ({ handleChange }: Props) => {
   const [isActive, setActive] = useState<boolean>(false);
+  const [imgFile, setImgFile] = useState<File | null>(null);
 
-  const [uploadedImage, setUploadedImage] = useState<any>(null);
+  const { uploadedImage, handleDrop, handleUpload } = useUploadImage({ setImgFile });
 
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
+  useEffect(() => {
+    handleChange(uploadedImage);
+  }, [uploadedImage]);
 
-    setFileInfo(file);
-    setActive(false);
-    // 파일을 데이터 URL로 읽어오기
-  };
-
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const file = e.target?.files?.[0]; // 사용자가 파일을 선택하지 않은 경우를 고려하여 optional chaining 사용
-
-    if (file) setFileInfo(file);
-    else console.error('No file selected');
-
-    setActive(false);
-  };
-
-  const setFileInfo = (file: any) => {
-    const { name, type } = file;
-    const isImage = type.includes('image');
-    const size = (file.size / (1024 * 1024)).toFixed(2) + 'mb';
-
-    if (!isImage) {
-      setUploadedImage({ name, size, type });
-      handleChange({ name, size, type });
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setUploadedImage({ name, size, type, imageUrl: String(reader.result) });
-      handleChange({ name, size, type, imageUrl: String(reader.result) });
-    };
-    reader.readAsDataURL(file);
-  };
   return (
     <div className="flex w-full flex-col items-center justify-center gap-5">
       <label
@@ -53,7 +23,7 @@ const ImageUploader = ({ handleChange }: Props) => {
         onDragEnter={() => setActive(true)}
         onDragLeave={() => setActive(false)}
         onDragOver={(event) => event.preventDefault()}
-        onDrop={(event) => handleDrop(event)}
+        onDrop={(event) => handleDrop(event, setActive)}
         htmlFor="dropzone-file">
         <div className="flex flex-col items-center justify-center pb-6 pt-5">
           <AiOutlineCloudUpload className="mb-4 h-8 w-8 text-gray-500" />
@@ -62,7 +32,7 @@ const ImageUploader = ({ handleChange }: Props) => {
           </p>
           <p className="text-xs text-gray-500">PNG, JPG, JPEG, BMP or GIF (10MB 이하)</p>
         </div>
-        <input id="dropzone-file" type="file" className="hidden" onChange={(e) => handleUpload(e)} />
+        <input id="dropzone-file" type="file" className="hidden" onChange={(e) => handleUpload(e, setActive)} />
       </label>
       <div className="mx-auto w-2/3 rounded-lg border-2 border-gray-300 bg-gray-100 p-5">
         {uploadedImage ? (
