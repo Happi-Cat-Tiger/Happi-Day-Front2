@@ -48,7 +48,7 @@ const ProfileImageEdit = () => {
           </label>
 
           <input ref={fileRef} id="image" className="hidden" type="file" accept="image/*" onChange={onChangeImg} />
-          <div className="flex w-72 flex-row justify-between">
+          <div className="flex w-80 flex-row justify-between">
             <div className="relative h-28 w-28 overflow-hidden rounded-full border md:h-32 md:w-32">
               <Image src={preview as string} alt="profile image" fill={true} placeholder="empty" />
             </div>
@@ -59,12 +59,12 @@ const ProfileImageEdit = () => {
                 onClick={() => {
                   handleClick();
                 }}
-                className="prose-btn-XS flex w-[62px] items-center rounded-xl bg-orange2 px-5 py-3 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4 "
+                className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-orange2  px-4 py-4 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6 "
               />
               <StyledButton
                 label="삭제"
                 onClick={() => {}}
-                className="prose-btn-XS flex w-[62px] items-center rounded-xl bg-gray5 px-5 py-3 text-white md:prose-btn-S hover:bg-gray4 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4"
+                className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-gray5 px-4 py-4 text-white md:prose-btn-M hover:bg-gray4 focus:outline-none disabled:bg-gray6"
               />
             </div>
           </div>
