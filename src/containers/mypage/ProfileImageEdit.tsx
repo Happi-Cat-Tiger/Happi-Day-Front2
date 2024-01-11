@@ -6,12 +6,14 @@ import StyledButton from '@/components/Button/StyledButton';
 
 //TODO 파일 업로드 컴포넌트 분리
 //TODO 서버 전송 구현
+
 const ProfileImageEdit = () => {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm();
+
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgFile, setImgFile] = useState<File | null>();
   const [preview, setPreview] = useState<string | null>('');
@@ -39,7 +41,7 @@ const ProfileImageEdit = () => {
   }, [imgFile]);
   return (
     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
-      <div className="flex w-full flex-col gap-8">
+      <div className="flex flex-col gap-8">
         <div className=" flex flex-col gap-4">
           <label htmlFor="profileImage" className="prose-h6  text-gray2">
             프로필 이미지
@@ -57,12 +59,12 @@ const ProfileImageEdit = () => {
                 onClick={() => {
                   handleClick();
                 }}
-                className="w-15 prose-btn-XS flex items-center rounded-xl bg-orange2 px-5 py-3 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4 "
+                className="prose-btn-XS flex w-[62px] items-center rounded-xl bg-orange2 px-5 py-3 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4 "
               />
               <StyledButton
                 label="삭제"
                 onClick={() => {}}
-                className="w-15 prose-btn-XS flex items-center rounded-xl bg-gray5 px-5 py-3 text-white md:prose-btn-S hover:bg-gray4 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4"
+                className="prose-btn-XS flex w-[62px] items-center rounded-xl bg-gray5 px-5 py-3 text-white md:prose-btn-S hover:bg-gray4 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4"
               />
             </div>
           </div>
