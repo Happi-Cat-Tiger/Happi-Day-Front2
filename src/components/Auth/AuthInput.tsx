@@ -45,19 +45,19 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
         {inputPlaceHolder.map((item, index) => (
           <div
             key={index}
-            className={`mb-1 flex w-full items-center md:mb-3 justify-${
-              item.label ? 'between' : 'center'
+            className={`mb-1 flex w-full items-center md:mb-3 ${
+              item.label ? 'justify-between' : 'justify-center'
             } self-stretch`}>
             {item.label && <div className="prose-subtitle-S text-gray1 md:prose-subtitle-M">{item.label}</div>}
             <div className="flex flex-col">
               <div
-                className={`border-[1px]-${
-                  errors[item.name] ? 'red-500' : 'gray-5'
+                className={`${
+                  errors[item.name] ? 'border-[1px]-red-500' : 'border-[1px]-gray-5'
                 } flex h-[44px] items-center gap-2.5 rounded-lg border-[1px] px-2 py-2.5 ${
                   item.label ? 'w-[200px] md:w-[300px]' : 'w-[300px]'
                 }`}>
                 {React.createElement(item.icon, {
-                  className: `w-6 h-6 flex-shrink-0 text-${errors[item.name] ? 'red-500' : 'gray5'}`,
+                  className: `w-6 h-6 flex-shrink-0 ${errors[item.name] ? 'text-red-500' : 'text-gray5'}`,
                 })}
                 <input
                   {...register(item.name, {
