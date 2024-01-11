@@ -114,15 +114,11 @@ const Home = () => {
     }
   };
 
-  const handleResize = () => {
-    dataLength();
-  };
-
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', dataLength);
     dataLength();
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', dataLength);
     };
   }, []);
 
