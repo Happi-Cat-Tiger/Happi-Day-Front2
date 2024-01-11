@@ -70,10 +70,10 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-3">
+        <div className="flex w-full flex-col gap-3">
           <div className="prose-h6  text-gray2">{label}</div>
           <div className="flex flex-col gap-1">
-            <div className="flex max-w-md flex-row justify-between border-b-[1px] pb-2 md:max-w-md">
+            <div className="flex min-w-[300px] max-w-md flex-row justify-between border-b-[1px] pb-2  sm:w-full md:max-w-md">
               <input
                 className=" bg-white outline-0 md:w-[320px]"
                 placeholder={placeholder}
@@ -89,7 +89,7 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
                   label="변경"
                   isSubmitting={isSubmitting}
                   onClick={() => null}
-                  className="prose-btn-XS flex h-9 w-[58px] items-center justify-center rounded-xl bg-orange2 px-5 py-3 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4 "
+                  className="prose-btn-XS flex h-9 w-[62px] items-center justify-center rounded-xl bg-orange2 px-5 py-3 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-4 "
                 />
               </div>
             </div>

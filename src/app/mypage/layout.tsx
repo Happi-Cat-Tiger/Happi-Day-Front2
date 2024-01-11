@@ -3,7 +3,8 @@ import SideMenu from '@/containers/mypage/SideMenu';
 import Title from '@/containers/mypage/Title';
 
 const MypageLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
+  const isLoggedIn = true;
+  return isLoggedIn ? (
     <div>
       <Title />
       <div className="mx-auto flex h-full min-h-screen flex-col md:max-w-[1280px] md:flex-row md:justify-center">
@@ -11,6 +12,8 @@ const MypageLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </div>
     </div>
+  ) : (
+    <div>로그인 화면</div>
   );
 };
 
