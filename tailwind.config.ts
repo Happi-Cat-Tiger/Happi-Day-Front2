@@ -12,6 +12,7 @@ const config: Config = {
     screens: {
       sm: { min: '360px' },
       md: { min: '768px' },
+      lg: { min: '1280px' },
     },
     extend: {
       colors: {
