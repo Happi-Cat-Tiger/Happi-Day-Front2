@@ -4,8 +4,11 @@ import HappiDayBanner from '../../public/images/happiDayBanner.png';
 import SubBanner from '../../public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import Card from '@/components/Card';
-import { AiOutlineSmile, AiOutlineCalendar, AiOutlineEye } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
+import ArticleList from '@/components/List/ArticleList';
+import Slick from 'react-slick';
+import '../slider/slick.css';
+import '../slider/slick-theme.css';
 
 interface MockData {
   id: number;
@@ -99,28 +102,59 @@ const Home = () => {
   ];
   const [data, setData] = useState(mockData);
 
-  const dataLength = () => {
-    if (window.innerWidth > 1200) {
-      setData(data.slice(0, 5));
-    }
-    if (window.innerWidth <= 1200) {
-      setData(data.slice(0, 4));
-    }
-    if (window.innerWidth <= 930) {
-      setData(data.slice(0, 3));
-    }
-    if (window.innerWidth <= 700) {
-      setData(data.slice(0, 2));
-    }
-  };
+  // const dataLength = () => {
+  //   if (window.innerWidth > 1200) {
+  //     setData(data.slice(0, 5));
+  //   }
+  //   if (window.innerWidth <= 1200) {
+  //     setData(data.slice(0, 4));
+  //   }
+  //   if (window.innerWidth <= 930) {
+  //     setData(data.slice(0, 3));
+  //   }
+  //   if (window.innerWidth <= 700) {
+  //     setData(data.slice(0, 2));
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener('resize', dataLength);
-    dataLength();
-    return () => {
-      window.removeEventListener('resize', dataLength);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener('resize', dataLength);
+  //   dataLength();
+  //   return () => {
+  //     window.removeEventListener('resize', dataLength);
+  //   };
+  // }, []);
+
+  const settings = {
+    dots: true, // 슬라이더 하단 점
+    infinite: false, // 마지막 콘텐츠와 처음 콘텐츠 연결
+    speed: 500, // 콘텐츠 전환 속도. 작아질수록 속도가 빠르다
+    slidesToShow: 5, // 보여지는 컨텐츠 개수
+    slideToScroll: 1, // 한번에 넘어가는 콘텐츠의 개수
+    arrows: true, // 좌우 화살표
+    draggable: false, // 슬라이더 드래그 활성화
+    fade: false, // fade 효과
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 910,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 650,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
@@ -128,7 +162,7 @@ const Home = () => {
         <div className="max-w-[1280px]">
           <Image src={SubBanner} alt="구독 배너" className="w-[1280px]" />
         </div>
-        <div className="flex h-[386px] max-w-[1280px] flex-col justify-between">
+        <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 이벤트</h3>
             <StyledButton
@@ -137,27 +171,29 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="flex justify-between">
-            {data.map((el: MockData, idx: number) => (
-              <Card
-                key={idx}
-                id={el.id}
-                cardType="events"
-                thumbnailUrl={el.thumbnailUrl}
-                title={el.title}
-                artist={el.artist}
-                location={el.place}
-                startTime={el.startDate}
-                endTime={el.endDate}
-                address={el.location}
-                likeCount={el.like}
-                commentCount={el.comment}
-                viewCount={el.view}
-              />
-            ))}
+          <div className="h-[340px]">
+            <Slick {...settings}>
+              {mockData.map((el: MockData, idx: number) => (
+                <Card
+                  key={idx}
+                  id={el.id}
+                  cardType="events"
+                  thumbnailUrl={el.thumbnailUrl}
+                  title={el.title}
+                  artist={el.artist}
+                  location={el.place}
+                  startTime={el.startDate}
+                  endTime={el.endDate}
+                  address={el.location}
+                  likeCount={el.like}
+                  commentCount={el.comment}
+                  viewCount={el.view}
+                />
+              ))}
+            </Slick>
           </div>
         </div>
-        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+        <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 굿즈</h3>
             <StyledButton
@@ -166,27 +202,29 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="flex justify-between">
-            {data.map((el: MockData, idx: number) => (
-              <Card
-                key={idx}
-                id={el.id}
-                cardType="sales"
-                thumbnailUrl={el.thumbnailUrl}
-                title={el.title}
-                artist={el.artist}
-                location={el.place}
-                startTime={el.startDate}
-                endTime={el.endDate}
-                address={el.location}
-                likeCount={el.like}
-                commentCount={el.comment}
-                viewCount={el.view}
-              />
-            ))}
+          <div className="h-[340px]">
+            <Slick {...settings}>
+              {mockData.map((el: MockData, idx: number) => (
+                <Card
+                  key={idx}
+                  id={el.id}
+                  cardType="events"
+                  thumbnailUrl={el.thumbnailUrl}
+                  title={el.title}
+                  artist={el.artist}
+                  location={el.place}
+                  startTime={el.startDate}
+                  endTime={el.endDate}
+                  address={el.location}
+                  likeCount={el.like}
+                  commentCount={el.comment}
+                  viewCount={el.view}
+                />
+              ))}
+            </Slick>
           </div>
         </div>
-        <div className="flex h-[386px] w-full flex-col justify-between gap-[35px]">
+        <div className="overflow-hiddenZ flex h-[420px] max-w-[1280px] flex-col justify-between">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
             <StyledButton
@@ -195,169 +233,46 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="flex justify-between">
-            {data.map((el: MockData, idx: number) => (
-              <Card
-                key={idx}
-                id={el.id}
-                cardType="sales"
-                thumbnailUrl={el.thumbnailUrl}
-                title={el.title}
-                artist={el.artist}
-                location={el.place}
-                startTime={el.startDate}
-                endTime={el.endDate}
-                address={el.location}
-                likeCount={el.like}
-                commentCount={el.comment}
-                viewCount={el.view}
-              />
-            ))}
+          <div className="h-[340px]">
+            <Slick {...settings}>
+              {mockData.map((el: MockData, idx: number) => (
+                <Card
+                  key={idx}
+                  id={el.id}
+                  cardType="events"
+                  thumbnailUrl={el.thumbnailUrl}
+                  title={el.title}
+                  artist={el.artist}
+                  location={el.place}
+                  startTime={el.startDate}
+                  endTime={el.endDate}
+                  address={el.location}
+                  likeCount={el.like}
+                  commentCount={el.comment}
+                  viewCount={el.view}
+                />
+              ))}
+            </Slick>
           </div>
         </div>
         <div className="flex h-[476px] w-full gap-[24px]">
           <div className="flex flex-col items-start gap-[35px] sm:w-full md:w-[65%]">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 게시글</h3>
             <ul className="flex h-full w-full flex-col justify-between">
-              <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
-                <div className="flex w-full flex-row items-center gap-[8px]">
-                  <StyledButton
-                    label="자유"
-                    disabled={false}
-                    onClick={() => null}
-                    className="rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
-                  />
-                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
-                    <span>콘서트 같이 가실분</span>
-                    <span className="text-[#891BDF]">(1)</span>
-                  </div>
-                </div>
-                <div className="prose-body-XS flex w-[194px] items-center justify-between ">
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineSmile />
-                    닉네임
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineCalendar />
-                    12.01
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineEye />
-                    50
-                  </span>
-                </div>
+              <li className="flex h-[65px] items-center justify-between border-b-[1px]">
+                <ArticleList />
               </li>
-              <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
-                <div className="flex w-full flex-row items-center gap-[8px]">
-                  <StyledButton
-                    label="자유"
-                    disabled={false}
-                    onClick={() => null}
-                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
-                  />
-                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
-                    <span>콘서트 같이 가실분</span>
-                    <span className="text-[#891BDF]">(1)</span>
-                  </div>
-                </div>
-                <div className="prose-body-XS flex w-[194px] items-center justify-between ">
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineSmile />
-                    닉네임
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineCalendar />
-                    12.01
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineEye />
-                    50
-                  </span>
-                </div>
+              <li className="flex h-[65px] items-center justify-between border-b-[1px]">
+                <ArticleList />
               </li>
-              <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
-                <div className="flex w-full flex-row items-center gap-[8px]">
-                  <StyledButton
-                    label="자유"
-                    disabled={false}
-                    onClick={() => null}
-                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
-                  />
-                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
-                    <span>콘서트 같이 가실분</span>
-                    <span className="text-[#891BDF]">(1)</span>
-                  </div>
-                </div>
-                <div className="prose-body-XS flex w-[194px] items-center justify-between ">
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineSmile />
-                    닉네임
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineCalendar />
-                    12.01
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineEye />
-                    50
-                  </span>
-                </div>
+              <li className="flex h-[65px] items-center justify-between border-b-[1px]">
+                <ArticleList />
               </li>
-              <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
-                <div className="flex w-full flex-row items-center gap-[8px]">
-                  <StyledButton
-                    label="자유"
-                    disabled={false}
-                    onClick={() => null}
-                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
-                  />
-                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
-                    <span>콘서트 같이 가실분</span>
-                    <span className="text-[#891BDF]">(1)</span>
-                  </div>
-                </div>
-                <div className="prose-body-XS flex w-[194px] items-center justify-between ">
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineSmile />
-                    닉네임
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineCalendar />
-                    12.01
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineEye />
-                    50
-                  </span>
-                </div>
+              <li className="flex h-[65px] items-center justify-between border-b-[1px]">
+                <ArticleList />
               </li>
-              <li className="flex h-[65px] items-center justify-between border-b-[1px] px-[16px]">
-                <div className="flex w-full flex-row items-center gap-[8px]">
-                  <StyledButton
-                    label="자유"
-                    disabled={false}
-                    onClick={() => null}
-                    className=" rounded-[8px] bg-gray5 px-[12px] py-[4px] text-white sm:prose-body-M md:prose-body-L"
-                  />
-                  <div className="flex-1 sm:prose-body-M md:prose-btn-L">
-                    <span>콘서트 같이 가실분</span>
-                    <span className="text-[#891BDF]">(1)</span>
-                  </div>
-                </div>
-                <div className="prose-body-XS flex w-[194px] items-center justify-between ">
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineSmile />
-                    닉네임
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineCalendar />
-                    12.01
-                  </span>
-                  <span className="flex items-center gap-[5px] text-gray4">
-                    <AiOutlineEye />
-                    50
-                  </span>
-                </div>
+              <li className="flex h-[65px] items-center justify-between border-b-[1px]">
+                <ArticleList />
               </li>
             </ul>
           </div>
