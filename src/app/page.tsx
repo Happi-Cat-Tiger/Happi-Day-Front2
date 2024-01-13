@@ -100,30 +100,6 @@ const Home = () => {
       joinCount: 5,
     },
   ];
-  const [data, setData] = useState(mockData);
-
-  // const dataLength = () => {
-  //   if (window.innerWidth > 1200) {
-  //     setData(data.slice(0, 5));
-  //   }
-  //   if (window.innerWidth <= 1200) {
-  //     setData(data.slice(0, 4));
-  //   }
-  //   if (window.innerWidth <= 930) {
-  //     setData(data.slice(0, 3));
-  //   }
-  //   if (window.innerWidth <= 700) {
-  //     setData(data.slice(0, 2));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('resize', dataLength);
-  //   dataLength();
-  //   return () => {
-  //     window.removeEventListener('resize', dataLength);
-  //   };
-  // }, []);
 
   const settings = {
     dots: true, // 슬라이더 하단 점
