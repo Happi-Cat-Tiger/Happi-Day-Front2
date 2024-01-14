@@ -101,10 +101,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 6,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페6',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -116,10 +116,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 7,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페7',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -131,10 +131,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 8,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페8',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -146,10 +146,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 9,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페9',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -161,10 +161,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 10,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페10',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -176,10 +176,10 @@ const page = () => {
       joinCount: 5,
     },
     {
-      id: 5,
+      id: 11,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
+      title: '방탄소년단 생일 카페11',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.04',
@@ -193,17 +193,47 @@ const page = () => {
   ];
 
   const [page, setPage] = useState(1);
-  const postPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPageGrid, setItemsPerPageGrid] = useState(5);
+  const postPerPage = itemsPerPage;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
 
   const [loading, setLoading] = useState(false);
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
+
   const filteredItem = mockData.filter((el) => el.title.includes(eventsSearch));
 
   const pageChange = (page: number) => {
     setPage(page);
   };
+
+  // 반응형에 따른 페이지네이션 아이템 개수
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1100) {
+        setItemsPerPage(10);
+        setItemsPerPageGrid(5);
+      }
+      if (window.innerWidth <= 1100) {
+        setItemsPerPage(8);
+        setItemsPerPageGrid(4);
+      }
+      if (window.innerWidth <= 860) {
+        setItemsPerPage(6);
+        setItemsPerPageGrid(3);
+      }
+      if (window.innerWidth <= 650) {
+        setItemsPerPage(4);
+        setItemsPerPageGrid(2);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('reisze', handleResize);
+    };
+  }, []);
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -226,7 +256,7 @@ const page = () => {
           <p>다시 검색해주세요 !</p>
         </div>
       ) : (
-        <div className="grid grid-cols-5 grid-rows-2 gap-10">
+        <div className={`grid grid-cols-${itemsPerPageGrid} grid-rows-2 gap-10`}>
           {filteredItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
             <Card
               key={idx}
@@ -247,7 +277,12 @@ const page = () => {
         </div>
       )}
       <div className="my-[100px] text-center">
-        <PaginationComponent page={page} totalItemsCount={filteredItem.length} pageChange={pageChange} />
+        <PaginationComponent
+          page={page}
+          totalItemsCount={filteredItem.length}
+          pageChange={pageChange}
+          countPerPage={itemsPerPage}
+        />
       </div>
       <div className="text-right">
         <PrimaryButton label="글쓰기" onClick={() => null} />
