@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 import { eventsSearchState } from '@/atom/eventsSearch';
 import { useRecoilState } from 'recoil';
 
@@ -17,8 +17,8 @@ const InputElements = () => {
   };
 
   return (
-    <div className="my-[60px] flex justify-between">
-      <div className="flex gap-[24px]">
+    <div className="my-[60px] flex justify-between sm:flex-col sm:gap-[16px] md:flex-row md:items-center md:gap-[0]">
+      <div className="flex items-center sm:justify-between md:gap-[24px]">
         <div>
           <select className="cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none">
             <option className="prose-btn-M">최신순</option>
@@ -45,7 +45,7 @@ const InputElements = () => {
           type="search"
           placeholder="Search"
           onKeyDown={handleEnter}
-          className="prose-subtitle-S w-[264px] rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black"
+          className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
         />
       </div>
     </div>
