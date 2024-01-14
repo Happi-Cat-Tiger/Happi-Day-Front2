@@ -9,6 +9,7 @@ import ArticleList from '@/components/List/ArticleList';
 import Slick from 'react-slick';
 import '../slider/slick.css';
 import '../slider/slick-theme.css';
+import { useRouter } from 'next/navigation';
 
 interface MockData {
   id: number;
@@ -132,6 +133,8 @@ const Home = () => {
     ],
   };
 
+  const router = useRouter();
+
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
@@ -143,7 +146,7 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 이벤트</h3>
             <StyledButton
               label="More+"
-              onClick={() => null}
+              onClick={() => router.push('/events')}
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
@@ -174,7 +177,7 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 굿즈</h3>
             <StyledButton
               label="More+"
-              onClick={() => null}
+              onClick={() => router.push('/sales')}
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
@@ -205,7 +208,7 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
             <StyledButton
               label="More+"
-              onClick={() => null}
+              onClick={() => router.push('/sales')}
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
