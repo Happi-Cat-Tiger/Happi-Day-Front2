@@ -1,6 +1,21 @@
-import React from 'react';
+'use client';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { eventsSearchState } from '@/atom/eventsSearch';
+import { useRecoilState } from 'recoil';
 
 const InputElements = () => {
+  const [eventsSearch, setEventsSearch] = useRecoilState<string>(eventsSearchState);
+
+  const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setEventsSearch(e.target.value);
+  };
+  const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      console.log('엔터', eventsSearch);
+      getEventSearch(e);
+    }
+  };
+
   return (
     <div className="my-[60px] flex justify-between">
       <div className="flex gap-[24px]">
@@ -29,6 +44,7 @@ const InputElements = () => {
         <input
           type="search"
           placeholder="Search"
+          onKeyDown={handleEnter}
           className="prose-subtitle-S w-[264px] rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black"
         />
       </div>
