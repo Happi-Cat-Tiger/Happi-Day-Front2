@@ -247,7 +247,7 @@ const page = () => {
         </div>
       )}
       <div className="my-[100px] text-center">
-        <PaginationComponent page={page} totalItemsCount={mockData.length} pageChange={pageChange} />
+        <PaginationComponent page={page} totalItemsCount={filteredItem.length} pageChange={pageChange} />
       </div>
       <div className="text-right">
         <PrimaryButton label="글쓰기" onClick={() => null} />
