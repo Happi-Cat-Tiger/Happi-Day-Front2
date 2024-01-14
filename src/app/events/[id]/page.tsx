@@ -1,14 +1,37 @@
 'use client';
 
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
+import { useRecoilState } from 'recoil';
+import { eventsCommentValue } from '@/atom/eventsComment';
 
 const page = () => {
-  const pathname = usePathname();
-  console.log(pathname);
+  const [comments, setComments] = useRecoilState(eventsCommentValue);
+  const [commentsValue, setCommentsValue] = useState<string>();
+
+  const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentsValue(e.target.value);
+  };
+
+  const addComments = () => {
+    if (commentsValue) {
+      const currentTime = new Date().toLocaleString();
+      const newComment = {
+        id: comments.length + 1,
+        user: '성동윤',
+        comment: `${commentsValue}`,
+        date: `${currentTime}`,
+      };
+
+      setComments([...comments, newComment]);
+      setCommentsValue('');
+    } else {
+      alert('댓글을 입력해주세요 !');
+    }
+  };
+
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px] md:mt-[100px]">
       <Link href="/events">
@@ -85,28 +108,29 @@ const page = () => {
           </li>
         </ul>
         <div className="my-[10px] flex flex-col gap-[5px]">
-          <div className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-            <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 닉네임</p>
-            <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">댓글 댓글 댓글 댓글 댓글</p>
-            <p className="prose-body-XXS absolute bottom-[10px] text-gray6">2024.01.08 19:30</p>
-          </div>
-          <div className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-            <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 닉네임</p>
-            <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">댓글 댓글 댓글 댓글 댓글</p>
-            <p className="prose-body-XXS absolute bottom-[10px] text-gray6">2024.01.08 19:30</p>
-          </div>
+          {comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
+              <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
+              <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.comment}</p>
+              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.date}</p>
+            </div>
+          ))}
         </div>
         <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-[20px]">
           <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
           <textarea
             placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
             className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
+            value={commentsValue}
+            onChange={getComments}
           />
         </div>
         <div className="text-right">
           <StyledButton
             label="등록"
-            onClick={() => null}
+            onClick={() => addComments()}
             disabled={false}
             className="rounded-[16px] bg-gray5 px-[24px] py-[16px] text-white sm:prose-btn-M md:prose-btn-L"
           />
