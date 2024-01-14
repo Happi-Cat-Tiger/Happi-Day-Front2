@@ -9,7 +9,7 @@ import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilState } from 'recoil';
 import { eventsSearchState } from '@/atom/eventsSearch';
-import { AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 
 interface MockData {
   id: number;
@@ -211,19 +211,19 @@ const page = () => {
   // 반응형에 따른 페이지네이션 아이템 개수
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1100) {
+      if (window.innerWidth > 1148) {
         setItemsPerPage(10);
         setItemsPerPageGrid(5);
       }
-      if (window.innerWidth <= 1100) {
+      if (window.innerWidth <= 1148) {
         setItemsPerPage(8);
         setItemsPerPageGrid(4);
       }
-      if (window.innerWidth <= 860) {
+      if (window.innerWidth <= 980) {
         setItemsPerPage(6);
         setItemsPerPageGrid(3);
       }
-      if (window.innerWidth <= 650) {
+      if (window.innerWidth <= 720) {
         setItemsPerPage(4);
         setItemsPerPageGrid(2);
       }
@@ -240,12 +240,15 @@ const page = () => {
   }
 
   return (
-    <div>
+    <div className="sm:px-[8px]">
       <EventGuide />
-      <div className="my-[60px] text-right">
-        <span className="prose-subtitle-M mr-[20px] underline">주최 관련 이벤트도 보고싶다면?</span>
-        <Link href="/board" className="prose-h5 text-orange1">
-          주최 게시판 바로가기
+      <div className="my-[60px] flex items-center justify-end">
+        <span className="mr-[20px] underline sm:prose-subtitle-S md:prose-subtitle-M">
+          주최 관련 이벤트도 보고싶다면?
+        </span>
+        <Link href="/board" className="flex gap-[10px] text-orange1 sm:prose-h6 md:prose-h5">
+          <span>주최 게시판 바로가기</span>
+          <AiOutlineSend />
         </Link>
       </div>
       <InputElements />
@@ -256,7 +259,7 @@ const page = () => {
           <p>다시 검색해주세요 !</p>
         </div>
       ) : (
-        <div className={`grid grid-cols-${itemsPerPageGrid} grid-rows-2 gap-10`}>
+        <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] grid-rows-2 gap-[10px]`}>
           {filteredItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
             <Card
               key={idx}
