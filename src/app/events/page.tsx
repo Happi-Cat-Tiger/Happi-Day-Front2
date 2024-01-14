@@ -240,7 +240,7 @@ const page = () => {
   }
 
   return (
-    <div className="sm:px-[8px]">
+    <div className="px-[8px]">
       <EventGuide />
       <div className="my-[60px] flex items-center justify-end">
         <span className="mr-[20px] underline sm:prose-subtitle-S md:prose-subtitle-M">
