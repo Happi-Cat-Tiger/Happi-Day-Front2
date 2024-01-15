@@ -22,7 +22,7 @@ export default function AllPage() {
           .fill(0)
           .slice(indexOfFirstPost, indexOfLastPost)
           .map((v, i) => (
-            <ArticleList />
+            <ArticleList key={i} />
           ))}
       </div>
       <PaginationComponent page={page} totalItemsCount={20} pageChange={pageChange} />
