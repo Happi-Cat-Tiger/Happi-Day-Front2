@@ -3,15 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import FormErrorMessage from './FormErrorMessage';
 import StyledSubmitButton from '@/components/Button/StyledSubmitButton';
-
-//TODO types 폴더가 없어서 pull 받고 타입 파일 추가예정
-type FormData = {
-  realName: string;
-  userName: string;
-  nickName: string;
-  phone: string;
-  password: string;
-};
+import { UserProfileInfo } from '@/types/useProfile';
 
 interface Props {
   label: string;
@@ -20,7 +12,7 @@ interface Props {
   placeholder?: string;
   valid: RegExp;
   errorMesage: string;
-  name: keyof FormData;
+  name: keyof UserProfileInfo;
   defaultValues?: object;
 }
 
@@ -32,7 +24,7 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
     handleSubmit,
     setValue,
     watch,
-  } = useForm<FormData>({
+  } = useForm<UserProfileInfo>({
     mode: 'onBlur',
     defaultValues,
   });
@@ -43,7 +35,7 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
 
   // const mutationPatch = useServiceMutation(updateProfileService, { userId })
 
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = (formData: UserProfileInfo) => {
     //TODO 서버 전송 코드 작성 + 공통 에러핸들링
 
     // mutationPatch.mutate(formData, {

@@ -2,13 +2,7 @@
 
 import React from 'react';
 import MenuItems from './MenuItems';
-
-//TODO types 폴더가 없어서 pull 받은 후 추가 예정
-type MenuListItem = {
-  id: number;
-  title: string;
-  path: string;
-};
+import { MenuListItem } from '@types/mypage';
 
 //TODO contants 폴더가 없어서 pull 받은 후 추가 예정
 const MYPAGE_MENU_LIST: MenuListItem[] = [
