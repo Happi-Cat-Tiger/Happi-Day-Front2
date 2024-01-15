@@ -10,6 +10,7 @@ import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilState } from 'recoil';
 import { eventsSearchState } from '@/atom/eventsSearch';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
+import { useRouter } from 'next/navigation';
 
 interface MockData {
   id: number;
@@ -200,6 +201,7 @@ const page = () => {
   const indexOfFirstPost = indexOfLastPost - postPerPage;
 
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
 
   const filteredItem = mockData.filter((el) => el.title.includes(eventsSearch));
@@ -288,7 +290,7 @@ const page = () => {
         />
       </div>
       <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={() => null} />
+        <PrimaryButton label="글쓰기" onClick={() => router.push('/events/write')} />
       </div>
     </div>
   );
