@@ -29,15 +29,16 @@ Pagination에 사용되는 props
 interface PaginationProps {
   page: number;
   totalItemsCount: number;
+  countPerPage: number;
   pageChange: (page: number) => void;
 }
 
-const PaginationComponent = ({ page, totalItemsCount, pageChange }: PaginationProps) => {
+const PaginationComponent = ({ page, totalItemsCount, countPerPage, pageChange }: PaginationProps) => {
   return (
     <div>
       <Pagination
         activePage={page}
-        itemsCountPerPage={10}
+        itemsCountPerPage={countPerPage}
         totalItemsCount={totalItemsCount}
         pageRangeDisplayed={5}
         prevPageText={'<'}
