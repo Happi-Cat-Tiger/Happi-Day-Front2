@@ -18,7 +18,7 @@ const CustomEditor = ({ editValue, setEditValue }: CustomEditorProps) => {
       onChange={setEditValue}
       modules={QUILL_EDITOR.modules}
       formats={QUILL_EDITOR.formats}
-      className="h-full w-full overflow-auto"
+      className="flex h-full min-h-[10rem] flex-1 flex-col overflow-y-auto"
     />
   );
 };
