@@ -12,7 +12,8 @@ const PreviewWritingStep = () => {
       <hr />
       <p className=" prose-body-XS text-left text-gray4 md:prose-body-S">{writingInfoValue.hashtag}</p>
       <hr />
-      <div dangerouslySetInnerHTML={{ __html: writeValue.editValue }} className="prose-body-M md:prose-body-L" />
+      <div dangerouslySetInnerHTML={{ __html: writeValue.editValue }} className="prose-body-M my-10 md:prose-body-L" />
+      <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]"></div>
     </div>
   );
 };

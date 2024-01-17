@@ -1,18 +1,15 @@
 import useUploadImage from '@/hooks/useUploadImage';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 interface Props {
   handleChange: (value: any) => void;
+  image: any;
 }
-const ImageUploader = ({ handleChange }: Props) => {
+const ImageUploader = ({ handleChange, image }: Props) => {
   const [isActive, setActive] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<File | null>(null);
 
-  const { uploadedImage, handleDrop, handleUpload } = useUploadImage({ setImgFile });
-
-  useEffect(() => {
-    handleChange(uploadedImage);
-  }, [uploadedImage]);
+  const { uploadedImage, handleDrop, handleUpload } = useUploadImage({ setImgFile, handleChange });
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-5">
@@ -35,8 +32,8 @@ const ImageUploader = ({ handleChange }: Props) => {
         <input id="dropzone-file" type="file" className="hidden" onChange={(e) => handleUpload(e, setActive)} />
       </label>
       <div className="mx-auto w-2/3 rounded-lg border-2 border-gray-300 bg-gray-100 p-5">
-        {uploadedImage ? (
-          <img src={uploadedImage.imageUrl} className="mx-auto h-auto w-[250px]" />
+        {image ? (
+          <img src={image.imageUrl} className="mx-auto h-auto w-[250px]" />
         ) : (
           <p className="prose-body-XS text-center text-gray-600 md:prose-body-S">이미지 미리보기</p>
         )}

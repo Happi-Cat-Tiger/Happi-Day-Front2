@@ -11,15 +11,26 @@ const AddressInput = () => {
   const handleChangeAdress = (value: any) => {
     setWritingInfoValue({
       ...writingInfoValue,
-      eventAddress: value,
+      eventAddress: { ...eventAddress, address: value },
     });
   };
+  const handleChangeDetail = (value: any) => {
+    setWritingInfoValue({
+      ...writingInfoValue,
+      eventAddress: { ...eventAddress, detailAddress: value },
+    });
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="prose-h6 md:prose-h5">
         <span>주소 등록</span> <span className="text-red-600">*</span>
       </div>
-      <DaumPost handleChangeAdress={handleChangeAdress} />
+      <DaumPost
+        handleChangeAdress={handleChangeAdress}
+        handleChangeDetail={handleChangeDetail}
+        eventAddress={eventAddress}
+      />
     </div>
   );
 };
