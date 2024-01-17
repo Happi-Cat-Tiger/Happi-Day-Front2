@@ -17,7 +17,7 @@ const MenuItems = ({ title, path }: MenuItemsProps) => {
   return (
     <li
       className={`prose-menu&tabs mx-3 my-4 cursor-pointer hover:scale-110 md:my-5
-        ${pathname == `/mypage/${path}` ? 'font-bold text-orange2 ' : ' text-gray2'}`}
+        ${pathname.startsWith(`/mypage/${path}`) ? 'font-bold text-orange2 ' : ' text-gray2'}`}
       onClick={() => goLink(`/mypage/${path}`)}>
       {title}
     </li>
