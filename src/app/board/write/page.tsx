@@ -13,7 +13,7 @@ const WritePage = () => {
 
   const [writeValue] = useRecoilState(writeState);
   const { articleTitle, editValue, category } = writeValue;
-  
+
   const [writingInfoValue] = useRecoilState(writingInfoState);
   const { hashtag, thumbnailImage, eventAddress } = writingInfoValue;
 
@@ -23,9 +23,9 @@ const WritePage = () => {
     }
     if (step === 2) {
       if (category === '거래/교환/양도') {
-        if (!hashtag || !thumbnailImage) return true;
+        if (!hashtag || !thumbnailImage.imageUrl) return true;
       } else if (category === '이벤트/홍보') {
-        if (!hashtag || !thumbnailImage || !eventAddress) return true;
+        if (!hashtag || !thumbnailImage.imageUrl || !eventAddress.address) return true;
       } else {
         if (!hashtag) return true;
       }
