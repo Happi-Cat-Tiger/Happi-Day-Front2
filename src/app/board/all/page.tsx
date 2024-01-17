@@ -4,6 +4,8 @@ import LinkButton from '@/components/Button/LinkButton';
 import Link from 'next/link';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
 
 export default function AllPage() {
   const [page, setPage] = useState(1);
@@ -14,6 +16,9 @@ export default function AllPage() {
   const pageChange = (page: number) => {
     setPage(page);
   };
+
+  const [, setWriteValue] = useRecoilState(writeState);
+  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   return (
     <div className="flex flex-col gap-4">
@@ -32,6 +37,10 @@ export default function AllPage() {
             label="글쓰기"
             href="#"
             className="prose-btn-M rounded-2xl bg-orange2 px-5 py-3 text-white md:prose-btn-L hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
+            onClick={() => {
+              setWriteValue(writeInitState);
+              setWritingInfoValue(writingInfoInitState);
+            }}
           />
         </Link>
       </div>
