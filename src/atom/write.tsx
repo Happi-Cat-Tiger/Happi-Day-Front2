@@ -10,7 +10,7 @@ export const writeState = atom({
 interface WritingInfoState {
   hashtag: string;
   thumbnailImage: {};
-  eventAddress: string;
+  eventAddress: { address: string; detailAddress: string };
   location: string;
   startTime: Date | null;
   endTime: Date | null;
@@ -28,7 +28,7 @@ export const writingInfoState = atom<WritingInfoState>({
   default: {
     hashtag: '',
     thumbnailImage: {},
-    eventAddress: '',
+    eventAddress: { address: '', detailAddress: '' },
     location: '',
     startTime: new Date(),
     endTime: new Date(),
