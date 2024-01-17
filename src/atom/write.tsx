@@ -14,7 +14,7 @@ export const writeState = atom({
 
 interface WritingInfoState {
   hashtag: string;
-  thumbnailImage: {};
+  thumbnailImage: { imageUrl: string; name: string; size: string; type: string };
   eventAddress: { address: string; detailAddress: string };
   location: string;
   startTime: Date | null;
@@ -26,11 +26,11 @@ interface WritingInfoState {
     name: string;
     number: string;
   };
-  poster: {};
+  poster: { imageUrl: string; name: string; size: string; type: string };
 }
 export const writingInfoInitState: WritingInfoState = {
   hashtag: '',
-  thumbnailImage: {},
+  thumbnailImage: { imageUrl: '', name: '', size: '', type: '' },
   eventAddress: { address: '', detailAddress: '' },
   location: '',
   startTime: new Date(),
@@ -38,7 +38,7 @@ export const writingInfoInitState: WritingInfoState = {
   productOptions: [],
   shippingOptions: [],
   bankAccount: { bank: '', name: '', number: '' },
-  poster: {},
+  poster: { imageUrl: '', name: '', size: '', type: '' },
 };
 
 export const writingInfoState = atom<WritingInfoState>({
