@@ -1,9 +1,11 @@
 'use client';
+import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
 import LinkButton from '@/components/Button/LinkButton';
 import Card from '@/components/Card';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 const TradePage = () => {
   const [page, setPage] = useState(1);
@@ -14,6 +16,10 @@ const TradePage = () => {
   const pageChange = (page: number) => {
     setPage(page);
   };
+
+  const [, setWriteValue] = useRecoilState(writeState);
+  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden">
       <div className="grid h-full grid-cols-2 place-items-center md:min-w-[1100px] md:grid-cols-5">
@@ -46,6 +52,10 @@ const TradePage = () => {
             label="글쓰기"
             href="#"
             className="prose-btn-M rounded-2xl bg-orange2 px-5 py-3 text-white md:prose-btn-L hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
+            onClick={() => {
+              setWriteValue(writeInitState);
+              setWritingInfoValue(writingInfoInitState);
+            }}
           />
         </Link>
       </div>
