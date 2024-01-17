@@ -45,7 +45,7 @@ const TradePage = () => {
             />
           ))}
       </div>
-      <PaginationComponent page={page} totalItemsCount={20} pageChange={pageChange} />
+      <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
       <div className="flex justify-end">
         <Link href="/board/write" passHref legacyBehavior>
           <LinkButton
