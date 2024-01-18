@@ -14,13 +14,12 @@ const ThumbnailUploader = () => {
       thumbnailImage: value,
     });
   };
-
   return (
     <div className="flex flex-col gap-2">
       <div className="prose-h6 md:prose-h5">
         <span>썸네일 사진 등록</span> <span className="text-red-600">*</span>
       </div>
-      <ImageUploader handleChange={handleChangeThumbnail} />
+      <ImageUploader handleChange={handleChangeThumbnail} image={thumbnailImage} />
     </div>
   );
 };

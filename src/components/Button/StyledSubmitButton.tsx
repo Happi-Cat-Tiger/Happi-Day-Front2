@@ -3,14 +3,15 @@ import Spinner from 'react-bootstrap/Spinner';
 
 interface Props {
   label: string;
-  type: 'submit' | 'reset' | 'button';
+  type: 'submit';
+  disabled?: boolean;
   isSubmitting?: boolean;
   onClick: () => void;
   className: string;
 }
-const StyledSubmitButton = ({ label, type, isSubmitting, onClick, className }: Props) => {
+const StyledSubmitButton = ({ label, type, isSubmitting, onClick, className, disabled }: Props) => {
   return (
-    <button type={type} onClick={onClick} disabled={isSubmitting} className={className}>
+    <button type={type} onClick={onClick} disabled={disabled} className={className}>
       {isSubmitting ? (
         <svg
           className="mx-auto h-4 w-7 animate-spin  text-white"

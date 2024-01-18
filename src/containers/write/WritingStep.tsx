@@ -1,16 +1,19 @@
 import { writeState } from '@/atom/write';
 import CategoryDropdown from '@/components/Dropdowns/CategoryDropdown';
 import CustomEditor from '@/components/Tool/CustomEditor';
+import { usePathname } from 'next/navigation';
 import React, { ChangeEvent } from 'react';
 import { useRecoilState } from 'recoil';
 
 const WritingStep = () => {
+  const pathname = usePathname();
+  const firstPath = pathname.split('/')[1];
+
   const dropdownOpt = ['이벤트/홍보', '거래/교환/양도', '친목/동행', '자유', '주최 관련'];
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
 
   const { articleTitle, editValue, category } = writeValue;
-
   // articleTitle 수정
   const handleChangeArticle = (e: ChangeEvent<HTMLInputElement>) => {
     setWriteValue({
@@ -35,8 +38,15 @@ const WritingStep = () => {
 
   return (
     <div className="flex h-[560px] w-full flex-col gap-4 md:border md:border-gray-200 md:p-4">
-      <div className=" relative flex gap-3">
-        <CategoryDropdown dropdownOpt={dropdownOpt} dropValue={category} handleChangeCategory={handleChangeCategory} />
+      <div className="relative flex gap-3">
+        {firstPath === 'board' && (
+          <CategoryDropdown
+            dropdownOpt={dropdownOpt}
+            dropValue={category}
+            handleChangeCategory={handleChangeCategory}
+          />
+        )}
+
         <input
           defaultValue={articleTitle}
           onChange={(e) => handleChangeArticle(e)}
