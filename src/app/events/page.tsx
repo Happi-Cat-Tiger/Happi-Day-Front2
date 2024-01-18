@@ -200,7 +200,7 @@ const page = () => {
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const router = useRouter();
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
 
@@ -216,16 +216,13 @@ const page = () => {
       if (window.innerWidth > 1148) {
         setItemsPerPage(10);
         setItemsPerPageGrid(5);
-      }
-      if (window.innerWidth <= 1148) {
+      } else if (window.innerWidth <= 1148 && window.innerWidth > 980) {
         setItemsPerPage(8);
         setItemsPerPageGrid(4);
-      }
-      if (window.innerWidth <= 980) {
+      } else if (window.innerWidth <= 980 && window.innerWidth > 720) {
         setItemsPerPage(6);
         setItemsPerPageGrid(3);
-      }
-      if (window.innerWidth <= 720) {
+      } else if (window.innerWidth <= 720) {
         setItemsPerPage(4);
         setItemsPerPageGrid(2);
       }
@@ -233,9 +230,13 @@ const page = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('reisze', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('width', itemsPerPageGrid);
+  }, [window.innerWidth]);
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -261,7 +262,7 @@ const page = () => {
           <p>다시 검색해주세요 !</p>
         </div>
       ) : (
-        <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] grid-rows-2 gap-[10px]`}>
+        <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] gap-[10px]`}>
           {filteredItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
             <Card
               key={idx}
