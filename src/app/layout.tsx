@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
+import { ThemeProvider } from '../containers/mypage/tailwindexport';
 import '../styles/global.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';
@@ -18,9 +19,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Nav />
+
         <RecoilRootWrapper>
-          <ReactQueryWrapper>{children}</ReactQueryWrapper>
+          <ReactQueryWrapper>
+            <ThemeProvider>{children}</ThemeProvider>
+          </ReactQueryWrapper>
         </RecoilRootWrapper>
+
         <Footer />
       </body>
     </html>
