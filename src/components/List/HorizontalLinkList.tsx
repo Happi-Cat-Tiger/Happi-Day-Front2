@@ -11,7 +11,7 @@ const HorizontalLinkList = ({ category }: HorizontalLinkListProps) => {
 
   return (
     <div className="flex flex-wrap gap-2 md:gap-4">
-      {category.map((page, i) => (
+      {category?.map((page, i) => (
         <Link key={i} href={page.navigate}>
           <p
             className={`prose-h7 w-fit truncate border-b-2 p-2 md:prose-h7 hover:border-orange2 hover:text-orange2 ${
