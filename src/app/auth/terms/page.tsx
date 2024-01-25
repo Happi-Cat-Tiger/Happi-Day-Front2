@@ -54,40 +54,40 @@ const Terms = () => {
 
   return (
     <>
-      <div className="px-2 gap-4 pt-10 m-auto flex w-[360px] flex-col items-center py-[18px] pb-[130px] md:w-[752px] md:px-[26px] md:py-[60px]">
+      <div className="m-auto flex w-[360px] flex-col items-center gap-4 px-2 py-[18px] pb-[130px] pt-10 md:w-[752px] md:px-[26px] md:py-[60px]">
         <div className="prose-h4 text-gray1 md:prose-h3">이용약관 동의</div>
-        <div className="p-2.5 md:p-2.5 flex w-[319px] flex-col items-center gap-[30px] md:w-[680px]">
-          <div className="gap-1.5 flex flex-shrink-0 flex-col items-start justify-center self-stretch">
+        <div className="flex w-[319px] flex-col items-center gap-[30px] p-2.5 md:w-[680px] md:p-2.5">
+          <div className="flex flex-shrink-0 flex-col items-start justify-center gap-1.5 self-stretch">
             <CheckBox
               checkBoxData={checkBoxData[0]}
               handleAgreementChange={handleAgreementChange}
               toggleAllAgreements={toggleAllAgreements}
             />
-            <div className="gap-2.5 flex w-[299px] flex-[1_0_0%] items-start justify-center px-[22px] md:w-full">
+            <div className="flex w-[299px] flex-[1_0_0%] items-start justify-center gap-2.5 px-[22px] md:w-full">
               <div className="prose-body-S w-[294px] flex-shrink-0 text-gray4 md:prose-body-M md:w-full">
                 {checkBoxData[0].content}
               </div>
             </div>
           </div>
-          <div className="gap-1.5 flex flex-shrink-0 flex-col items-start justify-center self-stretch">
+          <div className="flex flex-shrink-0 flex-col items-start justify-center gap-1.5 self-stretch">
             <CheckBox
               checkBoxData={checkBoxData[1]}
               handleAgreementChange={handleAgreementChange}
               toggleAllAgreements={toggleAllAgreements}
             />
-            <div className="py-2.5 gap-2.5 whitespace-wrap flex h-[100px] w-[304px] flex-shrink-0 items-start justify-center overflow-y-auto rounded-lg border-[1px] border-gray5 px-[15px] md:h-[130px] md:w-[660px]">
+            <div className="whitespace-wrap flex h-[100px] w-[304px] flex-shrink-0 items-start justify-center gap-2.5 overflow-y-auto rounded-lg border-[1px] border-gray5 px-[15px] py-2.5 md:h-[130px] md:w-[660px]">
               <div className="prose-body-S flex-[1_1_0%] flex-shrink-0 text-gray4 md:prose-body-M">
                 {checkBoxData[1].content}
               </div>
             </div>
           </div>
-          <div className="gap-1.5 flex flex-shrink-0 flex-col items-start justify-center self-stretch">
+          <div className="flex flex-shrink-0 flex-col items-start justify-center gap-1.5 self-stretch">
             <CheckBox
               checkBoxData={checkBoxData[2]}
               handleAgreementChange={handleAgreementChange}
               toggleAllAgreements={toggleAllAgreements}
             />
-            <div className="py-2.5 gap-2.5 whitespace-wrap flex h-[100px] w-[304px] flex-shrink-0 items-start justify-center overflow-y-auto rounded-lg border-[1px] border-gray5 px-[15px] md:h-[130px] md:w-[660px]">
+            <div className="whitespace-wrap flex h-[100px] w-[304px] flex-shrink-0 items-start justify-center gap-2.5 overflow-y-auto rounded-lg border-[1px] border-gray5 px-[15px] py-2.5 md:h-[130px] md:w-[660px]">
               <div className="prose-body-S flex-[1_1_0%] flex-shrink-0 text-gray4 md:prose-body-M">
                 {checkBoxData[2].content}
               </div>
