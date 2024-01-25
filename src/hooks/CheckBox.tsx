@@ -24,9 +24,9 @@ const CheckBox = ({ checkBoxData, handleAgreementChange, toggleAllAgreements }: 
   return (
     <div key={id} className="flex cursor-pointer items-center gap-2" onClick={handleClick}>
       {isChecked ? (
-        <IoCheckbox className="h-6 w-6 absolute text-orange2" />
+        <IoCheckbox className="h-6 w-6 text-orange2" />
       ) : (
-        <IoCheckboxOutline className="h-6 w-6 absolute text-orange2" />
+        <IoCheckboxOutline className="h-6 w-6 text-orange2" />
       )}
 
       <div className="prose-subtitle-M text-black md:prose-subtitle-L">{title}</div>
