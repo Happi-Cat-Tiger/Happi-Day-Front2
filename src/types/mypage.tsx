@@ -15,8 +15,9 @@ export type ResultSalesGoods = {
 
 export type ResultOrdersGoods = {
   id: number;
-  price: string;
-  orderedProducts: string;
+  salesId: number;
+  price: number;
+  orderedProducts: object;
   title: string;
   status: string;
   createdAt: string;

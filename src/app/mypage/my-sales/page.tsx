@@ -7,7 +7,7 @@ import { ResultSalesGoods } from '@/types/mypage';
 
 const SalesDetailLink = ({ id, label, href }: { id: number; label: string; href: string }) => (
   <Link href={`${href}/${id}`} passHref>
-    <div className="prose-btn-XXS rounded-2xl  text-gray4 focus:outline-none disabled:bg-gray6 ">{label}</div>
+    {label}
   </Link>
 );
 
@@ -57,7 +57,7 @@ const MySalesMockData = [
 const addOrderDetailButton = (data: ResultSalesGoods[]) => {
   return data?.map((item) => ({
     ...item,
-    orderDetailLink: <SalesDetailLink id={item.id} label="주문 상세보기 >" href="/mypage/my-sales/sales-goods/" />,
+    orderDetailLink: <SalesDetailLink id={item.id} label="주문 상세보기 >" href="/mypage/my-sales/" />,
   }));
 };
 

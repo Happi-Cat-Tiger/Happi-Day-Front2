@@ -1,7 +1,12 @@
+'use client';
 import React from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const page = () => {
-  return <div>주문 상세내역</div>;
+  const router = useRouter();
+  const pathname = usePathname();
+  console.log(pathname);
+  return <div>zzz</div>;
 };
 
 export default page;

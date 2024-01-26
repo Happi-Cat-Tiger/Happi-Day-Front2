@@ -3,7 +3,9 @@ import axios from 'axios';
 
 //OAuth 프레임워크에서 Bearer 사용. OAuth는 프레임워크 사용하는지 백엔드에 확인필요
 //TODO 저장된 토큰 가져오는 getToken() 함수 구현 해야함
-const USER_TOKEN = `Bearer ${getToken('authorization')}`;
+
+// const USER_TOKEN = `Bearer ${getToken('authorization')}`;
+const USER_TOKEN = 'Bearer authorization';
 
 export const apiInstance = axios.create({
   baseURL: `${API_BASE_URL}/`,
