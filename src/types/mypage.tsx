@@ -7,6 +7,7 @@ export type MenuListItem = {
 
 export type ResultSalesGoods = {
   id: number;
+  salesId: number;
   category: string;
   title: string;
   orderCount: number;

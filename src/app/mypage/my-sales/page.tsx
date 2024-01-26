@@ -5,8 +5,18 @@ import Table from '@/containers/mypage/Table';
 import { MY_SALES_TABLE_HEAD } from '@/constants/mypage';
 import { ResultSalesGoods } from '@/types/mypage';
 
-const SalesDetailLink = ({ id, label, href }: { id: number; label: string; href: string }) => (
-  <Link href={`${href}/${id}`} passHref>
+const SalesDetailLink = ({
+  orderId,
+  salesId,
+  label,
+  href,
+}: {
+  orderId: number;
+  salesId: number;
+  label: string;
+  href: string;
+}) => (
+  <Link href={`${href}/detail?orderId=${orderId}&salesId=${salesId}`} passHref>
     {label}
   </Link>
 );
@@ -20,6 +30,7 @@ const SalesDetailLink = ({ id, label, href }: { id: number; label: string; href:
 const MySalesMockData = [
   {
     id: 31,
+    salesId: 2,
     category: '굿즈',
     title: '방탄 굿즈 이것저것 팔아요',
     orderCount: 11,
@@ -27,6 +38,7 @@ const MySalesMockData = [
   },
   {
     id: 33,
+    salesId: 3,
     category: '굿즈',
     title: '스트레이키즈 굿즈 총 모음집',
     orderCount: 4,
@@ -34,6 +46,7 @@ const MySalesMockData = [
   },
   {
     id: 35,
+    salesId: 4,
     category: '굿즈',
     title: '세븐틴 떡메 모음',
     orderCount: 42,
@@ -41,6 +54,7 @@ const MySalesMockData = [
   },
   {
     id: 23,
+    salesId: 5,
     category: '굿즈',
     title: '아이브(IVE) 슬로건 - 15종',
     orderCount: 2,
@@ -48,6 +62,7 @@ const MySalesMockData = [
   },
   {
     id: 13,
+    salesId: 6,
     category: '굿즈',
     title: '아이들 IDLE 폰케이스 2종 Pink/Green',
     orderCount: 32,
@@ -57,7 +72,9 @@ const MySalesMockData = [
 const addOrderDetailButton = (data: ResultSalesGoods[]) => {
   return data?.map((item) => ({
     ...item,
-    orderDetailLink: <SalesDetailLink id={item.id} label="주문 상세보기 >" href="/mypage/my-sales/" />,
+    orderDetailLink: (
+      <SalesDetailLink orderId={item.id} salesId={item.salesId} label="주문 상세보기 >" href="/mypage/my-sales/" />
+    ),
   }));
 };
 

@@ -1,4 +1,4 @@
-'use client ';
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -7,14 +7,24 @@ import { MY_ORDERS_TABLE_HEAD } from '@/constants/mypage';
 import { ResultOrdersGoods } from '@/types/mypage';
 import { getOrderDetailService } from '@/hooks/queries/order/orderService';
 
-const OrdersDetailLink = ({ label, onClick }: { label: string; onClick: () => void }) => (
-  <div onClick={onClick}>{label}</div>
+const OrdersDetailLink = ({
+  orderId,
+  salesId,
+  label,
+  href,
+}: {
+  orderId: number;
+  salesId: number;
+  label: string;
+  href: string;
+}) => (
+  <Link href={`${href}/detail?orderId=${orderId}&salesId=${salesId}`} passHref>
+    {label}
+  </Link>
 );
 
 const modifyDataForOrderTable = (data: ResultOrdersGoods[]) => {
   return data?.map((item) => {
-    // const useQueryOrderDetail = getOrderDetailService({ salesId: item.salesId, orderId: item.id });
-
     const orderedProductsName = Object.keys(item.orderedProducts);
     const orderedProductsCount = orderedProductsName.length;
 
@@ -24,13 +34,14 @@ const modifyDataForOrderTable = (data: ResultOrdersGoods[]) => {
         orderedProductsCount === 1
           ? `${orderedProductsName[0]}`
           : `${orderedProductsName[0]} 외 ${orderedProductsCount - 1}건`,
-      orderDetailLink: <OrdersDetailLink label="주문 상세보기 >" onClick={() => {}} />,
+      orderDetailLink: (
+        <OrdersDetailLink orderId={item.id} salesId={item.salesId} label="주문 상세보기 >" href="/mypage/my-orders" />
+      ),
     };
   });
 };
 
 const Page = () => {
-  const [data, setData] = useState('');
   const modifiedData = modifyDataForOrderTable(MyOrdersMockData);
   return (
     <div className="w-full">
