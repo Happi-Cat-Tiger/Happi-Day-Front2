@@ -9,7 +9,7 @@ interface TableProps {
 }
 const Table = ({ TABLE_HEAD, TABLE_ROWS }: TableProps) => {
   return (
-    <Card color="white" className="h-full w-full overflow-scroll" shadow={true} placeholder>
+    <Card color="white" className="h-full w-full " shadow={true} placeholder>
       <table className="w-full  table-auto  text-left">
         <thead>
           <tr>

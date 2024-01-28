@@ -44,7 +44,8 @@ const modifyDataForOrderTable = (data: ResultOrdersGoods[]) => {
 const Page = () => {
   const modifiedData = modifyDataForOrderTable(MyOrdersMockData);
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col gap-5">
+      <div className="prose prose-h4">주문 내역</div>
       <Table TABLE_HEAD={MY_ORDERS_TABLE_HEAD} TABLE_ROWS={modifiedData} />
     </div>
   );
