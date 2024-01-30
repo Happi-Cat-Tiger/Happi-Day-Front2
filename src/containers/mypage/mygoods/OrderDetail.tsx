@@ -10,6 +10,10 @@ import Section from '@/containers/mypage/mygoods/Section';
 import Content from '@/containers/mypage/mygoods/Content';
 import Input from '@/components/Input/Input';
 import { ORDER_STATUS } from '@/constants/order';
+import { updateOrderStatusService } from '@/hooks/mutations/order/orderService';
+import { OrderedProductItem } from './OrderedProductItem';
+import { OrderCancellationButton } from './OrderCancelButton';
+import { DeliveryInfo } from './DeliveryInfo';
 
 export const OrderDetail = ({
   orderDetailMockData,
@@ -23,7 +27,8 @@ export const OrderDetail = ({
     username,
     salesId,
     orderedProducts,
-    price,
+    totalPrice,
+    productPrice,
     orderStatus,
     address,
     orderAt,
@@ -34,43 +39,32 @@ export const OrderDetail = ({
     sellerAccount,
   } = orderDetailMockData;
 
-  const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState({ trackingNum, orderStatus });
-
-  const deleteOrderData = [{ label: '주문내역 삭제', onClick: () => confirm('정말로 삭제하시겠습니까?') }];
 
   const onChangeHandler = (newValues: { trackingNum: string; orderStatus: string }) => {
     setInputValue(newValues);
   };
 
   return (
-    <div className="flex flex-col gap-7">
-      <div className="prose-h6 flex flex-row gap-2">
+    <div className="flex  w-full flex-col gap-7">
+      <div className="prose-h6  flex w-full flex-row gap-2">
         <div>{dayjs(orderAt).format('YYYY.MM.DD')}</div>
         <div>주문</div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        {Object.entries(orderedProducts).map(([key, value]) => (
-          <div key={key} className="flex flex-col gap-4 rounded-md border border-solid p-4">
-            <div className="flex justify-between">
-              <div className="prose-h6 text-green-500 md:prose-h5">{ORDER_STATUS[orderStatus]}</div>
-              <BsThreeDotsVertical onClick={() => setIsOpen(!isOpen)} className="w-5 text-gray3" />
-            </div>
-            {isOpen && <MobileModal isOpen={isOpen} setIsOpen={setIsOpen} list={deleteOrderData} />}
-            <div className="prose-body-M">
-              {key} {value}개
-            </div>
-          </div>
+      <div className="flex w-full flex-col gap-3">
+        {orderedProducts.map((item) => (
+          <OrderedProductItem
+            key={item.productName}
+            orderStatus={orderStatus}
+            productName={item.productName}
+            productCount={item.count}
+            individualProductPrice={item.individualProductPrice}
+          />
         ))}
-        <div className="flex justify-end">
-          <StyledButton
-            label={'주문취소'}
-            className="prose-btn-S w-32 rounded-xl bg-orange2 px-4 py-2 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-2"
-            onClick={() => {}}></StyledButton>
-        </div>
+        <OrderCancellationButton onClick={() => {}} />
       </div>
-      <div className="flex flex-col gap-10">
+      <div className="flex  w-full flex-col gap-10">
         <Section>
           <SubTitle label={'주문자 정보'} />
           <Content>
@@ -117,20 +111,20 @@ export const OrderDetail = ({
               <div className=" prose-body-M text-gray2 ">결제수단</div>
               <div className="\ prose-body-L ">무통장 입금</div>
               <div className=" prose-body-M text-gray2 ">배송 방법</div>
-              <div className="\ prose-body-L">{delivery}</div>
+              <div className="\ prose-body-L">{delivery.deliveryWay}</div>
             </div>
             <div className="prose-body-M flex w-full flex-col gap-2 bg-gray7 p-4 px-3  md:w-80 md:pt-2">
               <div className="flex flex-row justify-between">
                 <div>총 상품가격</div>
-                <div>{price}원</div>
+                <div>{productPrice}원</div>
               </div>
               <div className="flex flex-row justify-between">
                 <div>배송비</div>
-                <div>1800원</div>
+                <div>{delivery.price}원</div>
               </div>
               <div className="prose-body-L flex flex-row justify-between font-bold">
                 <div>총 결제금액</div>
-                <div>40800원</div>
+                <div>{totalPrice}원</div>
               </div>
             </div>
           </div>
@@ -138,33 +132,13 @@ export const OrderDetail = ({
         <Section>
           <SubTitle label={'배송 정보'} />
           <Content>
-            {userType == 'orderUser' && (
-              <div className="flex flex-row items-center gap-20">
-                <select
-                  id="orderStatus"
-                  onChange={(event) => onChangeHandler({ ...inputValue, orderStatus: event.target.value })}
-                  defaultValue={orderStatus}
-                  className="w-40 cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M">
-                  {Object.entries(ORDER_STATUS).map(([key, value]) => (
-                    <option value={key}>{value}</option>
-                  ))}
-                </select>
-                <div>
-                  <Input
-                    isReadOnly={false}
-                    type="text"
-                    placeholder="운송장 번호"
-                    value={inputValue.trackingNum}
-                    onChange={(event) => onChangeHandler({ ...inputValue, trackingNum: event.target.value })}
-                  />
-                </div>
-                <StyledButton
-                  label="저장"
-                  className="prose-btn-S w-16 rounded-xl bg-orange2 px-4 py-2 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-2"
-                  onClick={() => {}}
-                />
-              </div>
-            )}
+            <DeliveryInfo
+              userType={userType}
+              inputValue={inputValue}
+              onChangeHandler={onChangeHandler}
+              saveHandler={() => {}}
+              orderStatus={orderStatus}
+            />
           </Content>
           <Content>{userType == 'salesUser' && <div>{refundAccount}</div>}</Content>
         </Section>

@@ -6,7 +6,7 @@ import { Dialog } from '@headlessui/react';
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  list: { label: string; onClick: () => void }[];
+  list: { id: number; label: string; onClick: () => void }[];
 }
 
 const MobileModal = ({ isOpen, setIsOpen, list }: ModalProps) => {
@@ -24,17 +24,15 @@ const MobileModal = ({ isOpen, setIsOpen, list }: ModalProps) => {
 
           <div className=" my-8 inline-block w-full max-w-max transform items-center justify-center space-y-4  overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all">
             {list?.map((item) => (
-              <>
-                <div
-                  key={item.label}
-                  className=" text-m max-h-[400px] min-w-[210px] overflow-y-auto text-red-400 md:max-h-[600px] md:min-w-[250px]"
-                  onClick={() => {
-                    item.onClick();
-                    handleCloseModal();
-                  }}>
-                  {item.label}
-                </div>
-              </>
+              <div
+                key={item.id}
+                className=" text-m max-h-[400px] min-w-[210px] overflow-y-auto text-red-400 md:max-h-[600px] md:min-w-[250px]"
+                onClick={() => {
+                  item.onClick();
+                  handleCloseModal();
+                }}>
+                {item.label}
+              </div>
             ))}
 
             <div className="text-m  text-gray1">
