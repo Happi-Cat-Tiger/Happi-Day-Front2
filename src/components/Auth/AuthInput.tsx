@@ -45,19 +45,19 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
         {inputPlaceHolder.map((item, index) => (
           <div
             key={index}
-            className={`mb-1 flex w-full items-center md:mb-3 ${
-              item.label ? 'justify-between' : 'justify-center'
+            className={`mb-1 flex w-full items-center md:mb-3 justify-${
+              item.label ? 'between' : 'center'
             } self-stretch`}>
             {item.label && <div className="prose-subtitle-S text-gray1 md:prose-subtitle-M">{item.label}</div>}
             <div className="flex flex-col">
               <div
-                className={`${
-                  errors[item.name] ? 'border-red-500' : 'border-gray-5'
+                className={`border-[1px]-${
+                  errors[item.name] ? 'red-500' : 'gray-5'
                 } flex h-[44px] items-center gap-2.5 rounded-lg border-[1px] px-2 py-2.5 ${
                   item.label ? 'w-[200px] md:w-[300px]' : 'w-[300px]'
                 }`}>
                 {React.createElement(item.icon, {
-                  className: `w-6 h-6 flex-shrink-0 ${errors[item.name] ? 'text-red-500' : 'text-gray5'}`,
+                  className: `w-6 h-6 flex-shrink-0 text-${errors[item.name] ? 'red-500' : 'gray5'}`,
                 })}
                 <input
                   {...register(item.name, {
@@ -65,13 +65,13 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                     ...(item.name === 'id' && {
                       pattern: {
                         value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-                        message: '올바른 이메일 형식이 아닙니다.',
+                        message: `• 올바른 이메일 형식이 아닙니다.`,
                       },
                     }),
                     ...(item.name === 'pw' && {
                       pattern: {
                         value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\\\|\[\]{};:\'",.<>/?]).{8,}$/,
-                        message: '영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.',
+                        message: '• 영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.',
                       },
                     }),
                     ...(item.name === 'pwConfirm' && {
@@ -80,19 +80,19 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                     ...(item.name === 'name' && {
                       pattern: {
                         value: /^[A-Za-z가-힣]+$/,
-                        message: '영문 또는 한글만 입력해주세요.',
+                        message: '• 영문 또는 한글만 입력해주세요.',
                       },
                     }),
                     ...(item.name === 'phoneNumber' && {
                       pattern: {
                         value: /^[0-9]{1,11}$/,
-                        message: '하이픈(-)을 제외한 숫자만 입력해주세요.',
+                        message: '• 하이픈(-)을 제외한 숫자만 입력해주세요.',
                       },
                     }),
                     ...(item.name === 'nickName' && {
                       pattern: {
                         value: /^[A-Za-z가-힣]{1,10}$/,
-                        message: '영문 또는 한글로 10글자 이내로 입력해주세요.',
+                        message: '• 영문 또는 한글로 10글자 이내로 입력해주세요.',
                       },
                     }),
                   })}
@@ -102,7 +102,7 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                   maxLength={isPhoneNumberField(item.name) ? 11 : undefined}></input>
               </div>
               {errors[item.name] && (
-                <div className="prose-body-XXS text-red-500 md:prose-body-XS">&bull; {errors[item.name]?.message}</div>
+                <div className="prose-body-XXS text-red-500 md:prose-body-XS">{errors[item.name]?.message}</div>
               )}
             </div>
           </div>
