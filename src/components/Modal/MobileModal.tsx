@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Dialog } from '@headlessui/react';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  data: { label: string; onClick: () => void }[];
+  list: { label: string; onClick: () => void }[];
 }
 
-const MobileModal = ({ isOpen, setIsOpen, data }: ModalProps) => {
+const MobileModal = ({ isOpen, setIsOpen, list }: ModalProps) => {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -23,9 +23,10 @@ const MobileModal = ({ isOpen, setIsOpen, data }: ModalProps) => {
           <span className="inline-block h-screen  align-middle " aria-hidden="true"></span>
 
           <div className=" my-8 inline-block w-full max-w-max transform items-center justify-center space-y-4  overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all">
-            {data?.map((item) => (
+            {list?.map((item) => (
               <>
                 <div
+                  key={item.label}
                   className=" text-m max-h-[400px] min-w-[210px] overflow-y-auto text-red-400 md:max-h-[600px] md:min-w-[250px]"
                   onClick={() => {
                     item.onClick();
