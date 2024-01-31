@@ -23,3 +23,20 @@ export type ResultOrdersGoods = {
   status: string;
   createdAt: string;
 };
+
+export type orderedTable = [
+  { title: string },
+  { orderedProducts: string },
+  { price: string },
+  { createdAt: string },
+  { status: string },
+  { orderDetailLink: string },
+];
+
+export type salesTable = [
+  { category: string },
+  { title: string },
+  { createdAt: string },
+  { orderCount: string },
+  { orderDetailLink: string },
+];

@@ -1,4 +1,4 @@
-import { MenuListItem } from '@/types/mypage';
+import { MenuListItem, orderedTable, salesTable } from '@/types/mypage';
 import { CategoryNav } from '@/types/board';
 
 export const MYPAGE_MENU_LIST: MenuListItem[] = [
@@ -22,7 +22,7 @@ export const MY_GOODS_CATEGORY: CategoryNav[] = [
   { pageTitle: '주문한 굿즈', navigate: '/mypage/my-sales/order-goods' },
 ];
 
-export const MY_SALES_TABLE_HEAD = [
+export const MY_SALES_TABLE_HEAD: salesTable = [
   { category: '카테고리' },
   { title: '글제목' },
   { createdAt: '날짜' },
@@ -30,7 +30,7 @@ export const MY_SALES_TABLE_HEAD = [
   { orderDetailLink: '주문 상세보기' },
 ];
 
-export const MY_ORDERS_TABLE_HEAD = [
+export const MY_ORDERS_TABLE_HEAD: orderedTable = [
   { title: '글제목' },
   { orderedProducts: '구매한 상품' },
   { price: '금액' },

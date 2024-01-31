@@ -2,20 +2,28 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { OrderDetail } from '@/containers/mypage/mygoods/OrderDetail';
+import { getOrderDetailService } from '@/hooks/queries/order/orderService';
+import { getSearchParamsAsNumber } from '@/hooks/getSearchParamsAsNumber';
 
 const page = () => {
   const params = useSearchParams();
   const pathname = usePathname();
-  const orderId = params.get('orderId');
-  const salesId = params.get('salesId');
+  const orderId = getSearchParamsAsNumber('orderId');
+  const salesId = getSearchParamsAsNumber('salesId');
 
-  const [orderDetailData, setOrderDetailData] = useState({});
+  const [orderDetailData, setOrderDetailData] = useState();
+
   const userType = pathname === '/mypage/my-orders/detail' ? 'orderUser' : 'salesUser';
 
-  // useEffect(() => {
-  //주문 상세 내역 fetch 함수
-  // const { data : orderDetailData } = getOrderDetailService({ salesId, orderId })
-  // }, []);
+  const fetchData = () => {
+    if (salesId && orderId) {
+      const { data: data } = getOrderDetailService({ salesId, orderId });
+    }
+  };
+
+  useEffect(() => {
+    fetchData;
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-5">
