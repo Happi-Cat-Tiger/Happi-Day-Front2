@@ -22,17 +22,20 @@ const MobileModal = ({ isOpen, setIsOpen, list }: ModalProps) => {
 
           <span className="inline-block h-screen  align-middle " aria-hidden="true"></span>
 
-          <div className=" my-8 inline-block w-full max-w-max transform items-center justify-center space-y-4  overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all">
+          <div className="  inline-block w-full max-w-max transform cursor-pointer items-center justify-center  space-y-4 overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all">
             {list?.map((item) => (
-              <div
-                key={item.id}
-                className=" text-m max-h-[400px] min-w-[210px] overflow-y-auto text-red-400 md:max-h-[600px] md:min-w-[250px]"
-                onClick={() => {
-                  item.onClick();
-                  handleCloseModal();
-                }}>
-                {item.label}
-              </div>
+              <>
+                <div
+                  key={item.id}
+                  className=" text-m max-h-[400px] min-w-[210px] overflow-y-auto text-red-400 md:max-h-[600px] md:min-w-[250px]"
+                  onClick={() => {
+                    item.onClick();
+                    handleCloseModal();
+                  }}>
+                  {item.label}
+                </div>
+                <div className="my-8 h-1 w-full border-t"></div>
+              </>
             ))}
 
             <div className="text-m  text-gray1">

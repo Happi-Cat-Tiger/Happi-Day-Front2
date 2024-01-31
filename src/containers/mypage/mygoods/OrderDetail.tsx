@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { getOrderDetailService } from '@/hooks/queries/order/orderService';
 import dayjs from 'dayjs';
-import MobileModal from '@/components/Modal/MobileModal';
-import { orderDetail } from '@/types/order';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import StyledButton from '@/components/Button/StyledButton';
 import SubTitle from '@/containers/mypage/mygoods/SubTitle';
 import Section from '@/containers/mypage/mygoods/Section';
 import Content from '@/containers/mypage/mygoods/Content';
-import Input from '@/components/Input/Input';
-import { ORDER_STATUS } from '@/constants/order';
-import { updateOrderStatusService } from '@/hooks/mutations/order/orderService';
+import { orderDetail } from '@/types/order';
 import { OrderedProductItem } from './OrderedProductItem';
-import { OrderCancellationButton } from './OrderCancelButton';
+import { OrderCancelButton } from './OrderCancelButton';
 import { DeliveryInfo } from './DeliveryInfo';
+import { getOrderDetailService } from '@/hooks/queries/order/orderService';
+import { updateOrderCancelService } from '@/hooks/mutations/order/orderService';
 
-export const OrderDetail = ({
-  orderDetailMockData,
-  userType,
-}: {
+interface Props {
   orderDetailMockData: orderDetail;
   userType: string;
-}) => {
+}
+export const OrderDetail = ({ orderDetailMockData, userType }: Props) => {
   const {
     id,
     username,
@@ -45,6 +38,10 @@ export const OrderDetail = ({
     setInputValue(newValues);
   };
 
+  const mutationPut = updateOrderCancelService({ salesId, orderId: id });
+  const cancleHandler = () => {
+    mutationPut.mutate();
+  };
   return (
     <div className="flex  w-full flex-col gap-7">
       <div className="prose-h6  flex w-full flex-row gap-2">
@@ -55,6 +52,8 @@ export const OrderDetail = ({
       <div className="flex w-full flex-col gap-3">
         {orderedProducts.map((item) => (
           <OrderedProductItem
+            orderId={id}
+            salesId={salesId}
             key={item.productName}
             orderStatus={orderStatus}
             productName={item.productName}
@@ -62,7 +61,7 @@ export const OrderDetail = ({
             individualProductPrice={item.individualProductPrice}
           />
         ))}
-        <OrderCancellationButton onClick={() => {}} />
+        <OrderCancelButton onClick={cancleHandler} />
       </div>
       <div className="flex  w-full flex-col gap-10">
         <Section>
@@ -133,14 +132,14 @@ export const OrderDetail = ({
           <SubTitle label={'배송 정보'} />
           <Content>
             <DeliveryInfo
+              salesId={salesId}
+              orderId={id}
               userType={userType}
               inputValue={inputValue}
               onChangeHandler={onChangeHandler}
-              saveHandler={() => {}}
               orderStatus={orderStatus}
             />
           </Content>
-          <Content>{userType == 'salesUser' && <div>{refundAccount}</div>}</Content>
         </Section>
       </div>
     </div>

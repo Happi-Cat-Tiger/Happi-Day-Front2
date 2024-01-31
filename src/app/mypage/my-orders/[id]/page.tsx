@@ -8,6 +8,7 @@ const page = () => {
   const pathname = usePathname();
   const orderId = params.get('orderId');
   const salesId = params.get('salesId');
+
   const [orderDetailData, setOrderDetailData] = useState({});
   const userType = pathname === '/mypage/my-orders/detail' ? 'orderUser' : 'salesUser';
 

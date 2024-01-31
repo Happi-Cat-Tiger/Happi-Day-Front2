@@ -10,7 +10,7 @@ const USER_TOKEN = 'Bearer authorization';
 export const apiInstance = axios.create({
   baseURL: `${API_BASE_URL}/`,
   timeout: 1000,
-  headers: { 'Content -Type': 'application/json', authorization: USER_TOKEN },
+  headers: { 'Content-Type': 'application/json', authorization: USER_TOKEN },
 
   // 서버와 클라이언트가 다른 도메인일 경우 필수
   // withCredentials: true,

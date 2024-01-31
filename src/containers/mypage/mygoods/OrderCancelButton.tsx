@@ -5,7 +5,7 @@ interface Props {
   onClick: () => void;
 }
 
-export const OrderCancellationButton = ({ onClick }: Props) => (
+export const OrderCancelButton = ({ onClick }: Props) => (
   <div className="flex justify-end">
     <StyledButton
       label={'주문취소'}
