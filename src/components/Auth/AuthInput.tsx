@@ -65,13 +65,13 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                     ...(item.name === 'id' && {
                       pattern: {
                         value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-                        message: '올바른 이메일 형식이 아닙니다.',
+                        message: `• 올바른 이메일 형식이 아닙니다.`,
                       },
                     }),
                     ...(item.name === 'pw' && {
                       pattern: {
                         value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\\\|\[\]{};:\'",.<>/?]).{8,}$/,
-                        message: '영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.',
+                        message: '• 영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.',
                       },
                     }),
                     ...(item.name === 'pwConfirm' && {
@@ -80,19 +80,19 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                     ...(item.name === 'name' && {
                       pattern: {
                         value: /^[A-Za-z가-힣]+$/,
-                        message: '영문 또는 한글만 입력해주세요.',
+                        message: '• 영문 또는 한글만 입력해주세요.',
                       },
                     }),
                     ...(item.name === 'phoneNumber' && {
                       pattern: {
                         value: /^[0-9]{1,11}$/,
-                        message: '하이픈(-)을 제외한 숫자만 입력해주세요.',
+                        message: '• 하이픈(-)을 제외한 숫자만 입력해주세요.',
                       },
                     }),
                     ...(item.name === 'nickName' && {
                       pattern: {
                         value: /^[A-Za-z가-힣]{1,10}$/,
-                        message: '영문 또는 한글로 10글자 이내로 입력해주세요.',
+                        message: '• 영문 또는 한글로 10글자 이내로 입력해주세요.',
                       },
                     }),
                   })}
@@ -102,7 +102,7 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                   maxLength={isPhoneNumberField(item.name) ? 11 : undefined}></input>
               </div>
               {errors[item.name] && (
-                <div className="prose-body-XXS text-red-500 md:prose-body-XS">&bull; {errors[item.name]?.message}</div>
+                <div className="prose-body-XXS text-red-500 md:prose-body-XS">{errors[item.name]?.message}</div>
               )}
             </div>
           </div>
