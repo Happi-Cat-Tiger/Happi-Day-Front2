@@ -46,7 +46,7 @@ const Nav = () => {
             {isLoggedIn ? (
               <AiOutlineUser className="icon-default rounded-full bg-[#F5F5F5] p-1" />
             ) : (
-              <Link href="/auth/login">
+              <Link href="/auth/sign-in">
                 <div className="prose-h7 md:prose-h6 hover:text-orange2">로그인</div>
               </Link>
             )}
