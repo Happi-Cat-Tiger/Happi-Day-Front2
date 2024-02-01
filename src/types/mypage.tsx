@@ -1,3 +1,5 @@
+import { orderedProducts } from './order';
+
 export type MenuListItem = {
   id: number;
   title: string;
@@ -5,26 +7,7 @@ export type MenuListItem = {
   urlForHighlight: string;
 };
 
-export type ResultSalesGoods = {
-  id: number;
-  salesId: number;
-  category: string;
-  title: string;
-  orderCount: number;
-  createdAt: string;
-};
-
-export type ResultOrdersGoods = {
-  id: number;
-  salesId: number;
-  price: number;
-  orderedProducts: object;
-  title: string;
-  status: string;
-  createdAt: string;
-};
-
-export type orderedTable = [
+export type OrderedTable = [
   { title: string },
   { orderedProducts: string },
   { price: string },
@@ -33,10 +16,19 @@ export type orderedTable = [
   { orderDetailLink: string },
 ];
 
-export type salesTable = [
-  { category: string },
+export type SalesPostTable = [
+  { salesCategory: string },
   { title: string },
   { createdAt: string },
   { orderCount: string },
+  { orderDetailLink: string },
+];
+
+export type SalesProductsTable = [
+  { orderAt: string },
+  { orderedProducts: string },
+  { username: string },
+  { price: string },
+  { orderStatus: string },
   { orderDetailLink: string },
 ];

@@ -7,7 +7,6 @@ import { orderDetail } from '@/types/order';
 import { OrderedProductItem } from './OrderedProductItem';
 import { OrderCancelButton } from './OrderCancelButton';
 import { DeliveryInfo } from './DeliveryInfo';
-import { getOrderDetailService } from '@/hooks/queries/order/orderService';
 import { updateOrderCancelService } from '@/hooks/mutations/order/orderService';
 
 interface Props {

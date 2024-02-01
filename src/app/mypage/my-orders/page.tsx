@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Table from '@/containers/mypage/Table';
 import { MY_ORDERS_TABLE_HEAD } from '@/constants/mypage';
-import { ResultOrdersGoods } from '@/types/mypage';
-import { getOrderDetailService } from '@/hooks/queries/order/orderService';
+import { OrderedProductList } from '@/types/order';
 
 const OrdersDetailLink = ({
   orderId,
@@ -18,12 +17,12 @@ const OrdersDetailLink = ({
   label: string;
   href: string;
 }) => (
-  <Link href={`${href}/detail?orderId=${orderId}&salesId=${salesId}`} passHref>
+  <Link href={`${href}/${salesId}/${orderId}`} passHref>
     {label}
   </Link>
 );
 
-const modifyDataForOrderTable = (data: ResultOrdersGoods[]) => {
+const modifyDataForOrderTable = (data: OrderedProductList[]) => {
   return data?.map((item) => {
     const orderedProductsName = Object.keys(item.orderedProducts);
     const orderedProductsCount = orderedProductsName.length;
@@ -35,7 +34,12 @@ const modifyDataForOrderTable = (data: ResultOrdersGoods[]) => {
           ? `${orderedProductsName[0]}`
           : `${orderedProductsName[0]} 외 ${orderedProductsCount - 1}건`,
       orderDetailLink: (
-        <OrdersDetailLink orderId={item.id} salesId={item.salesId} label="주문 상세보기 >" href="/mypage/my-orders" />
+        <OrdersDetailLink
+          orderId={item.id}
+          salesId={item.salesId}
+          label="주문 상세보기 >"
+          href="/mypage/order-detail"
+        />
       ),
     };
   });

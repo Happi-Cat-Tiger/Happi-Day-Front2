@@ -1,8 +1,8 @@
 import apiInstance from '@/api/api';
-import { OrderData } from '@/hooks/queries/order/orderService';
+import { orderDetail, OrderedProductList } from '@/types/order';
 
 export const getOrderedDetailApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
-  await apiInstance.get<OrderData[]>(`/sales/${salesId}/order/${orderId}`).then(({ data }) => data);
+  await apiInstance.get<orderDetail[]>(`/sales/${salesId}/order/${orderId}`).then(({ data }) => data);
 
 export const updateOrderStatusApi = async ({
   salesId,
@@ -19,3 +19,6 @@ export const updateOrderCancleApi = async ({ salesId, orderId }: { salesId: numb
 
 export const deleteOrderApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
   await apiInstance.delete(`/sales/${salesId}/order/${orderId}`);
+
+export const getOrderedProductsListApi = async () =>
+  await apiInstance.get<OrderedProductList>('/user/orders').then(({ data }) => data);
