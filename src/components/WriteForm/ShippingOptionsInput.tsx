@@ -3,13 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
+interface ShippingOptions {
+  index: string;
+  label: string;
+  price: string;
+}
+
 const ShippingOptionsInput = () => {
-  const [shippingValue, setShippingValue] = useState<any>({ index: '', label: '', price: '' });
-  const [shippingList, setShippingList] = useState<any>([]);
+  const [shippingValue, setShippingValue] = useState<ShippingOptions>({ index: '', label: '', price: '' });
+  const [shippingList, setShippingList] = useState<ShippingOptions[]>([]);
 
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
-
-  const { shippingOptions } = writingInfoValue;
 
   const handleChangeShipping = () => {
     setWritingInfoValue({
@@ -21,6 +25,13 @@ const ShippingOptionsInput = () => {
     handleChangeShipping();
   }, [shippingList]);
 
+  const handleAddShipping = () => {
+    const newShipping = { ...shippingValue, index: uuidv4() };
+    setShippingValue({ index: '', label: '', price: '' });
+    setShippingList([...shippingList, newShipping]);
+    handleChangeShipping();
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="prose-h6 md:prose-h5">
@@ -29,14 +40,14 @@ const ShippingOptionsInput = () => {
       <div className="flex items-center gap-2">
         <input
           type="text"
-          defaultValue={shippingValue.label}
+          value={shippingValue.label}
           onChange={(e) => setShippingValue({ ...shippingValue, label: e.target.value })}
           className="text-input"
           placeholder="배송 옵션을 등록해주세요. ex) 우체국 택배"
         />
         <input
-          type="text"
-          defaultValue={shippingValue.price}
+          type="number"
+          value={shippingValue.price}
           onChange={(e) => setShippingValue({ ...shippingValue, price: e.target.value })}
           className="text-input w-[120px] md:w-[200px]"
           placeholder="배송비"
@@ -44,9 +55,7 @@ const ShippingOptionsInput = () => {
         <button
           type="button"
           onClick={() => {
-            setShippingValue({ ...shippingValue, index: uuidv4() });
-            setShippingList([...shippingList, shippingValue]);
-            handleChangeShipping();
+            handleAddShipping();
           }}>
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-700 text-lg font-bold text-white md:h-10 md:w-10 md:text-xl">
             +
@@ -54,14 +63,14 @@ const ShippingOptionsInput = () => {
         </button>
       </div>
       <ul className="prose-body-XS flex flex-col gap-2 md:prose-body-S">
-        {shippingList.map((shippingItem: any, i: number) => (
+        {shippingList.map((shippingItem) => (
           <li key={shippingItem.index} className="flex rounded-lg bg-[#F2F2F2] p-2">
             <p className="grow">{shippingItem.label}</p>
             <p className="w-[120px] md:w-[200px]">{shippingItem.price}</p>
             <button
               type="button"
               onClick={() => {
-                setShippingList([...shippingList.filter((shipping: any) => shipping.index !== shippingItem.index)]);
+                setShippingList([...shippingList.filter((shipping) => shipping.index !== shippingItem.index)]);
               }}>
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-red-700 font-bold text-white">
                 -
