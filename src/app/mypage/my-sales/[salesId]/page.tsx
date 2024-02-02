@@ -1,52 +1,21 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import Table from '@/containers/mypage/Table';
 import { MY_SALES_PRODUCTS_TABLE_HEAD } from '@/constants/mypage';
 import { SalesProductList } from '@/types/sales';
-import { useSearchParams } from 'next/navigation';
-import { getSearchParamsAsNumber } from '@/hooks/getSearchParamsAsNumber';
-
-const OrdersDetailLink = ({
-  orderId,
-  salesId,
-  label,
-  href,
-}: {
-  orderId: number;
-  salesId: number;
-  label: string;
-  href: string;
-}) => (
-  <Link href={`${href}/${salesId}/${orderId}`} passHref>
-    {label}
-  </Link>
-);
+import { OrderDetailLink } from '@/containers/mypage/mygoods/OrderdetailLink';
+import { getSalesProductListService } from '@/hooks/queries/sales/salesService';
 
 const Page = ({ params }: { params: { salesId: string } }) => {
   const salesId: number = parseInt(params.salesId, 10);
 
-  const modifyDataForOrderTable = (data: SalesProductList[]) => {
-    return data?.map((item) => {
-      const orderedProductsName = Object.keys(item.orderedProducts);
-      const orderedProductsCount = orderedProductsName.length;
+  const { data: data } = getSalesProductListService({ salesId });
 
-      return {
-        ...item,
-        orderedProducts:
-          orderedProductsCount === 1
-            ? `${orderedProductsName[0]}`
-            : `${orderedProductsName[0]} 외 ${orderedProductsCount - 1}건`,
-        orderDetailLink: salesId !== null && (
-          <OrdersDetailLink orderId={item.id} salesId={salesId} label="주문 상세보기 >" href="/mypage/order-detail" />
-        ),
-      };
-    });
-  };
+  const [salesProductList, setSalesProductList] = useState([]);
 
-  const modifiedData = modifyDataForOrderTable(salesPostListMockData);
-  console.log(params.salesId);
+  const modifiedData = modifyDataForOrderTable(salesPostListMockData, salesId);
+
   return (
     <div className="flex w-full flex-col gap-5">
       <div className="prose prose-h4">판매 내역</div>
@@ -56,6 +25,30 @@ const Page = ({ params }: { params: { salesId: string } }) => {
 };
 
 export default Page;
+
+const modifyDataForOrderTable = (data: SalesProductList[], salesId: number) => {
+  return data?.map((item) => {
+    const orderedProductsName = Object.keys(item.orderedProducts);
+    const orderedProductsCount = orderedProductsName.length;
+
+    return {
+      ...item,
+      orderedProducts:
+        orderedProductsCount === 1
+          ? `${orderedProductsName[0]}`
+          : `${orderedProductsName[0]} 외 ${orderedProductsCount - 1}건`,
+      orderDetailLink: salesId !== null && (
+        <OrderDetailLink
+          orderId={item.id}
+          salesId={salesId}
+          label="주문 상세보기 >"
+          href="/mypage/order-detail"
+          type="sales"
+        />
+      ),
+    };
+  });
+};
 
 const salesPostListMockData = [
   {

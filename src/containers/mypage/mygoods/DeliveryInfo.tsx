@@ -7,15 +7,15 @@ import { ORDER_STATUS } from '@/constants/order';
 interface Props {
   salesId: number;
   orderId: number;
-  userType: string;
+  detailType: string;
   inputValue: { trackingNum: string; orderStatus: string };
   onChangeHandler: (newValues: { trackingNum: string; orderStatus: string }) => void;
   orderStatus: string;
 }
 
-export const DeliveryInfo = ({ salesId, orderId, userType, inputValue, onChangeHandler, orderStatus }: Props) => {
+export const DeliveryInfo = ({ salesId, orderId, detailType, inputValue, onChangeHandler, orderStatus }: Props) => {
   const orderStatusClassName =
-    'w-40 cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M';
+    'w-30 md:w-36 cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none prose-btn-M';
 
   const mutationPut = updateOrderStatusService({ salesId, orderId, orderStatus: inputValue });
 
@@ -23,21 +23,22 @@ export const DeliveryInfo = ({ salesId, orderId, userType, inputValue, onChangeH
     mutationPut.mutate();
   };
   return (
-    <div className="flex flex-row items-center gap-20">
-      {userType == 'orderUser' && (
-        <>
-          <select
-            id="orderStatus"
-            onChange={(event) => onChangeHandler({ ...inputValue, orderStatus: event.target.value })}
-            defaultValue={orderStatus}
-            className={orderStatusClassName}>
-            {Object.entries(ORDER_STATUS).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
-          <div>
+    <div className="flex w-full flex-row items-center gap-16">
+      {detailType == 'sales' && (
+        <div className="flex w-full flex-col gap-3 md:flex md:flex-row md:justify-between">
+          <div className="flex w-80 items-center gap-2 sm:justify-between md:flex-row md:gap-8">
+            <select
+              id="orderStatus"
+              onChange={(event) => onChangeHandler({ ...inputValue, orderStatus: event.target.value })}
+              defaultValue={orderStatus}
+              className={orderStatusClassName}>
+              {Object.entries(ORDER_STATUS).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+
             <Input
               isReadOnly={false}
               type="text"
@@ -46,14 +47,16 @@ export const DeliveryInfo = ({ salesId, orderId, userType, inputValue, onChangeH
               onChange={(event) => onChangeHandler({ ...inputValue, trackingNum: event.target.value })}
             />
           </div>
-          <StyledButton
-            label="저장"
-            className="prose-btn-S w-16 rounded-xl bg-orange2 px-4 py-2 text-white md:prose-btn-S hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-2"
-            onClick={saveHandler}
-          />
-        </>
+          <div className="flex justify-end">
+            <StyledButton
+              label="저장"
+              className="prose-btn-S h-10 w-20 rounded-xl bg-orange2 px-4 py-2 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-4 md:py-2"
+              onClick={saveHandler}
+            />
+          </div>
+        </div>
       )}
-      {userType == 'salesUser' && (
+      {detailType == 'order' && (
         <>
           <div className={orderStatusClassName}>{ORDER_STATUS[inputValue.orderStatus]}</div>
           <div>{inputValue.trackingNum}</div>

@@ -15,15 +15,11 @@ export type orderDetail = {
   sellerAccount: string;
 };
 
-export type orderedProducts = {
-  [key: string]: number;
-};
-
 export type OrderedProductList = {
   id: number;
   salesId: number;
   price: number;
-  orderedProducts: orderedProducts;
+  orderedProducts: object;
   status: string;
   createdAt: string;
 };

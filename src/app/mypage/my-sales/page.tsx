@@ -1,23 +1,16 @@
-'use client ';
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Table from '@/containers/mypage/Table';
 import { MY_SALES_POST_TABLE_HEAD } from '@/constants/mypage';
-import { SalesProductList } from '@/types/sales';
-
-const SalesDetailLink = ({ salesId, label, href }: { salesId: number; label: string; href: string }) => (
-  <Link href={`${href}/${salesId}`} passHref>
-    {label}
-  </Link>
-);
+import { SalesPostList } from '@/types/sales';
+import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
 
 const Page = () => {
-  const modifyDataForSalesTable = (data: SalesProductList[]) => {
-    return data?.map((item) => ({
-      ...item,
-      orderDetailLink: <SalesDetailLink salesId={item.id} label="판매 내역 보기 >" href="/mypage/my-sales" />,
-    }));
-  };
+  const { data: data } = getSalesPostListService();
+
+  const [salesPostList, setSalesPostList] = useState([]);
 
   const modifiedData = modifyDataForSalesTable(MySalesMockData);
 
@@ -28,6 +21,21 @@ const Page = () => {
     </div>
   );
 };
+
+export default Page;
+
+const modifyDataForSalesTable = (data: SalesPostList[]) => {
+  return data?.map((item) => ({
+    ...item,
+    orderDetailLink: <SalesDetailLink salesId={item.id} label="판매 내역 보기 >" href="/mypage/my-sales" />,
+  }));
+};
+
+const SalesDetailLink = ({ salesId, label, href }: { salesId: number; label: string; href: string }) => (
+  <Link href={`${href}/${salesId}`} passHref>
+    {label}
+  </Link>
+);
 
 const MySalesMockData = [
   {
@@ -66,5 +74,3 @@ const MySalesMockData = [
     createdAt: '2023-01-04',
   },
 ];
-
-export default Page;

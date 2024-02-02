@@ -1,26 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import Table from '@/containers/mypage/Table';
 import { MY_ORDERS_TABLE_HEAD } from '@/constants/mypage';
 import { OrderedProductList } from '@/types/order';
+import { OrderDetailLink } from '@/containers/mypage/mygoods/OrderdetailLink';
+import { getOrderedProductListService } from '@/hooks/queries/order/orderService';
 
-const OrdersDetailLink = ({
-  orderId,
-  salesId,
-  label,
-  href,
-}: {
-  orderId: number;
-  salesId: number;
-  label: string;
-  href: string;
-}) => (
-  <Link href={`${href}/${salesId}/${orderId}`} passHref>
-    {label}
-  </Link>
-);
+const Page = () => {
+  const { data: data } = getOrderedProductListService();
+
+  const [salesProductList, setSalesProductList] = useState([]);
+
+  const modifiedData = modifyDataForOrderTable(MyOrdersMockData);
+  return (
+    <div className="flex w-full flex-col gap-5">
+      <div className="prose prose-h4">주문 내역</div>
+      <Table TABLE_HEAD={MY_ORDERS_TABLE_HEAD} TABLE_ROWS={modifiedData} />
+    </div>
+  );
+};
+
+export default Page;
 
 const modifyDataForOrderTable = (data: OrderedProductList[]) => {
   return data?.map((item) => {
@@ -34,28 +35,17 @@ const modifyDataForOrderTable = (data: OrderedProductList[]) => {
           ? `${orderedProductsName[0]}`
           : `${orderedProductsName[0]} 외 ${orderedProductsCount - 1}건`,
       orderDetailLink: (
-        <OrdersDetailLink
+        <OrderDetailLink
           orderId={item.id}
           salesId={item.salesId}
           label="주문 상세보기 >"
+          type="order"
           href="/mypage/order-detail"
         />
       ),
     };
   });
 };
-
-const Page = () => {
-  const modifiedData = modifyDataForOrderTable(MyOrdersMockData);
-  return (
-    <div className="flex w-full flex-col gap-5">
-      <div className="prose prose-h4">주문 내역</div>
-      <Table TABLE_HEAD={MY_ORDERS_TABLE_HEAD} TABLE_ROWS={modifiedData} />
-    </div>
-  );
-};
-
-export default Page;
 
 const MyOrdersMockData = [
   {

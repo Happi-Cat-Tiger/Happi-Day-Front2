@@ -20,5 +20,5 @@ export const updateOrderCancleApi = async ({ salesId, orderId }: { salesId: numb
 export const deleteOrderApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
   await apiInstance.delete(`/sales/${salesId}/order/${orderId}`);
 
-export const getOrderedProductsListApi = async () =>
-  await apiInstance.get<OrderedProductList>('/user/orders').then(({ data }) => data);
+export const getOrderedProductListApi = async () =>
+  await apiInstance.get<OrderedProductList[]>('/user/orders').then(({ data }) => data);

@@ -1,5 +1,3 @@
-import { orderedProducts } from '@/types/order';
-
 export type SalesPostList = {
   id: number;
   salesCategory: string;
@@ -11,7 +9,7 @@ export type SalesPostList = {
 export type SalesProductList = {
   id: number;
   username: string;
-  orderedProducts: orderedProducts;
+  orderedProducts: object;
   price: number;
   orderStatus: string;
   orderAt: string;

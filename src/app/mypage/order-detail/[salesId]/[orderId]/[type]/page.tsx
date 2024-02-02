@@ -1,34 +1,22 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, usePathname } from 'next/navigation';
+
+import React, { useState } from 'react';
 import { OrderDetail } from '@/containers/mypage/mygoods/OrderDetail';
 import { getOrderDetailService } from '@/hooks/queries/order/orderService';
-import { getSearchParamsAsNumber } from '@/hooks/getSearchParamsAsNumber';
 
-const page = ({ params }: { params: { salesId: string; orderId: string } }) => {
+const page = ({ params }: { params: { salesId: string; orderId: string; type: string } }) => {
   const orderId = parseInt(params.orderId, 10);
   const salesId = parseInt(params.salesId, 10);
+  const detailType = params.type;
 
   const [orderDetailData, setOrderDetailData] = useState();
 
-  // const userType = pathname === '/mypage/my-orders/detail' ? 'orderUser' : 'salesUser';
-
-  const userType = 'orderUser';
-
-  const fetchData = () => {
-    if (salesId && orderId) {
-      const { data: data } = getOrderDetailService({ salesId, orderId });
-    }
-  };
-
-  useEffect(() => {
-    fetchData;
-  }, []);
+  const { data: data } = getOrderDetailService({ salesId, orderId });
 
   return (
     <div className="flex w-full flex-col gap-5">
-      <div className="prose prose-h4 w-full">주문 상세</div>
-      <OrderDetail orderDetailMockData={orderDetailMockData} userType={userType} />
+      <div className="prose prose-h4">주문 상세</div>
+      <OrderDetail orderDetailMockData={orderDetailMockData} detailType={detailType} />
     </div>
   );
 };
@@ -52,7 +40,7 @@ const orderDetailMockData = {
     deliveryWay: '준등기',
     price: 1800,
   },
-  trackingNum: '등록되지 않음',
+  trackingNum: '30293574938',
   depositor: '저팔계',
   refundAccount: '국민은행 650043-340-2342 저팔계',
   sellerAccount: '농협 12303-546345-23',

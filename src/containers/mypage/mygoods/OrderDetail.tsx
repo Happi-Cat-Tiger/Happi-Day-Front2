@@ -11,9 +11,9 @@ import { updateOrderCancelService } from '@/hooks/mutations/order/orderService';
 
 interface Props {
   orderDetailMockData: orderDetail;
-  userType: string;
+  detailType: string;
 }
-export const OrderDetail = ({ orderDetailMockData, userType }: Props) => {
+export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
   const {
     id,
     username,
@@ -43,12 +43,12 @@ export const OrderDetail = ({ orderDetailMockData, userType }: Props) => {
   };
   return (
     <div className="flex  w-full flex-col gap-7">
-      <div className="prose-h6  flex w-full flex-row gap-2">
+      <div className="prose-h6  flex flex-row gap-2">
         <div>{dayjs(orderAt).format('YYYY.MM.DD')}</div>
         <div>주문</div>
       </div>
 
-      <div className="flex w-full flex-col gap-3">
+      <div className="flex flex-col gap-3">
         {orderedProducts.map((item) => (
           <OrderedProductItem
             orderId={id}
@@ -133,7 +133,7 @@ export const OrderDetail = ({ orderDetailMockData, userType }: Props) => {
             <DeliveryInfo
               salesId={salesId}
               orderId={id}
-              userType={userType}
+              detailType={detailType}
               inputValue={inputValue}
               onChangeHandler={onChangeHandler}
               orderStatus={orderStatus}
