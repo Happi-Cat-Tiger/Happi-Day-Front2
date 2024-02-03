@@ -200,7 +200,7 @@ const Home = () => {
             </Slick>
           </div>
         </div>
-        <div className="overflow-hiddenZ flex h-[420px] max-w-[1280px] flex-col justify-between">
+        <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
             <StyledButton
