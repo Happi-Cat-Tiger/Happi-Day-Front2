@@ -194,10 +194,10 @@ const page = () => {
 
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [itemsPerPageGrid, setItemsPerPageGrid] = useState(5);
   const postPerPage = itemsPerPage;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const [gridCols, setGridCols] = useState('grid-cols-5');
 
   const [loading, setLoading] = useState(false);
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
@@ -211,27 +211,21 @@ const page = () => {
   // 반응형에 따른 페이지네이션 아이템 개수
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1148) {
-        setItemsPerPage(10);
-        setItemsPerPageGrid(5);
-      }
-      if (window.innerWidth <= 1148) {
-        setItemsPerPage(8);
-        setItemsPerPageGrid(4);
-      }
-      if (window.innerWidth <= 980) {
-        setItemsPerPage(6);
-        setItemsPerPageGrid(3);
-      }
-      if (window.innerWidth <= 720) {
-        setItemsPerPage(4);
-        setItemsPerPageGrid(2);
+      let innerWidth = window.innerWidth;
+      if (innerWidth > 1148) {
+        setGridCols('grid-cols-5');
+      } else if (innerWidth <= 1148 && innerWidth > 980) {
+        setGridCols('grid-cols-4');
+      } else if (innerWidth <= 980 && innerWidth > 720) {
+        setGridCols('grid-cols-3');
+      } else if (innerWidth <= 720) {
+        setGridCols('grid-cols-2');
       }
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('reisze', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -259,7 +253,7 @@ const page = () => {
           <p>다시 검색해주세요 !</p>
         </div>
       ) : (
-        <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] grid-rows-2 gap-[10px]`}>
+        <div className={`grid ${gridCols} max-w-[1280px] grid-rows-2 gap-[10px]`}>
           {filteredItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
             <Card
               key={idx}
