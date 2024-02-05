@@ -7,6 +7,7 @@ import { orderDetail } from '@/types/order';
 import { OrderedProductItem } from './OrderedProductItem';
 import { OrderCancelButton } from './OrderCancelButton';
 import { DeliveryInfo } from './DeliveryInfo';
+import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import { updateOrderCancelService } from '@/hooks/mutations/order/orderService';
 
 interface Props {
@@ -32,15 +33,31 @@ export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
   } = orderDetailMockData;
 
   const [inputValue, setInputValue] = useState({ trackingNum, orderStatus });
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const onChangeHandler = (newValues: { trackingNum: string; orderStatus: string }) => {
     setInputValue(newValues);
   };
 
   const mutationPut = updateOrderCancelService({ salesId, orderId: id });
+
   const cancleHandler = () => {
     mutationPut.mutate();
   };
+
+  {
+    isDeleteModalOpen && (
+      <TwoButtonModal
+        isOpen={isDeleteModalOpen}
+        setOpen={setIsDeleteModalOpen}
+        buttonLabel="삭제"
+        buttonDisabled={false}
+        onClose={cancleHandler}>
+        <p>함께 결제된 주문상품은 전체 삭제되며, 복구할 수 없습니다.</p>
+        <p> 주문내역을 삭제하시겠습니까?</p>
+      </TwoButtonModal>
+    );
+  }
+
   return (
     <div className="flex  w-full flex-col gap-7">
       <div className="prose-h6  flex flex-row gap-2">
@@ -60,7 +77,7 @@ export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
             individualProductPrice={item.individualProductPrice}
           />
         ))}
-        <OrderCancelButton onClick={cancleHandler} />
+        <OrderCancelButton onClick={() => setIsDeleteModalOpen(true)} />
       </div>
       <div className="flex  w-full flex-col gap-10">
         <Section>

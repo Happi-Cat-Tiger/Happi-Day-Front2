@@ -3,9 +3,10 @@ import { Dispatch, SetStateAction, ChangeEvent, DragEvent, useState, useCallback
 
 interface Props {
   setImgFile: React.Dispatch<React.SetStateAction<File | null>>;
+  handleChange?: (value: any) => void;
 }
 // 이미지 업로드 함수 & 미리보기 이미지 hook
-const useUploadImage = ({ setImgFile }: Props) => {
+const useUploadImage = ({ setImgFile, handleChange }: Props) => {
   const [uploadedImage, setUploadedImage] = useState<any>(null); // preview image state
 
   const handleChangeImage = useCallback((file: File) => {
@@ -18,6 +19,7 @@ const useUploadImage = ({ setImgFile }: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       setUploadedImage({ name, size, type, imageUrl: String(reader.result) });
+      if (handleChange) handleChange({ name, size, type, imageUrl: String(reader.result) });
     };
     reader.readAsDataURL(file);
   }, []);
