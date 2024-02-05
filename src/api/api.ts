@@ -2,12 +2,25 @@ import { API_BASE_URL } from '../constants/api';
 import axios from 'axios';
 //OAuth 프레임워크에서 Bearer 사용. OAuth는 프레임워크 사용하는지 백엔드에 확인필요
 //TODO 저장된 토큰 가져오는 getToken() 함수 구현 해야함
+<<<<<<< HEAD
+=======
+
+// const USER_TOKEN = `Bearer ${getToken('authorization')}`;
+const USER_TOKEN = 'Bearer authorization';
+>>>>>>> 4eec069 ([Feature] 마이페이지 (나의 쇼핑, 나의 굿즈 판매)  (#73))
 
 export const apiInstance = axios.create({
   baseURL: `${API_BASE_URL}/`,
   timeout: 1000,
+<<<<<<< HEAD
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true, // 서버와 클라이언트가 다른 도메인일 경우 필수
+=======
+  headers: { 'Content-Type': 'application/json', authorization: USER_TOKEN },
+
+  // 서버와 클라이언트가 다른 도메인일 경우 필수
+  // withCredentials: true,
+>>>>>>> 4eec069 ([Feature] 마이페이지 (나의 쇼핑, 나의 굿즈 판매)  (#73))
 });
 
 apiInstance.interceptors.request.use(
