@@ -1,11 +1,15 @@
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 
-const config: Config = {
+const withMT = require('@material-tailwind/react/utils/withMT');
+
+const config: Config = withMT({
   content: [
     './src/containers/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
 
   theme: {
@@ -192,7 +196,7 @@ const config: Config = {
         },
         'menu&tabs': {
           css: {
-            fontSize: '16px',
+            fontSize: '20px',
             fontWeight: 'medium',
             lineHeight: '100%',
           },
@@ -201,6 +205,6 @@ const config: Config = {
     },
   },
   plugins: [require('tailwind-scrollbar'), typography],
-};
+});
 
 export default config;

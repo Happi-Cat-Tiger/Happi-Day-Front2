@@ -6,6 +6,7 @@ import PrimaryButton from '../Button/PrimaryButton';
 
 interface ModalProps {
   isOpen: boolean;
+  setOpen: (value: boolean) => void;
   onClose?: () => void;
   children: ReactNode;
   title?: string;
@@ -34,8 +35,8 @@ interface ModalProps {
     5. submitButton이 필요하면 children으로 같이 넘겨줘야합니다.
 
 */
-const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }: ModalProps) => {
-  const [open, setOpen] = useState(isOpen);
+const TwoButtonModal = ({ isOpen, setOpen, onClose, children, title, buttonLabel, buttonDisabled }: ModalProps) => {
+  // const [open, setOpen] = useState(isOpen);
   const handleCloseModal = () => {
     setOpen(false);
     if (onClose) {
@@ -44,7 +45,7 @@ const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }
   };
 
   return (
-    <Dialog as="div" className="fixed inset-0 z-10  " onClose={() => setOpen(false)} open={open}>
+    <Dialog as="div" className="fixed inset-0 z-10  " onClose={() => {}} open={isOpen}>
       <div className="max-h-[500px] px-10 text-center md:max-h-[700px] ">
         <Dialog.Overlay className="fixed inset-0" />
 
@@ -61,10 +62,11 @@ const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }
               {children}
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-row justify-center gap-3">
             {buttonLabel && (
               <PrimaryButton onClick={() => handleCloseModal()} label={buttonLabel} disabled={buttonDisabled} />
             )}
+            <PrimaryButton onClick={() => setOpen(false)} label="취소" />
           </div>
         </div>
       </div>
@@ -72,4 +74,4 @@ const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }
   );
 };
 
-export default Modal;
+export default TwoButtonModal;
