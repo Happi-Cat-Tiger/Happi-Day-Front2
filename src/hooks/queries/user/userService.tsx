@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { getProfileInfoApi } from '../../../api/user/userApi';
+import { getProfileInfoApi } from '@/api/user/userApi';
 
 export interface Profile {
   realName: string;
