@@ -2,7 +2,7 @@ import React from 'react';
 import { AuthInputPlaceholder } from '@/types/auth';
 import { useForm } from 'react-hook-form';
 import { AUTH_REACT_HOOK_FORM } from '@/constants/auth';
-import useSignInMutation from '@/services/useSignInMutation';
+import { postSigninService } from '@/hooks/mutations/auth/authService';
 
 interface AuthInputProps {
   inputPlaceHolder: AuthInputPlaceholder[];
@@ -27,7 +27,7 @@ type FormValues = {
 };
 
 const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
-  const mutation = useSignInMutation();
+  const signinMutation = postSigninService();
   const {
     register,
     handleSubmit,
@@ -39,7 +39,7 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
     // 회원가입 페이지에서의 api 동작 x
     if (inputPlaceHolder.length === 6) return;
     // 로그인 api
-    mutation.mutate({ username: data.id, password: data.pw });
+    signinMutation.mutate({ username: data.id, password: data.pw });
   });
 
   const isFormValid: boolean =
