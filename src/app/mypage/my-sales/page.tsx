@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Table from '@/containers/mypage/Table';
 import { MY_SALES_POST_TABLE_HEAD } from '@/constants/mypage';
@@ -8,17 +6,18 @@ import { SalesPostList } from '@/types/sales';
 import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
 
 const Page = () => {
-  const { data: data } = getSalesPostListService();
-
-  const [salesPostList, setSalesPostList] = useState([]);
-
-  const modifiedData = modifyDataForSalesTable(MySalesMockData);
-
+  const { data: salesPostList } = getSalesPostListService();
+  const modifiedData = salesPostList && modifyDataForSalesTable(salesPostList);
+  if (!salesPostList) {
+    return <div>판매 내역 없음</div>;
+  }
   return (
-    <div className="flex w-full flex-col gap-5">
-      <div className="prose prose-h4">판매글 목록</div>
-      <Table TABLE_HEAD={MY_SALES_POST_TABLE_HEAD} TABLE_ROWS={modifiedData} />
-    </div>
+    modifiedData && (
+      <div className="flex w-full flex-col gap-5">
+        <div className="prose prose-h4">판매글 목록</div>
+        <Table TABLE_HEAD={MY_SALES_POST_TABLE_HEAD} TABLE_ROWS={modifiedData} />
+      </div>
+    )
   );
 };
 

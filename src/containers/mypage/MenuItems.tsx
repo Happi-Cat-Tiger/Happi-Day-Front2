@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -18,8 +16,8 @@ const MenuItems = ({ title, path, urlForHighlight }: MenuItemsProps) => {
   return (
     <li
       className={`prose-menu&tabs mx-3 my-4 cursor-pointer hover:scale-110 md:my-5
-        ${pathname.startsWith(`/mypage/${urlForHighlight}`) ? 'font-bold text-orange2 ' : ' text-gray2'}`}
-      onClick={() => goLink(`/mypage/${path}`)}>
+        ${pathname.startsWith(`/${urlForHighlight}`) ? 'font-bold text-orange2 ' : ' text-gray2'}`}
+      onClick={() => goLink(`/${path}`)}>
       {title}
     </li>
   );

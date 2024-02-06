@@ -1,10 +1,10 @@
 import apiInstance from '@/api/api';
-import { orderDetail, OrderedProductList } from '@/types/order';
+import { OrderDetailType, OrderedProductItem } from '@/types/order';
 
 export const getOrderedDetailApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
-  await apiInstance.get<orderDetail[]>(`/sales/${salesId}/order/${orderId}`).then(({ data }) => data);
+  await apiInstance.get<OrderDetailType>(`/sales/${salesId}/order/${orderId}`).then(({ data }) => data);
 
-export const updateOrderStatusApi = async ({
+export const putOrderStatusApi = async ({
   salesId,
   orderId,
   orderStatus,
@@ -14,11 +14,11 @@ export const updateOrderStatusApi = async ({
   orderStatus: object;
 }) => await apiInstance.put(`/sales/${salesId}/order/${orderId}/changeStatus`, { orderStatus });
 
-export const updateOrderCancleApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
+export const putOrderCancleApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
   await apiInstance.put(`/sales/${salesId}/order/${orderId}/cancel`);
 
 export const deleteOrderApi = async ({ salesId, orderId }: { salesId: number; orderId: number }) =>
   await apiInstance.delete(`/sales/${salesId}/order/${orderId}`);
 
 export const getOrderedProductListApi = async () =>
-  await apiInstance.get<OrderedProductList[]>('/user/orders').then(({ data }) => data);
+  await apiInstance.get<OrderedProductItem[]>('/user/orders').then(({ data }) => data);

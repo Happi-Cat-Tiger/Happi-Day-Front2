@@ -36,7 +36,7 @@ const ProfileImageEdit = () => {
       };
       reader.readAsDataURL(imgFile);
     } else {
-      setPreview({});
+      setPreview(null);
     }
   }, [imgFile]);
   return (

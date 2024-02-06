@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import SubTitle from '@/containers/mypage/mygoods/SubTitle';
 import Section from '@/containers/mypage/mygoods/Section';
 import Content from '@/containers/mypage/mygoods/Content';
-import { orderDetail } from '@/types/order';
+import { OrderDetailType } from '@/types/order';
 import { OrderedProductItem } from './OrderedProductItem';
 import { OrderCancelButton } from './OrderCancelButton';
 import { DeliveryInfo } from './DeliveryInfo';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
-import { updateOrderCancelService } from '@/hooks/mutations/order/orderService';
+import { putOrderCancelService } from '@/hooks/mutations/order/orderService';
 
 interface Props {
-  orderDetailMockData: orderDetail;
+  data: OrderDetailType;
   detailType: string;
 }
-export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
+export const OrderDetail = ({ data, detailType }: Props) => {
   const {
     id,
     username,
@@ -30,7 +30,7 @@ export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
     depositor,
     refundAccount,
     sellerAccount,
-  } = orderDetailMockData;
+  } = data;
 
   const [inputValue, setInputValue] = useState({ trackingNum, orderStatus });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,7 +38,7 @@ export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
     setInputValue(newValues);
   };
 
-  const mutationPut = updateOrderCancelService({ salesId, orderId: id });
+  const mutationPut = putOrderCancelService({ salesId, orderId: id });
 
   const cancleHandler = () => {
     mutationPut.mutate();
@@ -66,7 +66,7 @@ export const OrderDetail = ({ orderDetailMockData, detailType }: Props) => {
       </div>
 
       <div className="flex flex-col gap-3">
-        {orderedProducts.map((item) => (
+        {orderedProducts?.map((item) => (
           <OrderedProductItem
             orderId={id}
             salesId={salesId}

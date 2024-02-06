@@ -1,8 +1,8 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
-import { updateOrderStatusApi, updateOrderCancleApi, deleteOrderApi } from '../../../api/order/orderApi';
+import { putOrderStatusApi, putOrderCancleApi, deleteOrderApi } from '@/api/order/orderApi';
 
-export const updateOrderStatusService = ({
+export const putOrderStatusService = ({
   salesId,
   orderId,
   orderStatus,
@@ -12,7 +12,7 @@ export const updateOrderStatusService = ({
   orderStatus: object;
 }) => {
   const mutation = useMutation({
-    mutationFn: () => updateOrderStatusApi({ salesId, orderId, orderStatus }),
+    mutationFn: () => putOrderStatusApi({ salesId, orderId, orderStatus }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['order', 'detail'] });
     },
@@ -20,9 +20,9 @@ export const updateOrderStatusService = ({
   return mutation;
 };
 
-export const updateOrderCancelService = ({ salesId, orderId }: { salesId: number; orderId: number }) => {
+export const putOrderCancelService = ({ salesId, orderId }: { salesId: number; orderId: number }) => {
   const mutation = useMutation({
-    mutationFn: () => updateOrderCancleApi({ salesId, orderId }),
+    mutationFn: () => putOrderCancleApi({ salesId, orderId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['order', 'detail'] });
     },
