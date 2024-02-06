@@ -8,14 +8,19 @@ import { usePathname } from 'next/navigation';
 import useScrollControl from '@/hooks/useScrollControl';
 import { useRecoilState } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
-import axios from 'axios';
-import { API_BASE_URL } from '@/constants/api';
-import useLogoutQuery from '@/services/useLogoutQuery';
+import { getSignoutService } from '@/hooks/queries/auth/authService';
 
 const Nav = () => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+  // ssr hybrate 랜더링
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const [isLoggedIn] = useRecoilState(LoginState);
   // 로그아웃 api
-  const logoutQuery = useLogoutQuery();
+  const logoutQuery = getSignoutService();
 
   const navList: { label: string; href: string }[] = [
     { label: '게시판', href: '/board' },
@@ -30,12 +35,6 @@ const Nav = () => {
 
   // isOpen 상태에서는 스크롤 제어
   useScrollControl(isOpen);
-
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   return (
     <div>
