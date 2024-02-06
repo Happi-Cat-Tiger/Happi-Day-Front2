@@ -1,6 +1,5 @@
 import React from 'react';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
-import ArticleList from '@/components/List/ArticleList';
 import { MY_POSTS_CATEGORY } from '@/constants/mypage';
 
 const MyPostsLayout = ({ children }: { children: React.ReactNode }) => {
