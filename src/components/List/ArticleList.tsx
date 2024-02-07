@@ -1,15 +1,16 @@
 'use client';
 
+import { PostContent } from '@/api/board/type';
 import React from 'react';
 import { AiOutlineSmile, AiTwotoneCalendar, AiTwotoneEye } from 'react-icons/ai';
 
-const ArticleList = () => {
-  const category = '자유';
-  const title = '콘서트 같이 가실 분';
-  const comments = 1;
-  const nickName = '닉네임';
-  const date = '12.01';
-  const view = 50;
+const ArticleList = ({ articleContent }: { articleContent?: PostContent }) => {
+  const category = articleContent?.category || '자유';
+  const title = articleContent?.title || '콘서트 같이 가실 분';
+  const comments = articleContent?.commentNum || 1;
+  const nickName = articleContent?.nickname || '닉네임';
+  const date = articleContent?.date || '12.01';
+  const view = articleContent?.viewCount || 50;
 
   return (
     <div
