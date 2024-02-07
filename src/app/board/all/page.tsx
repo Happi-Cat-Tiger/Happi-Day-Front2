@@ -6,8 +6,17 @@ import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
+import { getBoardAllService } from '@/hooks/queries/board/boardServie';
 
 export default function AllPage() {
+  const [, setWriteValue] = useRecoilState(writeState);
+  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+
+  const { data: boardAllData, isLoading } = getBoardAllService();
+
+  if (isLoading) return <></>;
+  console.log(boardAllData);
+
   const [page, setPage] = useState(1);
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
@@ -17,20 +26,24 @@ export default function AllPage() {
     setPage(page);
   };
 
-  const [, setWriteValue] = useRecoilState(writeState);
-  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
-
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        {new Array(20)
-          .fill(0)
-          .slice(indexOfFirstPost, indexOfLastPost)
-          .map((v, i) => (
-            <ArticleList key={i} />
+      {boardAllData && (
+        <div>
+          {boardAllData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
+            <ArticleList key={articleItem.id} articleContent={articleItem} />
           ))}
-      </div>
-      <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
+        </div>
+      )}
+      {boardAllData && (
+        <PaginationComponent
+          countPerPage={postPerPage}
+          page={page}
+          totalItemsCount={boardAllData?.totalElements}
+          pageChange={pageChange}
+        />
+      )}
+
       <div className="flex justify-end">
         <Link href="/board/write" passHref legacyBehavior>
           <LinkButton
