@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from 'react';
 import CustomEditor from '@/components/Tool/CustomEditor';
 import { useRecoilState } from 'recoil';
-import { eventsState } from '@/atom/eventsWrite';
+import { eventsWriteState } from '@/atom/eventsAtom';
 
 const EventsWritingStep = () => {
-  const [eventsWriteValue, setEventsWriteValue] = useRecoilState(eventsState);
+  const [eventsWriteValue, setEventsWriteValue] = useRecoilState(eventsWriteState);
 
   const { eventsTitle, eventsEditValue } = eventsWriteValue;
 

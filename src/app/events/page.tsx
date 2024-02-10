@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
+import { writingInfoState } from '@/atom/write';
 
 interface MockData {
   id: number;
@@ -205,6 +206,9 @@ const page = () => {
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
   const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
 
+  //글쓰기 관련 데이터
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+
   const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
 
   const pageChange = (page: number) => {
@@ -245,6 +249,10 @@ const page = () => {
       ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
       : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });
+
+  const eventsWriteButton = () => {
+    router.push('events/write');
+  };
 
   return (
     <div className="px-[8px]">
@@ -295,7 +303,7 @@ const page = () => {
         />
       </div>
       <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={() => router.push('/events/write')} />
+        <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
       </div>
     </div>
   );
