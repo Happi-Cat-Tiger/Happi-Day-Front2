@@ -1,10 +1,11 @@
 'use client';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
-import { eventsSearchState } from '@/atom/eventsSearch';
+import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { useRecoilState } from 'recoil';
 
 const InputElements = () => {
   const [eventsSearch, setEventsSearch] = useRecoilState<string>(eventsSearchState);
+  const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
 
   const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setEventsSearch(e.target.value);
@@ -16,13 +17,19 @@ const InputElements = () => {
     }
   };
 
+  const handleSort = (e: any) => {
+    setEventSort(e.target.value);
+  };
+
   return (
     <div className="my-[60px] flex justify-between sm:flex-col sm:gap-[16px] md:flex-row md:items-center md:gap-[0]">
       <div className="flex items-center sm:justify-between md:gap-[24px]">
         <div>
-          <select className="cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M">
-            <option>최신순</option>
-            <option>오래된순</option>
+          <select
+            className="cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M"
+            onChange={handleSort}>
+            <option value="new">최신순</option>
+            <option value="old">오래된순</option>
           </select>
         </div>
         <div className="flex flex-col items-start gap-1">
