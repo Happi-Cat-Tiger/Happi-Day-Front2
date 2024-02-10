@@ -45,19 +45,19 @@ const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }
 
   return (
     <Dialog as="div" className="fixed inset-0 z-10  " onClose={() => setOpen(false)} open={open}>
-      <div className="px-10 text-center max-h-[500px] md:max-h-[700px] ">
+      <div className="max-h-[500px] px-10 text-center md:max-h-[700px] ">
         <Dialog.Overlay className="fixed inset-0" />
 
         <span className="inline-block h-screen align-middle" aria-hidden="true">
           &#8203;
         </span>
 
-        <div className="my-8 inline-block w-full transform overflow-hidden rounded-2xl bg-white p-6 justify-center items-center align-middle shadow-xl transition-all max-w-max  ">
-          <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 mb-5">
+        <div className="my-8 inline-block w-full max-w-max transform items-center justify-center overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all  ">
+          <Dialog.Title as="h3" className="mb-5 text-lg font-medium leading-6 text-gray-900">
             {title}
           </Dialog.Title>
-          <div className="mt-2 mb-8 ">
-            <div className="text-sm text-gray-500 min-w-[210px] max-h-[400px] md:max-h-[600px] md:min-w-[250px] overflow-y-auto">
+          <div className="mb-8 mt-2 ">
+            <div className="text-m max-h-[400px] min-w-[210px] overflow-y-auto text-gray-500 md:max-h-[600px] md:min-w-[250px]">
               {children}
             </div>
           </div>
