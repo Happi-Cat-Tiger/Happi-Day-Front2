@@ -12,3 +12,13 @@ export const eventsCommentValue = atom({
   key: 'eventsCommentValue',
   default: commentsMockup,
 });
+
+export const eventsSearchState = atom({
+  key: 'eventsSearchState',
+  default: '',
+});
+
+export const eventsSortState = atom({
+  key: 'eventesSortState',
+  default: 'new',
+});

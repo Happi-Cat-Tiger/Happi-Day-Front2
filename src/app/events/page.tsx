@@ -8,7 +8,7 @@ import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilState } from 'recoil';
-import { eventsSearchState } from '@/atom/eventsSearch';
+import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 
@@ -35,7 +35,7 @@ const page = () => {
       title: '방탄소년단 생일 카페1',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.01',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 1,
@@ -49,7 +49,7 @@ const page = () => {
       title: '방탄소년단 생일 카페2',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.02',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 2,
@@ -63,7 +63,7 @@ const page = () => {
       title: '방탄소년단 생일 카페3',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.03',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 3,
@@ -93,7 +93,7 @@ const page = () => {
       title: '방탄소년단 생일 카페5',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.05',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -108,7 +108,7 @@ const page = () => {
       title: '방탄소년단 생일 카페6',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.06',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -123,7 +123,7 @@ const page = () => {
       title: '방탄소년단 생일 카페7',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.07',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -138,7 +138,7 @@ const page = () => {
       title: '방탄소년단 생일 카페8',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.08',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -153,7 +153,7 @@ const page = () => {
       title: '방탄소년단 생일 카페9',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.09',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -168,7 +168,7 @@ const page = () => {
       title: '방탄소년단 생일 카페10',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.10',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -183,7 +183,7 @@ const page = () => {
       title: '방탄소년단 생일 카페11',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
+      startDate: '2023.12.11',
       endDate: '2023.12.05',
       location: '서울시 용산구',
       like: 5,
@@ -195,16 +195,17 @@ const page = () => {
 
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [itemsPerPageGrid, setItemsPerPageGrid] = useState(5);
   const postPerPage = itemsPerPage;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const [gridCols, setGridCols] = useState('grid-cols-5');
 
   const [loading] = useState(false);
   const router = useRouter();
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
+  const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
 
-  const filteredItem = mockData.filter((el) => el.title.includes(eventsSearch));
+  const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
 
   const pageChange = (page: number) => {
     setPage(page);
@@ -213,18 +214,19 @@ const page = () => {
   // 반응형에 따른 페이지네이션 아이템 개수
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1148) {
+      let innerWidth = window.innerWidth;
+      if (innerWidth > 1148) {
         setItemsPerPage(10);
-        setItemsPerPageGrid(5);
-      } else if (window.innerWidth <= 1148 && window.innerWidth > 980) {
+        setGridCols('grid-cols-5');
+      } else if (innerWidth <= 1148 && innerWidth > 980) {
         setItemsPerPage(8);
-        setItemsPerPageGrid(4);
-      } else if (window.innerWidth <= 980 && window.innerWidth > 720) {
-        setItemsPerPage(6);
-        setItemsPerPageGrid(3);
-      } else if (window.innerWidth <= 720) {
-        setItemsPerPage(4);
-        setItemsPerPageGrid(2);
+        setGridCols('grid-cols-4');
+      } else if (innerWidth <= 980 && innerWidth > 720) {
+        setItemsPerPage(9);
+        setGridCols('grid-cols-3');
+      } else if (innerWidth <= 720) {
+        setItemsPerPage(10);
+        setGridCols('grid-cols-2');
       }
     };
     handleResize();
@@ -234,13 +236,15 @@ const page = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('width', itemsPerPageGrid);
-  }, [window.innerWidth]);
-
   if (loading) {
     return <h2>Loading...</h2>;
   }
+
+  const sortedItem = filteredItem.sort((a, b) => {
+    return eventSort === 'new'
+      ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+  });
 
   return (
     <div className="px-[8px]">
@@ -255,15 +259,15 @@ const page = () => {
         </Link>
       </div>
       <InputElements />
-      {filteredItem.length === 0 ? (
+      {sortedItem.length === 0 ? (
         <div className="flex flex-col items-center gap-[5px] text-gray5">
           <AiOutlineSearch style={{ fontSize: 80, color: '#9CA3AF', marginBottom: 10 }} />
           <p>검색결과가 존재하지 않습니다.</p>
           <p>다시 검색해주세요 !</p>
         </div>
       ) : (
-        <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] gap-[10px]`}>
-          {filteredItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
+        <div className={`grid ${gridCols} max-w-[1280px] grid-rows-2 justify-items-center gap-[10px]`}>
+          {sortedItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
             <Card
               key={idx}
               id={el.id}

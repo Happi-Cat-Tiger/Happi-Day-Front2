@@ -1,5 +1,6 @@
 'use client';
 import React, { FC, InputHTMLAttributes, useState } from 'react';
+import { DefaultValue } from 'recoil';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   isReadOnly: boolean;
@@ -14,9 +15,10 @@ const Input: FC<Props> = ({ isReadOnly, value, type, placeholder, onChange }) =>
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setInputValue(newValue);
-    // if (onChange) {
-    //   onChange(event); // 상위 컴포넌트로 변경된 값을 전달
-    // }
+
+    if (onChange) {
+      onChange(event); // 상위 컴포넌트로 변경된 값을 전달
+    }
   };
 
   return (
