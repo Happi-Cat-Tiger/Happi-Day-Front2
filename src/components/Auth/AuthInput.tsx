@@ -98,6 +98,9 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
                   </div>
                 )}
               </div>
+              {errors[item.name] && (
+                <div className="prose-body-XXS text-red-500 md:prose-body-XS">{errors[item.name]?.message}</div>
+              )}
             </div>
           );
         })}

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
-import { eventsCommentValue } from '@/atom/eventsComment';
+import { eventsCommentValue } from '@/atom/eventsAtom';
 
 const page = () => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
