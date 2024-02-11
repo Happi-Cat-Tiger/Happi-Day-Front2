@@ -3,12 +3,19 @@ import { writeInitState, writeState, writingInfoInitState, writingInfoState } fr
 import LinkButton from '@/components/Button/LinkButton';
 import Card from '@/components/Card';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
+import { getBoardCategoriesService } from '@/hooks/queries/board/boardServie';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-export default function EventsPage() {
+const EventsPage = () => {
+  const [, setWriteValue] = useRecoilState(writeState);
+  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+
   const [page, setPage] = useState(1);
+
+  const { data: boardEventsData, isLoading } = getBoardCategoriesService({ categoryId: 2 });
+
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
@@ -17,9 +24,9 @@ export default function EventsPage() {
     setPage(page);
   };
 
-  const [, setWriteValue] = useRecoilState(writeState);
-  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+  if (isLoading) return <></>;
 
+  console.log(boardEventsData);
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 place-items-center md:grid-cols-5">
@@ -61,4 +68,6 @@ export default function EventsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default EventsPage;

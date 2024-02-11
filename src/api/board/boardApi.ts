@@ -33,8 +33,8 @@ export const getBoardCategoriesOfSubscribeApi = async ({ categoryId }: { categor
   await apiInstance.get(`/articles/${categoryId}/list/subscribedArtists`);
 
 // 카테고리별 글 전체 조회
-export const getBoardCategoriesApi = async ({ categoryId }: { categoryId: string }) =>
-  await apiInstance.get(`/articles/${categoryId}/list`);
+export const getBoardCategoriesApi = async ({ categoryId }: { categoryId: number }): Promise<BoardAllResponse> =>
+  await apiInstance.get(`/articles/${categoryId}/list`).then((response) => response.data);
 
 // 글 상세보기 (단일 조회)
 export const getBoardArticleApi = async ({ articleId }: { articleId: string }) =>
