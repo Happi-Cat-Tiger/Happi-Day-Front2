@@ -3,12 +3,19 @@ import { writeInitState, writeState, writingInfoInitState, writingInfoState } fr
 import LinkButton from '@/components/Button/LinkButton';
 import ArticleList from '@/components/List/ArticleList';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
+import { getBoardCategoriesService } from '@/hooks/queries/board/boardServie';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 const FreePage = () => {
+  const [, setWriteValue] = useRecoilState(writeState);
+  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+
   const [page, setPage] = useState(1);
+
+  const { data: boardFreeData, isLoading } = getBoardCategoriesService({ categoryId: 1 });
+
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
@@ -17,20 +24,26 @@ const FreePage = () => {
     setPage(page);
   };
 
-  const [, setWriteValue] = useRecoilState(writeState);
-  const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+  if (isLoading) return <></>;
+  console.log(boardFreeData);
 
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        {new Array(20)
-          .fill(0)
-          .slice(indexOfFirstPost, indexOfLastPost)
-          .map((_, i) => (
-            <ArticleList key={i} />
+      {boardFreeData && (
+        <div>
+          {boardFreeData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
+            <ArticleList key={articleItem.id} articleContent={articleItem} />
           ))}
-      </div>
-      <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
+        </div>
+      )}
+      {boardFreeData && (
+        <PaginationComponent
+          countPerPage={postPerPage}
+          page={page}
+          totalItemsCount={boardFreeData?.totalElements}
+          pageChange={pageChange}
+        />
+      )}
       <div className="flex justify-end">
         <Link href="/board/write" passHref legacyBehavior>
           <LinkButton

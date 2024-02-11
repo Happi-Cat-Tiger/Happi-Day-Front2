@@ -8,16 +8,14 @@ import { useRecoilState } from 'recoil';
 import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
 import { getBoardAllService } from '@/hooks/queries/board/boardServie';
 
-export default function AllPage() {
+const AllPage = () => {
   const [, setWriteValue] = useRecoilState(writeState);
   const [, setWritingInfoValue] = useRecoilState(writingInfoState);
 
+  const [page, setPage] = useState(1);
+
   const { data: boardAllData, isLoading } = getBoardAllService();
 
-  if (isLoading) return <></>;
-  console.log(boardAllData);
-
-  const [page, setPage] = useState(1);
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
@@ -25,6 +23,9 @@ export default function AllPage() {
   const pageChange = (page: number) => {
     setPage(page);
   };
+
+  if (isLoading) return <></>;
+  console.log(boardAllData);
 
   return (
     <div className="flex flex-col gap-4">
@@ -59,4 +60,6 @@ export default function AllPage() {
       </div>
     </div>
   );
-}
+};
+
+export default AllPage;
