@@ -1,17 +1,24 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { writingInfoState } from '@/atom/write';
+import { eventsCardState } from '@/atom/eventsAtom';
 const HashtagInput = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { hashtag } = writingInfoValue;
+
+  // 임시로 생성한 이벤트 hashtags값
+  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
 
   const handleChangeHashtag = (e: ChangeEvent<HTMLInputElement>) => {
     setWritingInfoValue({
       ...writingInfoValue,
       hashtag: e.target.value,
     });
+    // 임시로 생성한 이벤트 hashtags값
+    setEventsCardValue({ ...eventsCardValue, hashtags: e.target.value });
   };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="prose-h6 md:prose-h5">

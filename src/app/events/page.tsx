@@ -7,8 +7,8 @@ import Link from 'next/link';
 import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
-import { useRecoilState } from 'recoil';
-import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { eventsListState, eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 import { writingInfoState } from '@/atom/write';
@@ -208,6 +208,8 @@ const page = () => {
 
   //글쓰기 관련 데이터
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+  const eventsList = useRecoilValue(eventsListState);
+  console.log('events', eventsList);
 
   const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
 

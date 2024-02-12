@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import logo from '../../public/images/logo.png';
 import { useRouter } from 'next/navigation';
 
 interface CardProps {

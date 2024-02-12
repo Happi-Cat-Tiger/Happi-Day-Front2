@@ -26,8 +26,54 @@ export const eventsSortState = atom({
   default: 'new',
 });
 
-// 이벤트 글쓰기
-export const eventsWriteState = atom({
-  key: 'eventsState',
-  default: { eventsTitle: '', eventsEditValue: '' },
+interface CardProps {
+  id: number;
+  cardType: 'events' | 'sales';
+  thumbnailUrl: string;
+  title: string;
+  artist: string;
+  location: string;
+  startTime: string;
+  endTime: string;
+  address: { address: string; detailAddress: string };
+  likeCount: number;
+  commentCount: number;
+  viewCount: number;
+  username: string;
+  updatedAt: Date | null;
+  hashtags: string;
+  imageUrl: string;
+  description: string;
+  userProfileUrl: string;
+}
+
+// 이벤트 카드
+export const eventsCardState = atom<CardProps>({
+  key: 'eventsCardState',
+  default: {
+    id: 1,
+    cardType: 'events',
+    thumbnailUrl: '',
+    title: '',
+    artist: 'atom artist',
+    location: '',
+    startTime: '',
+    endTime: '',
+    address: { address: '', detailAddress: '' },
+    likeCount: 10,
+    commentCount: 15,
+    viewCount: 20,
+    username: '작성자 닉네임',
+    updatedAt: new Date(),
+    hashtags: '',
+    imageUrl: '',
+    description: '',
+    userProfileUrl: '',
+  },
+});
+
+// 이벤트 리스트
+export const eventsListState = atom({
+  key: 'eventsList',
+  default: [],
 });

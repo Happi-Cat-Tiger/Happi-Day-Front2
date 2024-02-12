@@ -6,17 +6,18 @@ import EventsWritingInfoStep from '@/containers/events/EventsWritingInfoStep';
 import EventsPreviewWringStep from '@/containers/events/EventsPreviewWringStep';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { eventsWriteState } from '@/atom/eventsAtom';
+import { eventsCardState, eventsListState } from '@/atom/eventsAtom';
 
 const page = () => {
   const [step, setStep] = useState<number>(1);
 
-  const [eventsWriteValue, setEventsWriteValue] = useRecoilState(eventsWriteState);
-  const { eventsTitle, eventsEditValue } = eventsWriteValue;
+  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
+  const [eventsList, setEventsList] = useRecoilState(eventsListState);
+  const { title, description } = eventsCardValue;
 
   const onDisable = () => {
     if (step === 1) {
-      if (!eventsTitle || !eventsEditValue) return true;
+      if (!title || !description) return true;
     }
   };
   return (
