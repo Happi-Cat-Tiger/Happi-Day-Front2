@@ -136,6 +136,24 @@ const page = () => {
           />
         </div>
       </div>
+      <div className="mt-[100px] border border-red-200">
+        <p className="prose-h4">이벤트 후기</p>
+        <div className="border border-gray-300">
+          <div className="flex">
+            <p>닉네임</p>
+            <p>2023.12.03</p>
+          </div>
+          <div>⭐⭐⭐⭐⭐</div>
+          <div className="flex">
+            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+          </div>
+          <div>만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!</div>
+        </div>
+      </div>
     </div>
   );
 };
