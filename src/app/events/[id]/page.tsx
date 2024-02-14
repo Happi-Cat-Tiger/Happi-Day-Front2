@@ -1,15 +1,52 @@
 'use client';
 
-import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import { eventsCommentValue } from '@/atom/eventsAtom';
+import Slick from 'react-slick';
+import '../../../slider/slick.css';
+import '../../../slider/slick-theme.css';
+
+const settings = {
+  dots: false, // 슬라이더 하단 점
+  infinite: false, // 마지막 콘텐츠와 처음 콘텐츠 연결
+  speed: 500, // 콘텐츠 전환 속도. 작아질수록 속도가 빠르다
+  slidesToShow: 5, // 보여지는 컨텐츠 개수
+  slideToScroll: 1, // 한번에 넘어가는 콘텐츠의 개수
+  arrows: true, // 좌우 화살표
+  draggable: true, // 슬라이더 드래그 활성화
+  fade: false, // fade 효과
+  responsive: [
+    {
+      breakpoint: 1280,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 910,
+      settings: {
+        slidesToShow: 3,
+      },
+    },
+    {
+      breakpoint: 650,
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+  ],
+};
 
 const page = () => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
   const [commentsValue, setCommentsValue] = useState<string>();
+
+  // 임시 로그인 상태
+  const userState = false;
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
@@ -33,7 +70,7 @@ const page = () => {
   };
 
   return (
-    <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px] md:mt-[100px]">
+    <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
       <Link href="/events">
         <div className="cursor-pointer text-[30px]">←</div>
       </Link>
@@ -118,40 +155,82 @@ const page = () => {
             </div>
           ))}
         </div>
-        <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-[20px]">
-          <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
-          <textarea
-            placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
-            className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
-            value={commentsValue}
-            onChange={getComments}
-          />
-        </div>
-        <div className="text-right">
-          <StyledButton
-            label="등록"
-            onClick={() => addComments()}
-            disabled={false}
-            className="rounded-[16px] bg-gray5 px-[24px] py-[16px] text-white sm:prose-btn-M md:prose-btn-L"
-          />
-        </div>
+        {userState ? (
+          <div className="flex h-[200px] items-center justify-center border-2 border-gray-200">
+            <p className="prose-subtitle-M text-gray5">로그인 후 댓글을 남겨주세요!</p>
+          </div>
+        ) : (
+          <>
+            <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-[20px]">
+              <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
+              <textarea
+                placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
+                className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
+                value={commentsValue}
+                onChange={getComments}
+              />
+            </div>
+            <div className="text-right">
+              <StyledButton
+                label="등록"
+                onClick={() => addComments()}
+                disabled={false}
+                className="rounded-[16px] bg-gray5 px-[24px] py-[16px] text-white sm:prose-btn-M md:prose-btn-L"
+              />
+            </div>
+          </>
+        )}
       </div>
-      <div className="mt-[100px] border border-red-200">
-        <p className="prose-h4">이벤트 후기</p>
-        <div className="border border-gray-300">
-          <div className="flex">
-            <p>닉네임</p>
-            <p>2023.12.03</p>
+      <div className="mt-[100px]">
+        <p className="prose-h4 my-[50px]">이벤트 후기</p>
+        <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+          <div className="flex items-center gap-[10px]">
+            <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+            <p className="prose-body-S text-gray4">닉네임</p>
+            <p className="prose-body-XS text-gray5">2023.12.03</p>
           </div>
           <div>⭐⭐⭐⭐⭐</div>
-          <div className="flex">
-            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
-            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
-            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
-            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
-            <div className="h-[200px] w-[200px] bg-red-100">이미지</div>
+          <div className="h-[250px] w-[100%] overflow-hidden">
+            <Slick {...settings}>
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
+            </Slick>
           </div>
-          <div>만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!</div>
+          <div className="mt-[30px]">
+            <p className="w-[60%] min-w-[500px]">
+              만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
+              재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고
+              ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
+              재밌었습니다 !! 최고 ~!~!
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+          <div className="flex items-center gap-[10px]">
+            <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+            <p className="prose-body-S">닉네임</p>
+            <p className="prose-body-XS">2023.12.03</p>
+          </div>
+          <div>⭐⭐⭐⭐⭐</div>
+          <div className="flex gap-[35px]">
+            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
+            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
+            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
+            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
+            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
+          </div>
+          <div className="mt-[30px]">
+            <p className="w-[60%] min-w-[500px]">
+              만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
+              재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고
+              ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
+              재밌었습니다 !! 최고 ~!~!
+            </p>
+          </div>
         </div>
       </div>
     </div>
