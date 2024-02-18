@@ -4,11 +4,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
-import { eventsCommentValue } from '@/atom/eventsAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
 import '../../../slider/slick.css';
 import '../../../slider/slick-theme.css';
+import Modal from '@/components/Modal/Modal';
+import Reveiw from '../review/Reveiw';
+import { IoStar } from 'react-icons/io5';
+import { IoStarOutline } from 'react-icons/io5';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -16,7 +20,7 @@ const settings = {
   speed: 500, // 콘텐츠 전환 속도. 작아질수록 속도가 빠르다
   slidesToShow: 5, // 보여지는 컨텐츠 개수
   slideToScroll: 1, // 한번에 넘어가는 콘텐츠의 개수
-  arrows: true, // 좌우 화살표
+  arrows: false, // 좌우 화살표
   draggable: true, // 슬라이더 드래그 활성화
   fade: false, // fade 효과
   responsive: [
@@ -44,6 +48,17 @@ const settings = {
 const page = () => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
   const [commentsValue, setCommentsValue] = useState<string>();
+
+  // 이벤트 후기 목록
+  const reviewValue = useRecoilValue(eventsReviewValue);
+  const [allReview, setAllReview] = useRecoilState<reviewProps[]>(allEventsReviewValue);
+  const [isModal, setIsModal] = useState(true);
+  const modalState = () => {
+    setIsModal(true);
+  };
+
+  console.log('allReveiw', allReview);
+  console.log('reviewvalue', reviewValue);
 
   // 임시 로그인 상태
   const userState = false;
@@ -182,56 +197,69 @@ const page = () => {
         )}
       </div>
       <div className="mt-[100px]">
-        <p className="prose-h4 my-[50px]">이벤트 후기</p>
-        <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
-          <div className="flex items-center gap-[10px]">
-            <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-            <p className="prose-body-S text-gray4">닉네임</p>
-            <p className="prose-body-XS text-gray5">2023.12.03</p>
-          </div>
-          <div>⭐⭐⭐⭐⭐</div>
-          <div className="h-[250px] w-[100%] overflow-hidden">
-            <Slick {...settings}>
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-              <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src="" />
-            </Slick>
-          </div>
-          <div className="mt-[30px]">
-            <p className="w-[60%] min-w-[500px]">
-              만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
-              재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고
-              ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
-              재밌었습니다 !! 최고 ~!~!
-            </p>
-          </div>
+        <div className="my-[20px] flex justify-between">
+          <p className="prose-h4">이벤트 후기</p>
+          <StyledButton
+            label="후기 작성하기"
+            onClick={() => modalState()}
+            disabled={false}
+            className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
+          />
         </div>
-        <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
-          <div className="flex items-center gap-[10px]">
-            <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-            <p className="prose-body-S">닉네임</p>
-            <p className="prose-body-XS">2023.12.03</p>
+        <Modal
+          isOpen={isModal}
+          children={<Reveiw />}
+          buttonLabel="등록"
+          onClose={() => setAllReview([{ ...allReview, ...reviewValue }])}
+        />
+        {allReview.map((review) => (
+          <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+            <div className="flex items-center gap-[10px]">
+              <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+              <p className="prose-body-S text-gray4">닉네임</p>
+              <p className="prose-body-XS text-gray5">2023.12.03</p>
+            </div>
+            <div className="flex">
+              {[...Array(review.starRate)].map((el, idx) => (
+                <IoStar color="gold" key={idx} />
+              ))}
+              {[...Array(5 - review.starRate)].map((el, idx) => (
+                <IoStarOutline className="text-gray6" key={idx} />
+              ))}
+            </div>
+            <div className="h-[250px] w-[100%] overflow-hidden">
+              <Slick {...settings}>
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
+                />
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"
+                />
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png"
+                />
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg"
+                />
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg"
+                />
+                <img
+                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                  src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
+                />
+              </Slick>
+            </div>
+            <div className="mt-[30px]">
+              <p className="w-[60%] min-w-[500px]">{review.review}</p>
+            </div>
           </div>
-          <div>⭐⭐⭐⭐⭐</div>
-          <div className="flex gap-[35px]">
-            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
-            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
-            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
-            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
-            <img className="h-[200px] w-[200px] rounded-[10px]" src="" />
-          </div>
-          <div className="mt-[30px]">
-            <p className="w-[60%] min-w-[500px]">
-              만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
-              재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고
-              ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청 재밌었습니다 !! 최고 ~!~!만족스럽고 엄청
-              재밌었습니다 !! 최고 ~!~!
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
