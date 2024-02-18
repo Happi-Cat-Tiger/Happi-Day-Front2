@@ -4,7 +4,7 @@ import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
-const Reveiw = () => {
+const Review = () => {
   const [reveiwValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const { starRate, review } = reveiwValue;
 
@@ -57,4 +57,4 @@ const Reveiw = () => {
   );
 };
 
-export default Reveiw;
+export default Review;

@@ -10,9 +10,10 @@ import Slick from 'react-slick';
 import '../../../slider/slick.css';
 import '../../../slider/slick-theme.css';
 import Modal from '@/components/Modal/Modal';
-import Reveiw from '../review/Reveiw';
+import Reveiw from '../review/Review';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
+import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -52,7 +53,7 @@ const page = () => {
   // 이벤트 후기 목록
   const reviewValue = useRecoilValue(eventsReviewValue);
   const [allReview, setAllReview] = useRecoilState<reviewProps[]>(allEventsReviewValue);
-  const [isModal, setIsModal] = useState(true);
+  const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
   };
@@ -206,8 +207,9 @@ const page = () => {
             className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
           />
         </div>
-        <Modal
+        <TwoButtonModal
           isOpen={isModal}
+          setOpen={() => setIsModal(false)}
           children={<Reveiw />}
           buttonLabel="등록"
           onClose={() => setAllReview([{ ...allReview, ...reviewValue }])}
