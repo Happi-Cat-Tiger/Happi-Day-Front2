@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
 import '../../../slider/slick.css';
 import '../../../slider/slick-theme.css';
-import Modal from '@/components/Modal/Modal';
 import Reveiw from '../review/Review';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
@@ -51,15 +50,13 @@ const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
 
   // 이벤트 후기 목록
-  const reviewValue = useRecoilValue(eventsReviewValue);
+  const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const [allReview, setAllReview] = useRecoilState<reviewProps[]>(allEventsReviewValue);
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
+    setReviewValue({ starRate: 0, review: '' });
   };
-
-  console.log('allReveiw', allReview);
-  console.log('reviewvalue', reviewValue);
 
   // 임시 로그인 상태
   const userState = false;
@@ -172,12 +169,12 @@ const page = () => {
           ))}
         </div>
         {userState ? (
-          <div className="flex h-[200px] items-center justify-center border-2 border-gray-200">
+          <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
             <p className="prose-subtitle-M text-gray5">로그인 후 댓글을 남겨주세요!</p>
           </div>
         ) : (
           <>
-            <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-[20px]">
+            <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-gray6 p-[20px]">
               <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
               <textarea
                 placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
@@ -212,56 +209,62 @@ const page = () => {
           setOpen={() => setIsModal(false)}
           children={<Reveiw />}
           buttonLabel="등록"
-          onClose={() => setAllReview([{ ...allReview, ...reviewValue }])}
+          onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {allReview.map((review) => (
-          <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
-            <div className="flex items-center gap-[10px]">
-              <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-              <p className="prose-body-S text-gray4">닉네임</p>
-              <p className="prose-body-XS text-gray5">2023.12.03</p>
+        {allReview.length > 0 ? (
+          allReview.map((review) => (
+            <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+              <div className="flex items-center gap-[10px]">
+                <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                <p className="prose-body-S text-gray4">닉네임</p>
+                <p className="prose-body-XS text-gray5">2023.12.03</p>
+              </div>
+              <div className="flex">
+                {[...Array(review.starRate)].map((el, idx) => (
+                  <IoStar color="gold" key={idx} />
+                ))}
+                {[...Array(5 - review.starRate)].map((el, idx) => (
+                  <IoStarOutline className="text-gray6" key={idx} />
+                ))}
+              </div>
+              <div className="h-[250px] w-[100%] overflow-hidden">
+                <Slick {...settings}>
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
+                  />
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"
+                  />
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png"
+                  />
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg"
+                  />
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg"
+                  />
+                  <img
+                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
+                  />
+                </Slick>
+              </div>
+              <div className="mt-[30px]">
+                <p className="w-[60%] min-w-[500px]">{review.review}</p>
+              </div>
             </div>
-            <div className="flex">
-              {[...Array(review.starRate)].map((el, idx) => (
-                <IoStar color="gold" key={idx} />
-              ))}
-              {[...Array(5 - review.starRate)].map((el, idx) => (
-                <IoStarOutline className="text-gray6" key={idx} />
-              ))}
-            </div>
-            <div className="h-[250px] w-[100%] overflow-hidden">
-              <Slick {...settings}>
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                />
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"
-                />
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png"
-                />
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg"
-                />
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg"
-                />
-                <img
-                  className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                  src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                />
-              </Slick>
-            </div>
-            <div className="mt-[30px]">
-              <p className="w-[60%] min-w-[500px]">{review.review}</p>
-            </div>
+          ))
+        ) : (
+          <div className="flex items-center justify-center border-2 border-gray6 py-[50px]">
+            <p className="text-gray5">등록된 후기가 없습니다</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
