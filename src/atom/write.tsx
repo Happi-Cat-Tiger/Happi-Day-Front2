@@ -3,7 +3,7 @@ import { atom, RecoilEnv } from 'recoil';
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export const writeInitState = {
-  category: '카테고리|',
+  category: { id: 0, label: '카테고리|' },
   articleTitle: '',
   editValue: '',
 };
@@ -14,7 +14,7 @@ export const writeState = atom({
 
 interface WritingInfoState {
   hashtag: string;
-  thumbnailImage: { imageUrl: string; name: string; size: string; type: string };
+  thumbnailImage: File | null;
   eventAddress: { address: string; detailAddress: string };
   location: string;
   startTime: Date | null;
@@ -26,11 +26,11 @@ interface WritingInfoState {
     name: string;
     number: string;
   };
-  poster: { imageUrl: string; name: string; size: string; type: string };
+  poster: File | null;
 }
 export const writingInfoInitState: WritingInfoState = {
   hashtag: '',
-  thumbnailImage: { imageUrl: '', name: '', size: '', type: '' },
+  thumbnailImage: null,
   eventAddress: { address: '', detailAddress: '' },
   location: '',
   startTime: new Date(),
@@ -38,7 +38,7 @@ export const writingInfoInitState: WritingInfoState = {
   productOptions: [],
   shippingOptions: [],
   bankAccount: { bank: '', name: '', number: '' },
-  poster: { imageUrl: '', name: '', size: '', type: '' },
+  poster: null,
 };
 
 export const writingInfoState = atom<WritingInfoState>({
