@@ -9,7 +9,13 @@ const WritingStep = () => {
   const pathname = usePathname();
   const firstPath = pathname.split('/')[1];
 
-  const dropdownOpt = ['이벤트/홍보', '거래/교환/양도', '친목/동행', '자유', '주최 관련'];
+  const dropdownOpt = [
+    { id: 2, label: '이벤트/홍보' },
+    { id: 3, label: '거래/교환/양도' },
+    { id: 4, label: '친목/동행' },
+    { id: 1, label: '자유' },
+    { id: 5, label: '주최관련' },
+  ];
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
 
@@ -29,7 +35,7 @@ const WritingStep = () => {
     });
   };
 
-  const handleChangeCategory = (value: string) => {
+  const handleChangeCategory = (value: { id: number; label: string }) => {
     setWriteValue({
       ...writeValue,
       category: value,
