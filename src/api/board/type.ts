@@ -5,7 +5,7 @@ export interface PostContent {
   nickname: string;
   date: string;
   commentNum: number;
-  thubnailUrl: string;
+  thumbnailUrl: string;
   viewCount: number;
 }
 

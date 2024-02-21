@@ -3,6 +3,7 @@
 import { PostContent } from '@/api/board/type';
 import React from 'react';
 import { AiOutlineSmile, AiTwotoneCalendar, AiTwotoneEye } from 'react-icons/ai';
+import { useRouter } from 'next/navigation';
 
 const ArticleList = ({ articleContent }: { articleContent?: PostContent }) => {
   const category = articleContent?.category || '자유';
@@ -11,11 +12,16 @@ const ArticleList = ({ articleContent }: { articleContent?: PostContent }) => {
   const nickName = articleContent?.nickname || '닉네임';
   const date = articleContent?.date || '12.01';
   const view = articleContent?.viewCount || 50;
+  const id = articleContent?.id || 1;
+  const router = useRouter();
 
   return (
     <div
-      className="flex w-full cursor-pointer flex-col gap-1 border-b border-gray4 p-2 md:flex-row md:items-center md:justify-between md:gap-2 md:p-4"
-      onClick={() => {}}>
+      className="flex w-full cursor-pointer flex-col gap-1 border-b border-gray4 p-2 hover:bg-gray-200 md:flex-row md:items-center md:justify-between md:gap-2 md:p-4"
+      onClick={() => {
+        router.push(`board/${id}`);
+        console.log('111111');
+      }}>
       <div className="flex items-center justify-start gap-2">
         <div className="prose-body-XS rounded-lg bg-gray5 px-3 py-1 text-white md:prose-body-S">{category}</div>
         <div className="prose-body-S flex-1 md:prose-body-M">
