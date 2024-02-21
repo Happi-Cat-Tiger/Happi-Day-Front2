@@ -38,7 +38,12 @@ const FreePage = () => {
         {boardFreeData && (
           <div>
             {boardFreeData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <ArticleList key={articleItem.id} articleContent={articleItem} />
+              <ArticleList
+                key={articleItem.id}
+                articleContent={articleItem}
+                navCategory="board"
+                detailCategory="free"
+              />
             ))}
           </div>
         )}

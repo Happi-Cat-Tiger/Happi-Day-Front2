@@ -5,7 +5,15 @@ import React from 'react';
 import { AiOutlineSmile, AiTwotoneCalendar, AiTwotoneEye } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 
-const ArticleList = ({ articleContent }: { articleContent?: PostContent }) => {
+const ArticleList = ({
+  articleContent,
+  navCategory,
+  detailCategory = '',
+}: {
+  articleContent?: PostContent;
+  navCategory: string;
+  detailCategory?: string;
+}) => {
   const category = articleContent?.category || '자유';
   const title = articleContent?.title || '콘서트 같이 가실 분';
   const comments = articleContent?.commentNum || 1;
@@ -19,8 +27,8 @@ const ArticleList = ({ articleContent }: { articleContent?: PostContent }) => {
     <div
       className="flex w-full cursor-pointer flex-col gap-1 border-b border-gray4 p-2 hover:bg-gray-200 md:flex-row md:items-center md:justify-between md:gap-2 md:p-4"
       onClick={() => {
-        router.push(`board/${id}`);
-        console.log('111111');
+        if (detailCategory === '') router.push(`${navCategory}/${id}`);
+        else router.push(`${navCategory}/${detailCategory}/${id}`);
       }}>
       <div className="flex items-center justify-start gap-2">
         <div className="prose-body-XS rounded-lg bg-gray5 px-3 py-1 text-white md:prose-body-S">{category}</div>
