@@ -34,7 +34,7 @@ const FriendshipPage = () => {
             .fill(0)
             .slice(indexOfFirstPost, indexOfLastPost)
             .map((v, i) => (
-              <ArticleList key={i} />
+              <ArticleList key={i} navCategory="board" detailCategory="friendship" />
             ))}
         </div>
         <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
