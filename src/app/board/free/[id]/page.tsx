@@ -34,9 +34,9 @@ const page = ({ params }: { params: any }) => {
   };
 
   const { data: boardArticle, isLoading } = getBoardArticleService({ articleId: params.id });
-  console.log(boardArticle);
 
   if (isLoading) return <></>;
+  console.log(boardArticle);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px] md:mt-[100px]">
@@ -68,8 +68,8 @@ const page = ({ params }: { params: any }) => {
             </li>
           </ul>
           <ul className="prose-body-XS flex w-full gap-4 border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 md:prose-body-S">
-            {boardArticle.hashtags.map((tag: string) => (
-              <li>{tag}</li>
+            {boardArticle.hashtags.map((tag: string, i: number) => (
+              <li key={i}>{tag}</li>
             ))}
           </ul>
           {boardArticle.imageUrl[0] && (
@@ -83,12 +83,12 @@ const page = ({ params }: { params: any }) => {
             />
           )}
           <div className="my-[100px] w-[400px] md:w-[600px] lg:w-[800px]">
-            <p className="prose-body-S md:prose-body-L">
+            <div className="prose-body-S md:prose-body-L">
               <div
                 dangerouslySetInnerHTML={{ __html: boardArticle.content }}
                 className="prose-body-M my-10 md:prose-body-L"
               />
-            </p>
+            </div>
           </div>
           <div className="flex w-full flex-col items-center gap-4 bg-[#FEF9D0] py-[20px]">
             <div className="flex flex-col items-center">
