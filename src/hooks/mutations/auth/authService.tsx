@@ -4,7 +4,7 @@ import { LoginState } from '@/atom/LoginState';
 import { API_BASE_URL } from '@/constants/api';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 
 const logInApi = async () =>

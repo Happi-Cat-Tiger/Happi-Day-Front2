@@ -1,6 +1,6 @@
 import { fetchBoardAllApi, getBoardArticleApi, getBoardCategoriesApi } from '@/api/board/boardApi';
 import { BoardAllResponse } from '@/api/board/type';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export const getBoardAllService = () => {
   const query = useQuery<BoardAllResponse>({
