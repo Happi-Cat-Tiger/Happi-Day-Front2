@@ -29,8 +29,8 @@ const EventsPage = () => {
   };
 
   if (isLoading) return <></>;
-
   console.log(boardEventsData);
+
   return (
     <div className="flex w-full flex-col gap-[40px] px-2 md:gap-[60px] md:px-0">
       <Image src={SubBanner} alt="구독 배너" className="h-auto w-screen" priority />
@@ -40,7 +40,7 @@ const EventsPage = () => {
           <div className="grid grid-cols-2 place-items-center md:grid-cols-5">
             {boardEventsData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem, i) => (
               <Card
-                key={i}
+                key={articleItem.id}
                 id={articleItem.id}
                 cardType="board"
                 thumbnailUrl={articleItem.thumbnailUrl}
@@ -58,7 +58,6 @@ const EventsPage = () => {
             ))}
           </div>
         )}
-
         <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
         <div className="flex justify-end">
           <Link href="/board/write" passHref legacyBehavior>

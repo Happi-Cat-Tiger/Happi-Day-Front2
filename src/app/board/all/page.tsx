@@ -38,14 +38,23 @@ const AllPage = () => {
       <div className="flex flex-col gap-4">
         {boardAllData && (
           <div>
-            {boardAllData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <ArticleList
-                key={articleItem.id}
-                articleContent={articleItem}
-                navCategory="board"
-                detailCategory="free"
-              />
-            ))}
+            {boardAllData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => {
+              const categoryId = () => {
+                switch (articleItem.category) {
+                  case '자유':
+                    return 'free';
+                  case '홍보':
+                    return 'events';
+                  case '거래':
+                    return 'trade';
+                  case '친목':
+                    return 'friendship';
+                  case '주최관련':
+                    return 'organizing';
+                }
+              };
+              return <ArticleList key={articleItem.id} articleContent={articleItem} path={`board/${categoryId()}`} />;
+            })}
           </div>
         )}
         {boardAllData && (

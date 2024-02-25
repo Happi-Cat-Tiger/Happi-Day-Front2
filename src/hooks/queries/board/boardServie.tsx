@@ -12,16 +12,17 @@ export const getBoardAllService = () => {
 
 export const getBoardCategoriesService = ({ categoryId }: { categoryId: number }) => {
   const query = useQuery<BoardAllResponse>({
-    queryKey: ['board', 'event'],
+    queryKey: ['board'],
     queryFn: () => getBoardCategoriesApi({ categoryId }),
   });
   return query;
 };
 
-export const getBoardArticleService = ({ articleId }: { articleId: number }) => {
+export const getBoardArticleService = ({ articleId }: { articleId: number | null }) => {
   const query = useQuery({
     queryKey: ['board', 'article'],
     queryFn: () => getBoardArticleApi({ articleId }),
+    enabled: !!articleId,
   });
   return query;
 };
