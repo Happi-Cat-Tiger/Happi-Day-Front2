@@ -6,6 +6,7 @@ import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import { eventsCommentValue } from '@/atom/eventsAtom';
+import KakaoMap from '@/containers/events/KakaoMap';
 
 const page = () => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
@@ -91,7 +92,7 @@ const page = () => {
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
             <p className="sm:prose-body-XS md:prose-body-S">서울 마포구 어울림마당로 5길 52 2층</p>
           </div>
-          <div className="flex h-[150px] w-[200px] items-center justify-center border-2 border-black">지도</div>
+          <KakaoMap />
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
             <p className="sm:prose-body-XS md:prose-body-S">2024-01-08 ~ 2024-01-09</p>
