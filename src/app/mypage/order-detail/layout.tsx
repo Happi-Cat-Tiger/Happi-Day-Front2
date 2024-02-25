@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MySalesLayout = ({ children }: { children: React.ReactNode }) => {
+const OrderDetailLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full">
       <div className="mx-auto flex h-full min-h-screen justify-center md:max-w-[1280px]">
@@ -12,4 +12,4 @@ const MySalesLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default MySalesLayout;
+export default OrderDetailLayout;

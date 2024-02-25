@@ -1,7 +1,7 @@
 import React from 'react';
 
-const WortePosts = ({ children }: { children: React.ReactNode }) => {
+const WortePostsLayout = ({ children }: { children: React.ReactNode }) => {
   return <div className="w-full">{children}</div>;
 };
 
-export default WortePosts;
+export default WortePostsLayout;

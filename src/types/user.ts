@@ -1,9 +1,9 @@
 export declare enum UserType {
   ADIMIN = 'admin',
-  CLIENT = 'client',
+  USER = 'user',
 }
 
 export enum UserTypeName {
   admin = '관리자',
-  client = '유저',
+  user = '유저',
 }

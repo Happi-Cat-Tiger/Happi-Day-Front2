@@ -12,8 +12,8 @@ const BoardWritingInfoStep = () => {
   return (
     <div className="flex h-auto w-full flex-col gap-4 overflow-auto border border-gray-200 p-2 md:p-4">
       <HashtagInput />
-      {category === '거래/교환/양도' && <ThumbnailUploader />}
-      {category === '이벤트/홍보' && (
+      {category.label === '거래/교환/양도' && <ThumbnailUploader />}
+      {category.label === '이벤트/홍보' && (
         <>
           <ThumbnailUploader />
           <AddressInput />

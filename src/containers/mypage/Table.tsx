@@ -1,7 +1,6 @@
 'use client';
-
 import React from 'react';
-import { Card } from './tailwindexport';
+import { Card } from './Hd-material-tailwind';
 
 interface TableProps {
   TABLE_HEAD: Array<{ [key: string]: string }>;

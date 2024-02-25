@@ -7,6 +7,7 @@ import PreviewWritingStep from '@/containers/write/PreviewWritingStep';
 import StyledButton from '@/components/Button/StyledButton';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
+import { postWriteBoardService } from '@/hooks/mutations/board/boardService';
 
 const WritePage = () => {
   const [step, setStep] = useState<number>(1);
@@ -17,15 +18,19 @@ const WritePage = () => {
   const [writingInfoValue] = useRecoilState(writingInfoState);
   const { hashtag, thumbnailImage, eventAddress } = writingInfoValue;
 
+  const writeBoardMutation = postWriteBoardService({ categoryId: category.id });
+
+  console.log(writeValue, writingInfoValue);
   const onDisable = () => {
     if (step === 1) {
-      if (category === '카테고리|' || !articleTitle || !editValue) return true;
+      if (category.label === '카테고리|' || !articleTitle || !editValue) return true;
     }
     if (step === 2) {
-      if (category === '거래/교환/양도') {
-        if (!hashtag || !thumbnailImage.imageUrl) return true;
-      } else if (category === '이벤트/홍보') {
-        if (!hashtag || !thumbnailImage.imageUrl || !eventAddress.address) return true;
+      if (category.label === '거래/교환/양도') {
+        if (!hashtag || !thumbnailImage) return true;
+      } else if (category.label === '이벤트/홍보') {
+        if (!hashtag) return true;
+        // if (!hashtag || !thumbnailImage || !eventAddress.address) return true;
       } else {
         if (!hashtag) return true;
       }
@@ -53,6 +58,14 @@ const WritePage = () => {
           disabled={onDisable()}
           onClick={() => {
             if (step === 3) {
+              writeBoardMutation.mutate({
+                title: articleTitle,
+                content: editValue,
+                hashtag: [hashtag],
+                eventAddress: eventAddress.address + ' ' + eventAddress.detailAddress,
+                thumbnailImage: thumbnailImage,
+                imageFile: thumbnailImage ? [thumbnailImage] : null,
+              });
               alert('글 작성이 완료되었습니다');
             } else setStep(step + 1);
           }}

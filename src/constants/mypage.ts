@@ -2,13 +2,12 @@ import { MenuListItem, OrderedTable, SalesPostTable, SalesProductsTable } from '
 import { CategoryNav } from '@/types/board';
 
 export const MYPAGE_MENU_LIST: MenuListItem[] = [
-  { id: 0, title: '프로필 관리', urlForHighlight: 'profile', path: 'profile' },
-  { id: 1, title: '나의 게시글', urlForHighlight: 'my-posts', path: 'my-posts/wrote-posts' },
-  { id: 2, title: '나의 쇼핑', urlForHighlight: 'my-orders', path: 'my-orders/' },
-  { id: 3, title: '나의 굿즈 판매', urlForHighlight: 'my-sales', path: 'my-sales/' },
-  { id: 4, title: '나의 구독', urlForHighlight: 'my-subscribes', path: 'my-subscribes' },
-  { id: 5, title: '나의 이벤트', urlForHighlight: 'my-events', path: 'my-events' },
-  { id: 6, title: '관리자 메뉴', urlForHighlight: 'admin', path: 'admin' },
+  { id: 0, title: '프로필 관리', urlForHighlight: 'mypage/profile', path: 'mypage/profile' },
+  { id: 1, title: '나의 게시글', urlForHighlight: 'mypage/my-posts', path: 'mypage/my-posts/wrote-posts' },
+  { id: 2, title: '나의 쇼핑', urlForHighlight: 'mypage/my-orders', path: 'mypage/my-orders/' },
+  { id: 3, title: '나의 굿즈 판매', urlForHighlight: 'mypage/my-sales', path: 'mypage/my-sales/' },
+  { id: 4, title: '나의 구독', urlForHighlight: 'mypage/my-subscribes', path: 'mypage/my-subscribes' },
+  { id: 5, title: '나의 이벤트', urlForHighlight: 'mypage/my-events', path: 'mypage/my-events' },
 ];
 
 export const MY_POSTS_CATEGORY: CategoryNav[] = [

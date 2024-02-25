@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '@/components/Input/Input';
 import StyledButton from '@/components/Button/StyledButton';
-import { updateOrderStatusService } from '@/hooks/mutations/order/orderService';
+import { putOrderStatusService } from '@/hooks/mutations/order/orderService';
 import { ORDER_STATUS } from '@/constants/order';
 
 interface Props {
@@ -17,7 +17,7 @@ export const DeliveryInfo = ({ salesId, orderId, detailType, inputValue, onChang
   const orderStatusClassName =
     'w-30 md:w-36 cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none prose-btn-M';
 
-  const mutationPut = updateOrderStatusService({ salesId, orderId, orderStatus: inputValue });
+  const mutationPut = putOrderStatusService({ salesId, orderId, orderStatus: inputValue });
 
   const saveHandler = () => {
     mutationPut.mutate();

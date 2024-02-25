@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 const Section = ({ children }: { children: ReactNode }) => {
-  return <div className="flex flex-col gap-2">{children}</div>;
+  return <section className="flex flex-col gap-4">{children}</section>;
 };
 
 export default Section;
