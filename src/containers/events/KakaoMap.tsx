@@ -18,31 +18,36 @@ const KakaoMap = () => {
   });
 
   const center: Location = coords;
-  const address = '서울특별시 용산구 녹사평대로 150';
+  const [kakaoLoaded, setKakaoLoaded] = useState(false);
+  const address = '서울시 노원구 노해로 437';
 
   useEffect(() => {
     const script = document.createElement('script');
     script.src = KAKAO_SDK_URL;
     script.async = true;
     script.onload = () => {
-      if (window.kakao && window.kakao.maps) {
-        const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(address, (result, status) => {
-          if (status === window.kakao.maps.services.Status.OK) {
-            const { x, y } = result[0].road_address || result[0].address;
-            setCoords({ lat: Number(y), lng: Number(x) });
-          } else {
-            console.error('Failed to convert address to coordinates:', status);
-          }
-        });
-      }
+      setKakaoLoaded(true);
     };
     document.head.appendChild(script);
 
     return () => {
       document.head.removeChild(script);
     };
-  }, [address]);
+  }, []);
+
+  useEffect(() => {
+    if (kakaoLoaded) {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(address, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const { x, y } = result[0].road_address || result[0].address;
+          setCoords({ lat: Number(y), lng: Number(x) });
+        } else {
+          console.error('Failed to convert address to coordinates:', status);
+        }
+      });
+    }
+  }, [kakaoLoaded, address]);
 
   return (
     <>
