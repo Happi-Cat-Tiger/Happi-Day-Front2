@@ -52,7 +52,7 @@ export const getBoardCategoriesApi = async ({ categoryId }: { categoryId: number
   await apiInstance.get(`/articles/${categoryId}/list`).then((response) => response.data);
 
 // 글 상세보기 (단일 조회)
-export const getBoardArticleApi = async ({ articleId }: { articleId: number }) =>
+export const getBoardArticleApi = async ({ articleId }: { articleId: number | null }) =>
   await apiInstance.get(`/articles/${articleId}`).then((response) => response.data);
 
 // 글 삭제
@@ -60,5 +60,40 @@ export const deleteBoardArticleApi = async ({ articleId }: { articleId: number }
   await apiInstance.delete(`/articles/${articleId}`);
 
 // 글 수정
-export const patchBoardArticleApi = async ({ articleId }: { articleId: number }) =>
-  await apiInstance.patch(`/articles/${articleId}`);
+export const patchBoardArticleApi = async ({
+  articleId,
+  title,
+  content,
+  hashtag,
+  eventAddress,
+  thumbnailImage,
+  imageFile,
+}: {
+  articleId: number | null;
+  title: string;
+  content: string;
+  hashtag: string[];
+  eventAddress: string;
+  thumbnailImage: File | null;
+  imageFile: File[] | null;
+}) => {
+  const formData = new FormData();
+  const articleJson = new Blob(
+    [JSON.stringify({ title: title, content: content, hashtag: hashtag, eventAddress: eventAddress })],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('article', articleJson);
+  thumbnailImage && formData.append('thumbnailImage', thumbnailImage);
+  imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
+
+  await apiInstance.patch(`/articles/${articleId}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+    transformRequest: [
+      function () {
+        return formData;
+      },
+    ],
+  });
+};

@@ -1,26 +1,38 @@
 'use client';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import WritingStep from '@/containers/write/WritingStep';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import BoardWritingInfoStep from '@/containers/write/BoardWritingInfoStep';
 import PreviewWritingStep from '@/containers/write/PreviewWritingStep';
 import StyledButton from '@/components/Button/StyledButton';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
-import { postWriteBoardService } from '@/hooks/mutations/board/boardService';
+import { patchBoardArticleService, postWriteBoardService } from '@/hooks/mutations/board/boardService';
+import { useSearchParams } from 'next/navigation';
+import { getBoardArticleService } from '@/hooks/queries/board/boardServie';
+import { hdQueryClient } from '@/shared/hdQueryClient';
 
 const WritePage = () => {
+  // 수정
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const cat = searchParams.get('cat') || null;
+  const articleId = id ? +id : null;
+  console.log(articleId);
+  const { data: boardArticle, isLoading } = getBoardArticleService({ articleId });
+
   const [step, setStep] = useState<number>(1);
 
-  const [writeValue] = useRecoilState(writeState);
+  const [writeValue, setWriteValue] = useRecoilState(writeState);
   const { articleTitle, editValue, category } = writeValue;
 
-  const [writingInfoValue] = useRecoilState(writingInfoState);
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
   const { hashtag, thumbnailImage, eventAddress } = writingInfoValue;
 
   const writeBoardMutation = postWriteBoardService({ categoryId: category.id });
+  const modifyBoardMutation = patchBoardArticleService({ articleId });
 
-  console.log(writeValue, writingInfoValue);
   const onDisable = () => {
     if (step === 1) {
       if (category.label === '카테고리|' || !articleTitle || !editValue) return true;
@@ -36,6 +48,28 @@ const WritePage = () => {
       }
     }
   };
+  if (isLoading) return <></>;
+  console.log('here', boardArticle);
+
+  // 변환 cat events =2
+
+  useEffect(() => {
+    if (boardArticle && articleId) {
+      setWriteValue({
+        ...writeValue,
+        articleTitle: boardArticle.title,
+        editValue: boardArticle.content,
+        category: { id: 1, label: '' },
+      });
+      setWritingInfoValue({
+        ...writingInfoValue,
+        hashtag: boardArticle.hashtags,
+        // thumbnailImage:boardArticle.hashtags,
+        // eventAddress:boardArticle.eventAddress
+      });
+    }
+  }, [boardArticle]);
+
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -58,14 +92,16 @@ const WritePage = () => {
           disabled={onDisable()}
           onClick={() => {
             if (step === 3) {
-              writeBoardMutation.mutate({
+              const payloadData = {
                 title: articleTitle,
                 content: editValue,
                 hashtag: [hashtag],
                 eventAddress: eventAddress.address + ' ' + eventAddress.detailAddress,
                 thumbnailImage: thumbnailImage,
                 imageFile: thumbnailImage ? [thumbnailImage] : null,
-              });
+              };
+              if (mod === 'true') modifyBoardMutation.mutate(payloadData);
+              else writeBoardMutation.mutate(payloadData);
               alert('글 작성이 완료되었습니다');
             } else setStep(step + 1);
           }}

@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
 import { ThemeProvider } from '../containers/mypage/Hd-material-tailwind';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/global.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';
@@ -23,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Nav />
             {children}
             <Footer />
+            <ToastContainer />
           </ReactQueryWrapper>
         </RecoilRootWrapper>
       </body>
