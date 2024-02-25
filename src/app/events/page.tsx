@@ -10,6 +10,7 @@ import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilState } from 'recoil';
 import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
+import { getAllEvents } from '@/hooks/queries/events/eventsService';
 
 interface MockData {
   id: number;
@@ -25,6 +26,24 @@ interface MockData {
   view: number;
   joinCount: number;
 }
+
+// interface EventsList {
+//   id: number;
+//   thumbnailUrl: string;
+//   title: string;
+//   artists: string;
+//   location: string;
+//   startTime: string;
+//   endTime: string;
+//   updatedAt: string;
+//   likeCount: number;
+//   commentCount: number;
+//   viewCount: number;
+//   reveiwCount: number;
+//   teams?: [];
+//   hashtags: [];
+//   nickname: string;
+// }
 
 const page = () => {
   const mockData = [
@@ -203,6 +222,9 @@ const page = () => {
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
   const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
 
+  // const { data } = getAllEvents();
+  // const eventsData: EventsList[] = data !== undefined && data.content;
+
   const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
 
   const pageChange = (page: number) => {
@@ -273,7 +295,7 @@ const page = () => {
               thumbnailUrl={el.thumbnailUrl}
               title={el.title}
               artist={el.artist}
-              location={el.place}
+              location={el.location}
               startTime={el.startDate}
               endTime={el.endDate}
               address={el.location}
