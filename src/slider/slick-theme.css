@@ -21,23 +21,19 @@
   line-height: 0;
 
   position: absolute;
-  top: 50%;
+  bottom: -30px;
 
   display: block;
 
   width: 20px;
   height: 20px;
   padding: 0;
-  -webkit-transform: translate(0, -50%);
-  -ms-transform: translate(0, -50%);
-  transform: translate(0, -50%);
 
   cursor: pointer;
 
   color: transparent;
   border: none;
   outline: none;
-  background: transparent;
 }
 .slick-prev:hover,
 .slick-prev:focus,
@@ -69,10 +65,13 @@
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: orange;
+  border-radius: 50%;
 }
 
 .slick-prev {
-  left: -25px;
+  left: 40%;
+  transform: translateX(-50%);
 }
 [dir='rtl'] .slick-prev {
   right: -25px;
@@ -86,7 +85,8 @@
 }
 
 .slick-next {
-  right: -25px;
+  right: 40%;
+  transform: translateX(-50%);
 }
 [dir='rtl'] .slick-next {
   right: auto;
