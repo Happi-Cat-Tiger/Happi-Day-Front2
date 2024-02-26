@@ -6,6 +6,7 @@ import FormLabel from '@/components/Form/FormLabel';
 import Input from '@/components/Input/Input';
 import basicProfileImage from '../../../public/images/basicProfileImage.jpg';
 
+//TODO 전역 userData 가져오기
 const MockData = {
   profileImageUrl: basicProfileImage,
   realName: '전미혜',

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import MobileModal from '@/components/Modal/MobileModal';

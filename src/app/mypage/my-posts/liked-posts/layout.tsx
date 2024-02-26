@@ -1,7 +1,7 @@
 import React from 'react';
 
-const LikedPosts = ({ children }: { children: React.ReactNode }) => {
+const LikedPostsLayout = ({ children }: { children: React.ReactNode }) => {
   return <div className="w-full">{children}</div>;
 };
 
-export default LikedPosts;
+export default LikedPostsLayout;

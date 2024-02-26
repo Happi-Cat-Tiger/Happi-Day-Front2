@@ -1,9 +1,11 @@
 import useUploadImage from '@/hooks/useUploadImage';
 import React, { useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
+
+// 안쓰이는 컴포넌트
 interface Props {
-  handleChange: (value: any) => void;
-  image: any;
+  handleChange: (value: File) => void;
+  image: File | null;
 }
 const ImageUploader = ({ handleChange, image }: Props) => {
   const [isActive, setActive] = useState<boolean>(false);
@@ -33,7 +35,7 @@ const ImageUploader = ({ handleChange, image }: Props) => {
       </label>
       <div className="mx-auto w-2/3 rounded-lg border-2 border-gray-300 bg-gray-100 p-5">
         {image ? (
-          <img src={image.imageUrl} className="mx-auto h-auto w-[250px]" />
+          <img src={image ? URL.createObjectURL(image) : ''} className="mx-auto h-auto w-[250px]" />
         ) : (
           <p className="prose-body-XS text-center text-gray-600 md:prose-body-S">이미지 미리보기</p>
         )}

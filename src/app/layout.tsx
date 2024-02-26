@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import RecoilRootWrapper from '../utils/RecoilRootWrapper';
 import ReactQueryWrapper from '@/utils/ReactQueryWrapper';
-import { ThemeProvider } from '../containers/mypage/tailwindexport';
+import { ThemeProvider } from '../containers/mypage/Hd-material-tailwind';
 import '../styles/global.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';

@@ -77,3 +77,24 @@ export const eventsListState = atom({
   key: 'eventsList',
   default: [],
 });
+
+// 이벤트 후기
+export interface reviewProps {
+  starRate: number;
+  review: string;
+  // image: string;
+}
+
+export const eventsReviewValue = atom({
+  key: 'eventsReviewValue',
+  default: {
+    starRate: 0,
+    review: '',
+    // image: '',
+  } as reviewProps,
+});
+
+export const allEventsReviewValue = atom<reviewProps[]>({
+  key: 'allEventsReviewValue',
+  default: [],
+});

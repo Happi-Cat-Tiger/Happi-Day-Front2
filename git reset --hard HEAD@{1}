@@ -1,0 +1,167 @@
+[33mb7f4e95[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/develop[m[33m)[m HEAD@{0}: pull --rebase origin develop (start): checkout b7f4e950b0d676354ba09dadf4a85a124532d83c
+[33m5092d34[m[33m ([m[1;31morigin/feature/front/my-subscribes[m[33m, [m[1;32mfeature/front/my-subscribes[m[33m)[m HEAD@{1}: commit (merge): fix : conflict 해결
+[33m0c44473[m HEAD@{2}: checkout: moving from develop to feature/front/my-subscribes
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{3}: reset: moving to ORIG_HEAD
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{4}: checkout: moving from feature/front/my-subscribes to develop
+[33m0c44473[m HEAD@{5}: rebase (finish): returning to refs/heads/feature/front/my-subscribes
+[33m0c44473[m HEAD@{6}: rebase (squash): Feat : 나의 구독 페이지 구현
+[33mb1f91ca[m HEAD@{7}: rebase (squash): # This is a combination of 8 commits.
+[33ma283067[m HEAD@{8}: rebase (squash): # This is a combination of 7 commits.
+[33mcd15923[m HEAD@{9}: rebase (squash): # This is a combination of 6 commits.
+[33m9f5ddc8[m HEAD@{10}: rebase (squash): # This is a combination of 5 commits.
+[33m653cb82[m HEAD@{11}: rebase (squash): # This is a combination of 4 commits.
+[33m0d53339[m HEAD@{12}: rebase (squash): # This is a combination of 3 commits.
+[33m63b3e91[m HEAD@{13}: rebase (squash): # This is a combination of 2 commits.
+[33m0e9982e[m HEAD@{14}: rebase (start): checkout develop
+[33m0c11a8c[m HEAD@{15}: checkout: moving from develop to feature/front/my-subscribes
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{16}: reset: moving to ORIG_HEAD
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{17}: checkout: moving from feature/front/my-subscribes to develop
+[33m0c11a8c[m HEAD@{18}: commit: Feat : 나의 구독 페이지 구현
+[33m4aba1b9[m HEAD@{19}: commit: Feat : 팀,아티스트 구독,삭제 기능 구현
+[33m72f78ac[m HEAD@{20}: commit: Add : 아티스트/팀 react-query 작성
+[33mae89899[m HEAD@{21}: commit: HDF-38 Feat : 팀/아티스트 정보 UI
+[33m5be54c4[m HEAD@{22}: commit: Add: 팀,아티스트 상세정보 타입 작성
+[33m0ae72ea[m HEAD@{23}: commit (amend): HDF-40 Feat: 팀, 아티스트 목록조회 무한스크롤 구현
+[33mbb38b82[m HEAD@{24}: commit: HDF-40/Feat 팀,아티스트 목록조회 무한스크롤 구현
+[33m521c785[m HEAD@{25}: commit: Add: api get호출 함수 작성
+[33m4540f3e[m HEAD@{26}: commit: Feat: '새로운 아티스트 찾기' 카테고리 구현
+[33m0e9982e[m HEAD@{27}: commit: Style: 현재 구독중인 아티스트 UI
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{28}: Branch: renamed refs/heads/develop to refs/heads/feature/front/my-subscribes
+[33m46fc1e4[m[33m ([m[1;32mdevelop[m[33m)[m HEAD@{30}: pull origin: Fast-forward
+[33m4eec069[m HEAD@{31}: checkout: moving from feature/front/Fix_HorizonTalLinkList to develop
+[33m58ba204[m[33m ([m[1;31morigin/feature/front/Fix_HorizonTalLinkList[m[33m, [m[1;32mfeature/front/Fix_HorizonTalLinkList[m[33m)[m HEAD@{32}: commit: Fix: conlict 해결
+[33m4eec069[m HEAD@{33}: Branch: renamed refs/heads/develop to refs/heads/feature/front/Fix_HorizonTalLinkList
+[33m4eec069[m HEAD@{35}: pull origin: Fast-forward
+[33mef98aa9[m HEAD@{36}: checkout: moving from feature/front/my-goods to develop
+[33m4a14e46[m[33m ([m[1;31morigin/feature/front/my-goods[m[33m, [m[1;32mfeature/front/my-goods[m[33m)[m HEAD@{37}: checkout: moving from develop to feature/front/my-goods
+[33mef98aa9[m HEAD@{38}: checkout: moving from feature/front/my-goods to develop
+[33m4a14e46[m[33m ([m[1;31morigin/feature/front/my-goods[m[33m, [m[1;32mfeature/front/my-goods[m[33m)[m HEAD@{39}: rebase (abort): returning to refs/heads/feature/front/my-goods
+[33m4a14e46[m[33m ([m[1;31morigin/feature/front/my-goods[m[33m, [m[1;32mfeature/front/my-goods[m[33m)[m HEAD@{40}: reset: moving to 4a14e46
+[33m3aa8649[m HEAD@{41}: rebase (pick): ADD : terms UI 완성
+[33mce21776[m HEAD@{42}: rebase (pick): CHORE: 페이지네이션 맨 처음, 맨 끝 버튼 다시 추가
+[33m56a1bdf[m HEAD@{43}: rebase (pick): CHORE: 페이지네이션 스타일 수정정
+[33m0f1d515[m HEAD@{44}: rebase (pick): CHORE: 페이지네이션 컴포넌트화
+[33md78d078[m HEAD@{45}: rebase (continue): pagination 기능 추가
+[33m251e51b[m HEAD@{46}: rebase (pick): CHORE: 페이지네이션 위치 마진 수정
+[33mbe698b7[m HEAD@{47}: rebase (pick): ADD: 글쓰기 버튼 추가 / InputElements 요소들 디자인
+[33m02cd14f[m HEAD@{48}: rebase (pick): ADD: InputElements.tsx(select, checkbox, search) 추가 및 카드 레이아웃 테스트
+[33m40ed7cf[m HEAD@{49}: rebase (pick): ADD: 이벤트 게시글 작성 가이드 / 게시판 바로가기 레이아웃
+[33m9a68d24[m HEAD@{50}: rebase (pick): 이벤트 게시판 페이지 세팅
+[33m25c5468[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{51}: rebase (start): checkout origin
+[33m4a14e46[m[33m ([m[1;31morigin/feature/front/my-goods[m[33m, [m[1;32mfeature/front/my-goods[m[33m)[m HEAD@{52}: commit (merge): Fix: 카테고리 컴포넌트 폰트사이즈 수정
+[33m5ca144a[m HEAD@{53}: commit: Modify : api호출함수 수정 , 스타일 수정, [type]폴더 추가
+[33m5a2f6a2[m HEAD@{54}: commit: Modify : url 구조 변경
+[33m293cb49[m HEAD@{55}: commit: Add : Table props 타입지정, base_url 수정
+[33mfb0a31d[m HEAD@{56}: commit: Feat : 주문 상세 내역 api 호출 함수 구현 완료
+[33m45653c8[m HEAD@{57}: commit: Modify: 주문 상세 내역 컴포넌트 분리
+[33m52acade[m HEAD@{58}: commit: Feat : 주문 취소, 삭제 api 함수 구현
+[33m88f613b[m HEAD@{59}: commit: Style: 주문 상세 내역
+[33m54d6a45[m HEAD@{60}: commit: FEAT : 주문 상세 내역 api 호출 함수 작성
+[33md903c59[m HEAD@{61}: commit: FEAT: 주문 api 작성, 주문 상세 내역 페이지
+[33ma2f424f[m[33m ([m[1;31morigin/feature/front/my-post[m[33m)[m HEAD@{62}: Branch: renamed refs/heads/feature/front/my-post to refs/heads/feature/front/my-goods
+[33ma2f424f[m[33m ([m[1;31morigin/feature/front/my-post[m[33m)[m HEAD@{64}: commit: Modify : 폴더 구조, 사이드메뉴 수정
+[33me008968[m HEAD@{65}: commit: FEAT : 나의 굿즈 Table 구현
+[33mf08d35f[m HEAD@{66}: commit: Modify : layout 컴포넌트명 변경, 카테고리 기능 수정
+[33mb298dbe[m HEAD@{67}: commit: FEAT : 카테고리 별 화면 전환
+[33m7a36304[m HEAD@{68}: Branch: renamed refs/heads/feature/front/my-post-UI to refs/heads/feature/front/my-post
+[33m7a36304[m HEAD@{70}: Branch: renamed refs/heads/develop to refs/heads/feature/front/my-post-UI
+[33m7a36304[m HEAD@{72}: pull origin: Fast-forward
+[33md2ee4e8[m HEAD@{73}: checkout: moving from feature/front/withdrawal to develop
+[33m420dc8d[m[33m ([m[1;31morigin/feature/front/withdrawal[m[33m, [m[1;32mfeature/front/withdrawal[m[33m)[m HEAD@{74}: rebase (finish): returning to refs/heads/feature/front/withdrawal
+[33m420dc8d[m[33m ([m[1;31morigin/feature/front/withdrawal[m[33m, [m[1;32mfeature/front/withdrawal[m[33m)[m HEAD@{75}: rebase (pick): Modify : types
+[33m4f71f95[m HEAD@{76}: rebase (pick): Style : HDF-20 회원탈퇴 UI
+[33m1132724[m HEAD@{77}: rebase (continue): Style: 반응형 수정, 회원탈퇴 레이아웃 구현
+[33m55a25e8[m HEAD@{78}: rebase (start): checkout refs/remotes/origin/develop
+[33mf70d3d2[m HEAD@{79}: commit (merge): FIX : conflict 해결
+[33m31940dc[m HEAD@{80}: checkout: moving from develop to feature/front/withdrawal
+[33md2ee4e8[m HEAD@{81}: checkout: moving from HDF-95/feature/front/react-query to develop
+[33m6c779f1[m[33m ([m[1;31morigin/HDF-95/feature/front/react-query[m[33m, [m[1;32mHDF-95/feature/front/react-query[m[33m)[m HEAD@{82}: rebase (finish): returning to refs/heads/HDF-95/feature/front/react-query
+[33m6c779f1[m[33m ([m[1;31morigin/HDF-95/feature/front/react-query[m[33m, [m[1;32mHDF-95/feature/front/react-query[m[33m)[m HEAD@{83}: rebase (pick): Modify : mutation -> mutations 폴더 이름 변경
+[33m2a4a6fc[m HEAD@{84}: rebase (continue): FEAT : custom react-query hook
+[33m3ad398a[m HEAD@{85}: rebase (pick): FEAT : 리액트쿼리 구현, api 모듈화
+[33md2ee4e8[m HEAD@{86}: rebase (start): checkout refs/remotes/origin/develop
+[33ma1485d4[m HEAD@{87}: commit (merge): FIX : conflict 해결
+[33m6561cf7[m HEAD@{88}: checkout: moving from develop to HDF-95/feature/front/react-query
+[33md2ee4e8[m HEAD@{89}: checkout: moving from feature/front/my-post-page to develop
+[33md2ee4e8[m HEAD@{90}: Branch: renamed refs/heads/develop to refs/heads/feature/front/my-post-page
+[33md2ee4e8[m HEAD@{92}: pull: Fast-forward
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{93}: checkout: moving from feature/front/my-post-page to develop
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{94}: Branch: renamed refs/heads/develop to refs/heads/feature/front/my-post-page
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{96}: checkout: moving from feature/front/HDF-18_profile-edit-page to develop
+[33m940d7b5[m[33m ([m[1;31morigin/feature/front/HDF-18_profile-edit-page[m[33m, [m[1;32mfeature/front/HDF-18_profile-edit-page[m[33m)[m HEAD@{97}: checkout: moving from HDF-95/feature/front/react-query to feature/front/HDF-18_profile-edit-page
+[33m6561cf7[m HEAD@{98}: commit: Modify : mutation -> mutations 폴더 이름 변경
+[33m2670c78[m HEAD@{99}: commit: FEAT : custom react-query hook
+[33m72d82b6[m HEAD@{100}: commit: FEAT : 리액트쿼리 구현, api 모듈화
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{101}: Branch: renamed refs/heads/develop to refs/heads/HDF-95/feature/front/react-query
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{103}: checkout: moving from feature/front/withdrawal to develop
+[33m31940dc[m HEAD@{104}: commit: Modify : types
+[33m557f330[m HEAD@{105}: Branch: renamed refs/heads/feature/front/withwithdrawal to refs/heads/feature/front/withdrawal
+[33m557f330[m HEAD@{107}: commit: Style : HDF-20 회원탈퇴 UI
+[33m76d2827[m HEAD@{108}: commit: Style: 반응형 수정, 회원탈퇴 레이아웃 구현
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{109}: Branch: renamed refs/heads/develop to refs/heads/feature/front/withwithdrawal
+[33m01a8be1[m[33m ([m[1;31morigin/feature/front/refact-board[m[33m)[m HEAD@{111}: pull: Fast-forward
+[33m82098bb[m HEAD@{112}: pull: Fast-forward
+[33mced6026[m[33m ([m[1;32mfeature/front/profile-modify-section[m[33m)[m HEAD@{113}: checkout: moving from feature/front/HDF-18_profile-edit-page to develop
+[33m940d7b5[m[33m ([m[1;31morigin/feature/front/HDF-18_profile-edit-page[m[33m, [m[1;32mfeature/front/HDF-18_profile-edit-page[m[33m)[m HEAD@{114}: rebase (finish): returning to refs/heads/feature/front/HDF-18_profile-edit-page
+[33m940d7b5[m[33m ([m[1;31morigin/feature/front/HDF-18_profile-edit-page[m[33m, [m[1;32mfeature/front/HDF-18_profile-edit-page[m[33m)[m HEAD@{115}: commit: FIX : confict 해결
+[33mced6026[m[33m ([m[1;32mfeature/front/profile-modify-section[m[33m)[m HEAD@{116}: rebase (start): checkout refs/remotes/origin/develop
+[33m7413f55[m HEAD@{117}: commit (merge): Merge branch 'develop' of https://github.com/Happi-Cat-Tiger/Happi-Day-Front into feature/front/HDF-18_profile-edit-page
+[33m08b2498[m HEAD@{118}: commit: FEAT : 프로필 관리 기능 구현
+[33mbbcb520[m HEAD@{119}: Branch: renamed refs/heads/feature/front/profile-modify-page to refs/heads/feature/front/HDF-18_profile-edit-page
+[33mbbcb520[m HEAD@{121}: checkout: moving from feature/front/profile-modify-page to feature/front/profile-modify-page
+[33mbbcb520[m HEAD@{122}: Branch: renamed refs/heads/develop to refs/heads/feature/front/profile-modify-page
+[33mbbcb520[m HEAD@{124}: pull origin: Fast-forward
+[33me0f1bee[m HEAD@{125}: checkout: moving from feature/front/profile-modify-section to develop
+[33me0f1bee[m HEAD@{126}: Branch: renamed refs/heads/develop to refs/heads/feature/front/profile-modify-section
+[33me0f1bee[m HEAD@{128}: pull origin: Fast-forward
+[33m4edf4aa[m HEAD@{129}: checkout: moving from feature/front/modify-nav-width to develop
+[33m0275daf[m[33m ([m[1;32mfeature/front/modify-nav-width[m[33m)[m HEAD@{130}: commit: Modify : Nav width 수정
+[33m4edf4aa[m HEAD@{131}: Branch: renamed refs/heads/develop to refs/heads/feature/front/modify-nav-width
+[33m4edf4aa[m HEAD@{133}: checkout: moving from main to develop
+[33m537bb1c[m HEAD@{134}: checkout: moving from develop to main
+[33m4edf4aa[m HEAD@{135}: pull origin: Fast-forward
+[33m36bc39e[m HEAD@{136}: checkout: moving from feature/front/mypage-menu to develop
+[33m11ca8a2[m[33m ([m[1;32mfeature/front/mypage-menu[m[33m)[m HEAD@{137}: commit: STYLE : 오타 수정 / 동적 클래스 수정 / url 케밥케이스로 변경
+[33m5ceb132[m HEAD@{138}: checkout: moving from develop to feature/front/mypage-menu
+[33m36bc39e[m HEAD@{139}: checkout: moving from feature/front/mypage-menu to develop
+[33m5ceb132[m HEAD@{140}: commit: HDF-15 메뉴 기능, 반응형 구현
+[33m6040024[m HEAD@{141}: checkout: moving from develop to feature/front/mypage-menu
+[33m36bc39e[m HEAD@{142}: checkout: moving from feature/front/mypage-menu to develop
+[33m6040024[m HEAD@{143}: checkout: moving from develop to feature/front/mypage-menu
+[33m36bc39e[m HEAD@{144}: pull: Fast-forward
+[33m6040024[m HEAD@{145}: checkout: moving from feature/front/mypage-menu to develop
+[33m6040024[m HEAD@{146}: checkout: moving from develop to feature/front/mypage-menu
+[33m6040024[m HEAD@{147}: pull origin develop: Fast-forward
+[33mcd16a65[m HEAD@{148}: checkout: moving from feature/front/mypage-header-UI to develop
+[33m9e313fe[m[33m ([m[1;32mfeature/front/mypage-header-UI[m[33m)[m HEAD@{149}: checkout: moving from develop to feature/front/mypage-header-UI
+[33mcd16a65[m HEAD@{150}: checkout: moving from main to develop
+[33m537bb1c[m HEAD@{151}: checkout: moving from feature/front/mypage-header-UI to main
+[33m9e313fe[m[33m ([m[1;32mfeature/front/mypage-header-UI[m[33m)[m HEAD@{152}: commit: ADD : 마이페이지 header 구현
+[33m96e3ab3[m HEAD@{153}: Branch: renamed refs/heads/develop to refs/heads/feature/front/mypage-header-UI
+[33m96e3ab3[m HEAD@{155}: checkout: moving from feature/front/HDF-13--mypage-layout to develop
+[33mba446bb[m[33m ([m[1;31morigin/feature/front/HDF-13--mypage-layout[m[33m, [m[1;32mfeature/front/HDF-13--mypage-layout[m[33m)[m HEAD@{156}: checkout: moving from feature/front/Add-Button-to-Modal to feature/front/HDF-13--mypage-layout
+[33m3fa0047[m[33m ([m[1;32mfeature/front/Add-Button-to-Modal[m[33m)[m HEAD@{157}: checkout: moving from develop to feature/front/Add-Button-to-Modal
+[33m96e3ab3[m HEAD@{158}: checkout: moving from main to develop
+[33m537bb1c[m HEAD@{159}: pull: Fast-forward
+[33m38cf242[m HEAD@{160}: checkout: moving from feature/front/Add-Button-to-Modal to main
+[33m3fa0047[m[33m ([m[1;32mfeature/front/Add-Button-to-Modal[m[33m)[m HEAD@{161}: commit: FEAT : Modal 구현 완료
+[33mba446bb[m[33m ([m[1;31morigin/feature/front/HDF-13--mypage-layout[m[33m, [m[1;32mfeature/front/HDF-13--mypage-layout[m[33m)[m HEAD@{162}: Branch: renamed refs/heads/develop to refs/heads/feature/front/Add-Button-to-Modal
+[33mba446bb[m[33m ([m[1;31morigin/feature/front/HDF-13--mypage-layout[m[33m, [m[1;32mfeature/front/HDF-13--mypage-layout[m[33m)[m HEAD@{164}: checkout: moving from feature/front/HDF-4-Modal-UI to develop
+[33m3d556d2[m[33m ([m[1;32mfeature/front/HDF-4-Modal-UI[m[33m)[m HEAD@{165}: checkout: moving from feature/front/HDF-13--mypage-layout to feature/front/HDF-4-Modal-UI
+[33mba446bb[m[33m ([m[1;31morigin/feature/front/HDF-13--mypage-layout[m[33m, [m[1;32mfeature/front/HDF-13--mypage-layout[m[33m)[m HEAD@{166}: checkout: moving from develop to feature/front/HDF-13--mypage-layout
+[33mba446bb[m[33m ([m[1;31morigin/feature/front/HDF-13--mypage-layout[m[33m, [m[1;32mfeature/front/HDF-13--mypage-layout[m[33m)[m HEAD@{167}: pull: Fast-forward
+[33m7212156[m HEAD@{168}: checkout: moving from main to develop
+[33m38cf242[m HEAD@{169}: pull origin main: Fast-forward
+[33m46424b4[m HEAD@{170}: checkout: moving from develop to main
+[33m7212156[m HEAD@{171}: checkout: moving from feature/frong/HDF-13-mypage-layout to develop
+[33m7212156[m HEAD@{172}: checkout: moving from develop to feature/frong/HDF-13-mypage-layout
+[33m7212156[m HEAD@{173}: checkout: moving from feature/frong/HDF-13-mypage-layout to develop
+[33m7212156[m HEAD@{174}: checkout: moving from develop to feature/frong/HDF-13-mypage-layout
+[33m7212156[m HEAD@{175}: checkout: moving from main to develop
+[33m46424b4[m HEAD@{176}: checkout: moving from feature/front/HDF-4-Modal-UI to main
+[33m3d556d2[m[33m ([m[1;32mfeature/front/HDF-4-Modal-UI[m[33m)[m HEAD@{177}: checkout: moving from develop to feature/front/HDF-4-Modal-UI
+[33m7212156[m HEAD@{178}: checkout: moving from main to develop
+[33m46424b4[m HEAD@{179}: checkout: moving from feature/front/HDF-4-Modal-UI to main
+[33m3d556d2[m[33m ([m[1;32mfeature/front/HDF-4-Modal-UI[m[33m)[m HEAD@{180}: commit: FEAT : Modal 컴포넌트 구현
+[33m7432e01[m HEAD@{181}: checkout: moving from main to feature/front/HDF-4-Modal-UI
+[33m7432e01[m HEAD@{182}: clone: from https://github.com/Happi-Cat-Tiger/Happi-Day-Front.git

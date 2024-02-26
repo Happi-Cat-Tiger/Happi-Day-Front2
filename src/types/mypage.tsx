@@ -1,5 +1,3 @@
-import { orderedProducts } from './order';
-
 export type MenuListItem = {
   id: number;
   title: string;

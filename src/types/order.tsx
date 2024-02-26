@@ -1,4 +1,4 @@
-export type orderDetail = {
+export type OrderDetailType = {
   id: number;
   username: string;
   salesId: number;
@@ -15,7 +15,7 @@ export type orderDetail = {
   sellerAccount: string;
 };
 
-export type OrderedProductList = {
+export type OrderedProductItem = {
   id: number;
   salesId: number;
   price: number;

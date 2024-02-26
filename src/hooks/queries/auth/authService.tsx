@@ -1,6 +1,6 @@
 import { getSignoutApi } from '@/api/auth/authApi';
 import { LoginState } from '@/atom/LoginState';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 
 export const getSignoutService = () => {

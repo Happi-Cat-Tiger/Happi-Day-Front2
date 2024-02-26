@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { updateProfileInfoApi } from '../../../api/user/userApi';
 
