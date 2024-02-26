@@ -10,6 +10,9 @@ import Slick from 'react-slick';
 import '../slider/slick.css';
 import '../slider/slick-theme.css';
 import { useRouter } from 'next/navigation';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { LoginState } from '@/atom/LoginState';
+import { getProfileInfoService } from '@/hooks/queries/user/userService';
 
 interface MockData {
   id: number;
@@ -134,7 +137,13 @@ const Home = () => {
   ];
 
   const router = useRouter();
+  const isLoggedIn = useRecoilValue(LoginState);
 
+  const { data: userData, isLoading } = getProfileInfoService();
+
+  if (isLoading) return <></>;
+
+  console.log(userData, isLoggedIn);
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
@@ -239,19 +248,19 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 게시글</h3>
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
             </ul>
           </div>

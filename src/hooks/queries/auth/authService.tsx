@@ -1,4 +1,5 @@
 import { getSignoutApi } from '@/api/auth/authApi';
+import { getProfileInfoApi } from '@/api/user/userApi';
 import { LoginState } from '@/atom/LoginState';
 import { useQuery } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
