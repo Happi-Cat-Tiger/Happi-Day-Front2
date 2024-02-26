@@ -1,25 +1,24 @@
 import React, { ChangeEvent } from 'react';
 import CustomEditor from '@/components/Tool/CustomEditor';
 import { useRecoilState } from 'recoil';
-import { eventsCardState } from '@/atom/eventsAtom';
+import { writeState } from '@/atom/write';
 
 const EventsWritingStep = () => {
-  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
-
-  const { title, description } = eventsCardValue;
+  const [writeValue, setWriteValue] = useRecoilState(writeState);
+  const { articleTitle, editValue } = writeValue;
 
   const handleChangeEdit = (value: string) => {
-    setEventsCardValue({ ...eventsCardValue, description: value });
+    setWriteValue({ ...writeValue, editValue: value });
   };
 
   const handleChangeArticle = (e: ChangeEvent<HTMLInputElement>) => {
-    setEventsCardValue({ ...eventsCardValue, title: e.target.value });
+    setWriteValue({ ...writeValue, articleTitle: e.target.value });
   };
   return (
     <div className="flex h-[560px] w-full flex-col gap-4 md:border md:border-gray-200 md:p-4">
       <div className=" relative flex gap-3">
         <input
-          defaultValue={title}
+          defaultValue={articleTitle}
           onChange={handleChangeArticle}
           type="text"
           className="w-full rounded-md border border-gray3 px-1.5 py-1 hover:bg-[#A0C3FF]/[0.1] focus:border-orange1 focus:bg-[#A0C3FF]/[0.1] focus:outline-none"
@@ -27,7 +26,7 @@ const EventsWritingStep = () => {
           spellCheck="false"
         />
       </div>
-      <CustomEditor editValue={description} setEditValue={handleChangeEdit} />
+      <CustomEditor editValue={editValue} setEditValue={handleChangeEdit} />
     </div>
   );
 };

@@ -6,20 +6,25 @@ import EventsWritingInfoStep from '@/containers/events/EventsWritingInfoStep';
 import EventsPreviewWringStep from '@/containers/events/EventsPreviewWringStep';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { eventsCardState, eventsListState } from '@/atom/eventsAtom';
+import { writeState, writingInfoState } from '@/atom/write';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
   const [step, setStep] = useState<number>(1);
 
-  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
-  const [eventsList, setEventsList] = useRecoilState(eventsListState);
-  const { title, description } = eventsCardValue;
+  const [writeValue, setWriteValue] = useRecoilState(writeState);
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+
+  const { articleTitle, editValue } = writeValue;
+
+  console.log(writeValue, writingInfoValue);
 
   const onDisable = () => {
     if (step === 1) {
-      if (!title || !description) return true;
+      if (!articleTitle || !editValue) return true;
     }
   };
+  const router = useRouter();
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -37,6 +42,22 @@ const page = () => {
           onClick={() => {
             if (step === 3) {
               alert('글 작성이 완료되었습니다');
+              /* 저장처리 로직 구현 예정 */
+              // 저장처리 후 writeValue 및 writingInfoValue값 초기화
+              setWriteValue({ articleTitle: '', category: { ...writeValue.category }, editValue: '' });
+              setWritingInfoValue({
+                bankAccount: { bank: '', name: '', number: '' },
+                endTime: null,
+                eventAddress: { address: '', detailAddress: '' },
+                hashtag: '',
+                location: '',
+                poster: null,
+                productOptions: [],
+                shippingOptions: [],
+                startTime: null,
+                thumbnailImage: null,
+              });
+              router.push('/events');
             } else setStep(step + 1);
           }}
         />
