@@ -39,7 +39,7 @@ const BankAccountInput = () => {
         />
       </div>
       <input
-        type="text"
+        type="number"
         defaultValue={bankAccount.number}
         onChange={(e) =>
           setWritingInfoValue({
