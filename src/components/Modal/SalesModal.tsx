@@ -2,7 +2,9 @@
 
 import React, { Component, ReactNode, useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
+import { useRouter } from 'next/navigation';
 import PrimaryButton from '../Button/PrimaryButton';
+import StyledButton from '../Button/StyledButton';
 
 interface ModalProps {
   isOpen: boolean;
@@ -35,12 +37,20 @@ interface ModalProps {
 
 */
 const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }: ModalProps) => {
+  const router = useRouter();
+
   const [open, setOpen] = useState(isOpen);
   const handleCloseModal = () => {
     setOpen(false);
     if (onClose) {
       onClose();
     } else return;
+  };
+
+  const handleBackClick = () => {
+    handleCloseModal;
+    router.back();
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -65,7 +75,13 @@ const Modal = ({ isOpen, onClose, children, title, buttonLabel, buttonDisabled }
               {children}
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex justify-center gap-2">
+            <StyledButton
+              onClick={() => handleBackClick()}
+              label="돌아가기"
+              disabled={false}
+              className="prose-btn-S rounded-2xl bg-gray4 px-5 py-3 text-white md:prose-btn-M hover:bg-gray3 focus:outline-none md:px-6 md:py-4"
+            />
             {buttonLabel && (
               <PrimaryButton onClick={() => handleCloseModal()} label={buttonLabel} disabled={buttonDisabled} />
             )}

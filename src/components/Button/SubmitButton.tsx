@@ -11,7 +11,7 @@ const SubmitButton = ({ label, onClick, disabled }: SubmitButtonProps) => {
       type="submit"
       onClick={onClick}
       disabled={disabled}
-      className="w-[300px] py-3 prose-btn-M text-white bg-orange2 rounded-lg hover:bg-orange1 disabled:bg-gray6 md:prose-btn-L">
+      className="prose-btn-M w-[300px] rounded-lg bg-orange2 py-3 text-white md:prose-btn-L hover:bg-orange1 disabled:bg-gray6">
       {label}
     </button>
   );
