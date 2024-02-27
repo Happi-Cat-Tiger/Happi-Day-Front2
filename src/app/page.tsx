@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
 import { getProfileInfoService } from '@/hooks/queries/user/userService';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 
 interface MockData {
   id: number;
@@ -136,14 +137,20 @@ const Home = () => {
     },
   ];
 
+  // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
+  // const isLoggedIn = useRecoilValue(LoginState);
+  // const { data: userData, isLoading } = getProfileInfoService({ isLoggedIn });
+
   const router = useRouter();
-  const isLoggedIn = useRecoilValue(LoginState);
 
-  const { data: userData, isLoading } = getProfileInfoService();
+  const [isClient, setIsClient] = useState(false);
 
-  if (isLoading) return <></>;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  console.log(userData, isLoggedIn);
+  if (!isClient) return <LoadingSpinner />;
+
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">

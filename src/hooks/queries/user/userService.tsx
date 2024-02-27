@@ -14,9 +14,7 @@ export interface Profile {
   nickname: string;
 }
 
-export const getProfileInfoService = () => {
-  const isLoggedIn = useRecoilValue(LoginState);
-
+export const getProfileInfoService = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const query = useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfileInfoApi(),
