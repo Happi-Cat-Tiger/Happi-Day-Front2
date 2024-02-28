@@ -41,6 +41,7 @@ interface WritingInfoState {
     number: string;
   };
   poster: File | null;
+  urlAddress: '';
 }
 
 export const writingInfoInitState: WritingInfoState = {
@@ -55,6 +56,7 @@ export const writingInfoInitState: WritingInfoState = {
   shippingOptions: [],
   bankAccount: { bank: '', name: '', number: '' },
   poster: null,
+  urlAddress: '',
 };
 
 export const writingInfoState = atom<WritingInfoState>({
