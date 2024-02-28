@@ -14,6 +14,9 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
 import { getProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+import { usegetSubscribedListService } from '@/hooks/queries/artist/artistService';
+import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
+import { getSalesPostListApi } from '@/api/sales/salesApi';
 
 interface MockData {
   id: number;
@@ -62,6 +65,10 @@ const settings = {
 };
 
 const Home = () => {
+  const { data } = usegetSubscribedListService();
+  console.log(data);
+  // const { data } = getSalesPostListService();
+  // const { res } = getSalesPostListApi();
   const mockData = [
     {
       id: 1,

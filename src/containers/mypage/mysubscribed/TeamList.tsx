@@ -1,3 +1,4 @@
+'use client';
 import React, { useMemo, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
@@ -7,7 +8,7 @@ import useIntersectingState from '@/hooks/useIntersectingState';
 
 /** 무한스크롤 */
 const useInfiniteTeams = () => {
-  return useInfiniteQuery<TeamListType>({
+  const query = useInfiniteQuery({
     queryKey: ['artist'],
     queryFn: ({ pageParam }) => getTeamListApi(pageParam),
     initialPageParam: 0,
@@ -17,32 +18,38 @@ const useInfiniteTeams = () => {
       else return undefined;
     },
   });
+  return query;
 };
 
 const TeamList = () => {
-  const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
   const { data, fetchNextPage, isFetching } = useInfiniteTeams();
-  const teamList = data && useMemo(() => data?.pages.flatMap((teamList) => teamList.content), [data.pages]);
+  const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
+
+  const teamList = useMemo(() => data?.pages.map((page) => page), [data?.pages]);
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;
 
     fetchNextPage();
   }, [isIntersecting]);
-
+  console.log(data);
   return (
     <>
-      {teamList?.map((item) => (
-        <ArtistProfileCard
-          key={item.id}
-          id={item.id}
-          type={'team'}
-          imageUrl={item.logoUrl}
-          imageAlt={item.name}
-          size={'m'}
-          title={item.name}
-        />
-      ))}
+      <div className="flex flex-wrap">
+        {teamList?.map((pageData) => {
+          return pageData.map((item) => (
+            <ArtistProfileCard
+              key={item.id}
+              id={item.id}
+              type={'team'}
+              imageUrl={item.logoUrl}
+              imageAlt={item.name}
+              size={'m'}
+              title={item.name}
+            />
+          ));
+        })}
+      </div>
       <div aria-hidden ref={observerRef} />
       <div className="flex h-16 items-center justify-center">
         {isFetching && (

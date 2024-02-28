@@ -9,7 +9,7 @@ import useIntersectingState from '@/hooks/useIntersectingState';
 
 /** 무한스크롤 */
 const useInfiniteArtists = () => {
-  return useInfiniteQuery<ArtistListType>({
+  const query = useInfiniteQuery({
     queryKey: ['artist'],
     queryFn: ({ pageParam }) => getArtistListApi(pageParam),
     initialPageParam: 0,
@@ -19,11 +19,13 @@ const useInfiniteArtists = () => {
       else return undefined;
     },
   });
+  return query;
 };
+
 const ArtistList = () => {
   const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
   const { data, fetchNextPage, isFetching } = useInfiniteArtists();
-  const artistList = data && useMemo(() => data?.pages.flatMap((artistList) => artistList.content), [data.pages]);
+  const artistList = useMemo(() => data?.pages.map((page) => page), [data?.pages]);
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;
@@ -34,17 +36,19 @@ const ArtistList = () => {
   return (
     <>
       <div className="flex flex-wrap">
-        {artistList?.map((item) => (
-          <ArtistProfileCard
-            key={item.id}
-            id={item.id}
-            type={'artist'}
-            imageUrl={item.profileUrl}
-            imageAlt={item.name}
-            size={'m'}
-            title={item.name}
-          />
-        ))}
+        {artistList?.map((pageData) => {
+          return pageData.map((item) => (
+            <ArtistProfileCard
+              key={item.id}
+              id={item.id}
+              type={'artist'}
+              imageUrl={item.profileUrl}
+              imageAlt={item.name}
+              size={'m'}
+              title={item.name}
+            />
+          ));
+        })}
       </div>
       <div aria-hidden ref={observerRef} />
       <div className="flex h-16 items-center justify-center">

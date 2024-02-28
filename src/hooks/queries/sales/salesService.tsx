@@ -4,10 +4,11 @@ import { getSalesPostListApi, getSalesProductListApi } from '@/api/sales/salesAp
 import { SalesProductList, SalesPostList } from '@/types/sales';
 
 export const getSalesPostListService = () => {
-  return useQuery<SalesPostList[], AxiosError>({
+  const query = useQuery<SalesPostList[], AxiosError>({
     queryKey: ['sales'],
     queryFn: () => getSalesPostListApi(),
   });
+  return query;
 };
 
 export const getSalesProductListService = ({ salesId }: { salesId: number }) => {
