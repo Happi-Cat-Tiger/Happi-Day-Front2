@@ -15,7 +15,7 @@ export const postBoardWriteApi = async ({
   title: string;
   content: string;
   hashtag: string[];
-  eventAddress: string;
+  eventAddress: { address: string; detailAddress: string };
   thumbnailImage: File | null;
   imageFile: File[] | null;
 }) => {
@@ -73,7 +73,7 @@ export const patchBoardArticleApi = async ({
   title: string;
   content: string;
   hashtag: string[];
-  eventAddress: string;
+  eventAddress: { address: string; detailAddress: string };
   thumbnailImage: File | null;
   imageFile: File[] | null;
 }) => {

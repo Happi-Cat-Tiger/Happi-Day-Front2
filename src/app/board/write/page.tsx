@@ -1,7 +1,7 @@
 'use client';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import WritingStep from '@/containers/write/WritingStep';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BoardWritingInfoStep from '@/containers/write/BoardWritingInfoStep';
 import PreviewWritingStep from '@/containers/write/PreviewWritingStep';
 import StyledButton from '@/components/Button/StyledButton';
@@ -10,7 +10,6 @@ import { writeState, writingInfoState } from '@/atom/write';
 import { patchBoardArticleService, postWriteBoardService } from '@/hooks/mutations/board/boardService';
 import { useSearchParams } from 'next/navigation';
 import { getBoardArticleService } from '@/hooks/queries/board/boardServie';
-import { hdQueryClient } from '@/shared/hdQueryClient';
 
 const WritePage = () => {
   // 수정
@@ -18,6 +17,7 @@ const WritePage = () => {
   const mod = searchParams.get('mod') || null;
   const id = searchParams.get('id') || null;
   const cat = searchParams.get('cat') || null;
+
   const articleId = id ? +id : null;
   console.log(articleId);
   const { data: boardArticle, isLoading } = getBoardArticleService({ articleId });
@@ -41,8 +41,7 @@ const WritePage = () => {
       if (category.label === '거래/교환/양도') {
         if (!hashtag || !thumbnailImage) return true;
       } else if (category.label === '이벤트/홍보') {
-        if (!hashtag) return true;
-        // if (!hashtag || !thumbnailImage || !eventAddress.address) return true;
+        if (!hashtag || !thumbnailImage) return true;
       } else {
         if (!hashtag) return true;
       }
@@ -50,7 +49,6 @@ const WritePage = () => {
   };
   if (isLoading) return <></>;
   console.log('here', boardArticle);
-
   // 변환 cat events =2
 
   useEffect(() => {
@@ -95,8 +93,8 @@ const WritePage = () => {
               const payloadData = {
                 title: articleTitle,
                 content: editValue,
-                hashtag: [hashtag],
-                eventAddress: eventAddress.address + ' ' + eventAddress.detailAddress,
+                hashtag: hashtag,
+                eventAddress: eventAddress,
                 thumbnailImage: thumbnailImage,
                 imageFile: thumbnailImage ? [thumbnailImage] : null,
               };

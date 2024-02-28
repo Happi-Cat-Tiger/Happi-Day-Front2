@@ -16,7 +16,7 @@ export const postWriteBoardService = ({ categoryId }: { categoryId: number }) =>
       title: string;
       content: string;
       hashtag: string[];
-      eventAddress: string;
+      eventAddress: { address: string; detailAddress: string };
       thumbnailImage: File | null;
       imageFile: File[] | null;
     }) => postBoardWriteApi({ categoryId, title, content, hashtag, eventAddress, thumbnailImage, imageFile }),
@@ -51,7 +51,7 @@ export const patchBoardArticleService = ({ articleId }: { articleId: number | nu
       title: string;
       content: string;
       hashtag: string[];
-      eventAddress: string;
+      eventAddress: { address: string; detailAddress: string };
       thumbnailImage: File | null;
       imageFile: File[] | null;
     }) => patchBoardArticleApi({ articleId, title, content, hashtag, eventAddress, thumbnailImage, imageFile }),
