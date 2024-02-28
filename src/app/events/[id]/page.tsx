@@ -14,6 +14,10 @@ import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/containers/events/KakaoMap';
+import { getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -83,6 +87,14 @@ const page = () => {
     }
   };
 
+  const router = useRouter();
+  const path = usePathname();
+  const params = useSearchParams();
+
+  const { data } = getEventsDetail({ eventId: 1 });
+
+  console.log('data', data);
+
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
       <Link href="/events">
@@ -142,7 +154,7 @@ const page = () => {
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
             <p className="sm:prose-body-XS md:prose-body-S">서울 마포구 어울림마당로 5길 52 2층</p>
           </div>
-          <KakaoMap />
+          {/* <KakaoMap /> */}
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
             <p className="sm:prose-body-XS md:prose-body-S">2024-01-08 ~ 2024-01-09</p>

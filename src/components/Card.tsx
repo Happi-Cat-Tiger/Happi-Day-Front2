@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import logo from '../../public/images/logo.png';
 import { useRouter } from 'next/navigation';
 
 interface CardProps {
@@ -42,7 +41,7 @@ const Card = ({
       key={id}
       onClick={() => router.push(`${cardType}/${id}`)}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
-      {/*임시로 넣은 이미지는 next.config.js에서 모듈 이미지 경로 설정해야함*/}
+      {/*이미지 url의 경로를 next.config.js에 경로 설정해야함*/}
       {thumbnailUrl && (
         <Image src={thumbnailUrl} width={200} height={140} alt="thumbnail" className="flex-1 rounded-[4px]" priority />
       )}
