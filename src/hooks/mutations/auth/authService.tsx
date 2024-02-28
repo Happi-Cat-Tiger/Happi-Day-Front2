@@ -20,6 +20,8 @@ export const postSigninService = () => {
       console.log('success', res);
       const { token } = res.data;
 
+      localStorage.setItem('token', token);
+
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setIsLoggedIn(true);
@@ -50,6 +52,8 @@ export const hostSigninService = () => {
     onSuccess: (res) => {
       console.log('success', res);
       const { token } = res.data;
+      localStorage.setItem('token', token);
+
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setIsLoggedIn(true);
       const setTime = 60 * 1000 * 60;
