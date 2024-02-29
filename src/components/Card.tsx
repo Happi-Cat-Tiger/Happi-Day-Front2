@@ -43,7 +43,7 @@ const Card = ({
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       {/*이미지 url의 경로를 next.config.js에 경로 설정해야함*/}
       {thumbnailUrl && (
-        <Image src={thumbnailUrl} width={200} height={140} alt="thumbnail" className="flex-1 rounded-[4px]" priority />
+        <Image src={thumbnailUrl} width={150} height={140} alt="thumbnail" className="flex-1 rounded-[4px]" priority />
       )}
       <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
         <span className="prose-h6">{title}</span>

@@ -268,6 +268,14 @@ const page = () => {
       : new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
   });
 
+  const getDate = (value: string) => {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+  };
+
   return (
     <div className="px-[8px]">
       <EventGuide />
@@ -300,8 +308,8 @@ const page = () => {
                 title={el.title}
                 artist={el.artists}
                 location={el.location}
-                startTime={el.startTime}
-                endTime={el.endTime}
+                startTime={getDate(el.startTime)}
+                endTime={getDate(el.endTime)}
                 address={el.location}
                 likeCount={el.likeCount}
                 commentCount={el.commentCount}
