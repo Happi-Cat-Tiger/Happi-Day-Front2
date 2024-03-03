@@ -12,7 +12,7 @@ const KakaoMap = () => {
     lng: number;
   }
 
-  const [coords, setCoords] = useState({
+  const [coords, setCoords] = useState<Location>({
     lat: 0,
     lng: 0,
   });
@@ -37,14 +37,16 @@ const KakaoMap = () => {
 
   useEffect(() => {
     if (kakaoLoaded) {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(address, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          const { x, y } = result[0].road_address || result[0].address;
-          setCoords({ lat: Number(y), lng: Number(x) });
-        } else {
-          console.error('Failed to convert address to coordinates:', status);
-        }
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(address, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK) {
+            const { x, y } = result[0].road_address || result[0].address;
+            setCoords({ lat: Number(y), lng: Number(x) });
+          } else {
+            console.error('Failed to convert address to coordinates:', status);
+          }
+        });
       });
     }
   }, [kakaoLoaded, address]);
