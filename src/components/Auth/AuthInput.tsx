@@ -2,7 +2,7 @@ import React from 'react';
 import { AuthInputPlaceholder } from '@/types/auth';
 import { useForm } from 'react-hook-form';
 import { AUTH_REACT_HOOK_FORM } from '@/constants/auth';
-import { postSigninService } from '@/hooks/mutations/auth/authService';
+import { postSigninService, postSignupService } from '@/hooks/mutations/auth/authService';
 
 interface AuthInputProps {
   inputPlaceHolder: AuthInputPlaceholder[];
@@ -28,6 +28,7 @@ type FormValues = {
 
 const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
   const signinMutation = postSigninService();
+  const signupMutation = postSignupService();
   const {
     register,
     handleSubmit,
@@ -36,10 +37,17 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
   } = useForm<FormValues>({ mode: 'onBlur' });
 
   const onSubmit = handleSubmit((data) => {
-    // 회원가입 페이지에서의 api 동작 x
-    if (inputPlaceHolder.length === 6) return;
-    // 로그인 api
-    signinMutation.mutate({ username: data.id, password: data.pw });
+    if (inputPlaceHolder.length === 6) {
+      signupMutation.mutate({
+        username: data.id,
+        password: data.pw,
+        phone: data.phoneNumber,
+        nickname: data.nickName,
+        realname: data.name,
+        termsPrivacy: true,
+        termsService: true,
+      });
+    } else signinMutation.mutate({ username: data.id, password: data.pw });
   });
 
   const isFormValid: boolean =
@@ -105,7 +113,7 @@ const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
       <div className="flex justify-center">
         <input
           type="submit"
-          value={isHaveLabel ? '로그인' : '가입하기'}
+          value={isHaveLabel ? '가입하기' : '로그인'}
           disabled={!isFormValid}
           className="prose-btn-M w-[300px] rounded-lg bg-orange2 py-3 text-white md:prose-btn-L hover:cursor-pointer hover:bg-orange1 disabled:bg-gray6"
         />

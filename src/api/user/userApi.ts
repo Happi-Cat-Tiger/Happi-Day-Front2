@@ -1,4 +1,5 @@
 import apiInstance from '@/api/api';
+import { Profile } from '@/hooks/queries/user/userService';
 
 export type UpdateProfileInfo = {
   nickName?: string;
@@ -10,4 +11,12 @@ export const updateProfileInfoApi = async ({ nickName, phone, profileImage }: Up
   return await apiInstance.patch('/user/info', { nickName, phone, profileImage });
 };
 
-export const getProfileInfoApi = async () => await apiInstance.get('/user/info').then(({ data }) => data.data);
+export const getProfileInfoApi = async () => {
+  try {
+    const response = await apiInstance.get('/user/info');
+    return response.data;
+  } catch (error) {
+    console.error('Error while fetching profile info:', error);
+    throw error;
+  }
+};

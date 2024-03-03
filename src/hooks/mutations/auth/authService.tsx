@@ -1,26 +1,9 @@
 import apiInstance from '@/api/api';
-import { postSigninApi } from '@/api/auth/authApi';
+import { postSigninApi, postSignupApi } from '@/api/auth/authApi';
 import { LoginState } from '@/atom/LoginState';
-import { API_BASE_URL } from '@/constants/api';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
-
-const logInApi = async () =>
-  await axios({
-    baseURL: API_BASE_URL,
-    method: 'post',
-    url: '/auth/login',
-    timeout: 1000,
-    data: {
-      //   username,
-      //   password,
-      username: 'qwer@email.com',
-      password: 'qwer',
-    },
-    withCredentials: true,
-  });
 
 export const postSigninService = () => {
   const [, setIsLoggedIn] = useRecoilState(LoginState);
@@ -30,24 +13,85 @@ export const postSigninService = () => {
     mutationKey: ['signIn'],
     mutationFn: ({ username, password }: { username: string; password: string }) =>
       postSigninApi({
-        //   username,
-        //   password,
-        username: 'qwer@email.com',
-        password: 'qwer',
+        username,
+        password,
       }),
-    // logInApi(),
     onSuccess: (res) => {
       console.log('success', res);
       const { token } = res.data;
 
+      localStorage.setItem('token', token);
+
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      // localStorage에 token 저장
-      if (token) localStorage.setItem('jwt', token);
-      if (localStorage.getItem('jwt')) setIsLoggedIn(true);
+      setIsLoggedIn(true);
+      // localStorage.setItem('log', JSON.stringify({ state: true }));
+      const setTime = 60 * 1000 * 60;
+
+      setTimeout(() => {
+        setIsLoggedIn(false);
+      }, setTime);
 
       router.push('/');
     },
   });
+  return mutation;
+};
+
+export const hostSigninService = () => {
+  const [, setIsLoggedIn] = useRecoilState(LoginState);
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationKey: ['signIn'],
+    mutationFn: () =>
+      postSigninApi({
+        username: 'qwer@email.com',
+        password: 'qwer',
+      }),
+    onSuccess: (res) => {
+      console.log('success', res);
+      const { token } = res.data;
+      localStorage.setItem('token', token);
+
+      apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setIsLoggedIn(true);
+      const setTime = 60 * 1000 * 60;
+      setTimeout(() => {
+        setIsLoggedIn(false);
+      }, setTime);
+      router.push('/');
+    },
+  });
+  return mutation;
+};
+
+export const postSignupService = () => {
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: ({
+      username,
+      password,
+      nickname,
+      realname,
+      phone,
+      termsPrivacy,
+      termsService,
+    }: {
+      username: string;
+      password: string;
+      nickname: string;
+      realname: string;
+      phone: string;
+      termsPrivacy: boolean;
+      termsService: boolean;
+    }) => postSignupApi({ username, password, nickname, realname, phone, termsPrivacy, termsService }),
+    onSuccess: () => {
+      router.push('/auth/sign-in');
+      alert('회원가입이 완료되었습니다.');
+    },
+  });
+
   return mutation;
 };

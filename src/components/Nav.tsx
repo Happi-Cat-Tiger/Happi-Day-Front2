@@ -6,19 +6,19 @@ import Link from 'next/link';
 import { AiOutlineUser, AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { usePathname } from 'next/navigation';
 import useScrollControl from '@/hooks/useScrollControl';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
 import { getSignoutService } from '@/hooks/queries/auth/authService';
 
 const Nav = () => {
   // ssr hybrate 랜더링
+  const isLoggedIn = useRecoilValue(LoginState);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const [isLoggedIn] = useRecoilState(LoginState);
   // 로그아웃 api
   const logoutQuery = getSignoutService();
 

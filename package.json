@@ -27,6 +27,7 @@
     "react-js-pagination": "^3.0.3",
     "react-kakao-maps-sdk": "^1.1.26",
     "react-quill": "^2.0.0",
+    "react-select": "^5.8.0",
     "react-slick": "^0.29.0",
     "react-spinners": "^0.13.8",
     "recoil": "^0.7.7",

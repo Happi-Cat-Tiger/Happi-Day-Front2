@@ -12,15 +12,29 @@ export const writeState = atom({
   default: writeInitState,
 });
 
+interface ProductOption {
+  index: string;
+  label: string;
+  stock: string;
+  price: string;
+}
+
+interface ShippingOptions {
+  index: string;
+  label: string;
+  price: string;
+}
+
 interface WritingInfoState {
-  hashtag: string;
+  hashtag: string[];
   thumbnailImage: File | null;
+  titleProduct: { label: string; price: string };
   eventAddress: { address: string; detailAddress: string };
   location: string;
   startTime: Date | null;
   endTime: Date | null;
-  productOptions: {}[];
-  shippingOptions: {}[];
+  productOptions: ProductOption[];
+  shippingOptions: ShippingOptions[];
   bankAccount: {
     bank: string;
     name: string;
@@ -28,9 +42,11 @@ interface WritingInfoState {
   };
   poster: File | null;
 }
+
 export const writingInfoInitState: WritingInfoState = {
-  hashtag: '',
+  hashtag: [],
   thumbnailImage: null,
+  titleProduct: { label: '', price: '' },
   eventAddress: { address: '', detailAddress: '' },
   location: '',
   startTime: new Date(),

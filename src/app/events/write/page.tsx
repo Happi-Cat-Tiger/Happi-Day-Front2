@@ -49,13 +49,14 @@ const page = () => {
                 bankAccount: { bank: '', name: '', number: '' },
                 endTime: null,
                 eventAddress: { address: '', detailAddress: '' },
-                hashtag: '',
+                hashtag: [],
                 location: '',
                 poster: null,
                 productOptions: [],
                 shippingOptions: [],
                 startTime: null,
                 thumbnailImage: null,
+                titleProduct: { label: '', price: '' },
               });
               router.push('/events');
             } else setStep(step + 1);
