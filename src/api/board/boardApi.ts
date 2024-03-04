@@ -63,7 +63,7 @@ export const deleteBoardArticleApi = async ({ articleId }: { articleId: number }
   await apiInstance.delete(`/articles/${articleId}`);
 
 // 글 수정
-export const patchBoardArticleApi = async ({
+export const putBoardArticleApi = async ({
   articleId,
   title,
   content,
@@ -73,7 +73,6 @@ export const patchBoardArticleApi = async ({
   thumbnailImage,
   imageFile,
 }: BoardWritePatchPayload) => {
-  console.log('patch', address, detailAddress);
   const formData = new FormData();
   const articleJson = new Blob(
     [
@@ -93,12 +92,14 @@ export const patchBoardArticleApi = async ({
   thumbnailImage && formData.append('thumbnailImage', thumbnailImage);
   imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
 
-  await apiInstance.patch(`/articles/${articleId}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
-    transformRequest: [
-      function () {
-        return formData;
-      },
-    ],
-  });
+  return await apiInstance
+    .put(`/articles/${articleId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
 };
