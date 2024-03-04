@@ -4,7 +4,7 @@ import LinkButton from '@/components/Button/LinkButton';
 import ArticleList from '@/components/List/ArticleList';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
-import { getBoardCategoriesService } from '@/hooks/queries/board/boardServie';
+import { useGetBoardCategoriesService } from '@/hooks/queries/board/boardServie';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ const FreePage = () => {
 
   const [page, setPage] = useState(1);
 
-  const { data: boardFreeData, isLoading } = getBoardCategoriesService({ categoryId: 1 });
+  const { data: boardFreeData, isLoading } = useGetBoardCategoriesService({ categoryId: 1 });
 
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
@@ -38,7 +38,7 @@ const FreePage = () => {
         {boardFreeData && (
           <div>
             {boardFreeData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <ArticleList key={articleItem.id} articleContent={articleItem} path="board/free" />
+              <ArticleList key={articleItem.id} articleContent={articleItem} path="/board/free" />
             ))}
           </div>
         )}

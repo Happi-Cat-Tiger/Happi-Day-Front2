@@ -5,7 +5,7 @@ import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilState } from 'recoil';
 import { eventsCommentValue } from '@/atom/eventsAtom';
-import { getBoardArticleService } from '@/hooks/queries/board/boardServie';
+import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
 import Image from 'next/image';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 
@@ -33,7 +33,7 @@ const page = ({ params }: { params: any }) => {
     }
   };
 
-  const { data: boardArticle, isLoading } = getBoardArticleService({ articleId: params.id });
+  const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id });
   console.log(boardArticle);
 
   if (isLoading) return <></>;

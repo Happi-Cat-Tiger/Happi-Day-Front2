@@ -10,7 +10,7 @@ import { BOARD_CATEGORY } from '@/constants/board';
 import SubBanner from 'public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
-import { getBoardCategoriesService } from '@/hooks/queries/board/boardServie';
+import { useGetBoardCategoriesService } from '@/hooks/queries/board/boardServie';
 
 const FriendshipPage = () => {
   const [, setWriteValue] = useRecoilState(writeState);
@@ -18,7 +18,7 @@ const FriendshipPage = () => {
 
   const [page, setPage] = useState(1);
 
-  const { data: boardFriendData, isLoading } = getBoardCategoriesService({ categoryId: 4 });
+  const { data: boardFriendData, isLoading } = useGetBoardCategoriesService({ categoryId: 4 });
 
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
@@ -38,7 +38,7 @@ const FriendshipPage = () => {
         {boardFriendData && (
           <div>
             {boardFriendData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <ArticleList key={articleItem.id} articleContent={articleItem} path="board/friendship" />
+              <ArticleList key={articleItem.id} articleContent={articleItem} path="/board/friendship" />
             ))}
           </div>
         )}

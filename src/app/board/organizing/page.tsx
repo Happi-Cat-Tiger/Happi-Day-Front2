@@ -10,7 +10,7 @@ import { BOARD_CATEGORY } from '@/constants/board';
 import SubBanner from 'public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
-import { getBoardCategoriesService } from '@/hooks/queries/board/boardServie';
+import { useGetBoardCategoriesService } from '@/hooks/queries/board/boardServie';
 
 const OrganizingPage = () => {
   const [, setWriteValue] = useRecoilState(writeState);
@@ -18,7 +18,7 @@ const OrganizingPage = () => {
 
   const [page, setPage] = useState(1);
 
-  const { data: boardOrganizingData, isLoading } = getBoardCategoriesService({ categoryId: 5 });
+  const { data: boardOrganizingData, isLoading } = useGetBoardCategoriesService({ categoryId: 5 });
 
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
