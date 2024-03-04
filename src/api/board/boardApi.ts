@@ -1,5 +1,5 @@
 import apiInstance from '@/api/api';
-import { BoardAllResponse } from './type';
+import { BoardAllResponse, BoardWritePatchPayload, BoardWritePostPayload } from './type';
 
 // 게시글 작성
 export const postBoardWriteApi = async ({
@@ -7,21 +7,22 @@ export const postBoardWriteApi = async ({
   title,
   content,
   hashtag,
-  eventAddress,
+  address,
+  detailAddress,
   thumbnailImage,
   imageFile,
-}: {
-  categoryId: number;
-  title: string;
-  content: string;
-  hashtag: string[];
-  eventAddress: { address: string; detailAddress: string };
-  thumbnailImage: File | null;
-  imageFile: File[] | null;
-}) => {
+}: BoardWritePostPayload) => {
   const formData = new FormData();
   const articleJson = new Blob(
-    [JSON.stringify({ title: title, content: content, hashtag: hashtag, eventAddress: eventAddress })],
+    [
+      JSON.stringify({
+        title: title,
+        content: content,
+        hashtag: hashtag,
+        eventAddress: address,
+        eventDetailAddress: detailAddress,
+      }),
+    ],
     {
       type: 'application/json',
     },
@@ -30,14 +31,16 @@ export const postBoardWriteApi = async ({
   thumbnailImage && formData.append('thumbnailImage', thumbnailImage);
   imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
 
-  await apiInstance.post(`/articles/${categoryId}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
-    transformRequest: [
-      function () {
-        return formData;
-      },
-    ],
-  });
+  return await apiInstance
+    .post(`/articles/${categoryId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
 };
 // 전체 글 조회
 export const fetchBoardAllApi = async (): Promise<BoardAllResponse> =>
@@ -65,21 +68,23 @@ export const patchBoardArticleApi = async ({
   title,
   content,
   hashtag,
-  eventAddress,
+  address,
+  detailAddress,
   thumbnailImage,
   imageFile,
-}: {
-  articleId: number | null;
-  title: string;
-  content: string;
-  hashtag: string[];
-  eventAddress: { address: string; detailAddress: string };
-  thumbnailImage: File | null;
-  imageFile: File[] | null;
-}) => {
+}: BoardWritePatchPayload) => {
+  console.log('patch', address, detailAddress);
   const formData = new FormData();
   const articleJson = new Blob(
-    [JSON.stringify({ title: title, content: content, hashtag: hashtag, eventAddress: eventAddress })],
+    [
+      JSON.stringify({
+        title: title,
+        content: content,
+        hashtag: hashtag,
+        eventAddress: address,
+        eventDetailAddress: detailAddress,
+      }),
+    ],
     {
       type: 'application/json',
     },

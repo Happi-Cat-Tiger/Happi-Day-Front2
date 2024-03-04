@@ -2,27 +2,24 @@ import { fetchBoardAllApi, getBoardArticleApi, getBoardCategoriesApi } from '@/a
 import { BoardAllResponse } from '@/api/board/type';
 import { useQuery } from '@tanstack/react-query';
 
-export const getBoardAllService = () => {
-  const query = useQuery<BoardAllResponse>({
-    queryKey: ['board', 'all'],
+export const useGetBoardAllService = () => {
+  return useQuery<BoardAllResponse, Error>({
+    queryKey: ['board', 'articleList'],
     queryFn: () => fetchBoardAllApi(),
   });
-  return query;
 };
 
-export const getBoardCategoriesService = ({ categoryId }: { categoryId: number }) => {
-  const query = useQuery<BoardAllResponse>({
-    queryKey: ['board'],
+export const useGetBoardCategoriesService = ({ categoryId }: { categoryId: number }) => {
+  return useQuery<BoardAllResponse, Error>({
+    queryKey: ['board', 'articleList'],
     queryFn: () => getBoardCategoriesApi({ categoryId }),
   });
-  return query;
 };
 
-export const getBoardArticleService = ({ articleId }: { articleId: number | null }) => {
-  const query = useQuery({
+export const useGetBoardArticleService = ({ articleId }: { articleId: number | null }) => {
+  return useQuery({
     queryKey: ['board', 'article'],
     queryFn: () => getBoardArticleApi({ articleId }),
     enabled: !!articleId,
   });
-  return query;
 };

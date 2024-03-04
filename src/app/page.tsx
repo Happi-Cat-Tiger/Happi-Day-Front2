@@ -14,8 +14,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
 import { getProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '@/containers/loading/LoadingSpinner';
-import { useSubscribedListService } from '@/hooks/queries/artist/artistService';
-import { getSubscribedListApi } from '@/api/artist/artistApi';
 
 interface MockData {
   id: number;
@@ -143,10 +141,7 @@ const Home = () => {
   const isLoggedIn = useRecoilValue(LoginState);
   const { data: userData, isLoading } = getProfileInfoService({ isLoggedIn });
 
-  // const { data: subData } = useSubscribedListService();
-  const gs = getSubscribedListApi();
   const router = useRouter();
-  console.log(userData, gs);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
