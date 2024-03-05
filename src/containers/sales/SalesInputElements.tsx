@@ -1,28 +1,40 @@
 'use client';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
-import { salesSearchState } from '@/atom/salesAtom';
-import { useRecoilState } from 'recoil';
+import { salesSearchState, salesSearchFilter, salesSortList } from '@/atom/salesAtom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 const SalesInputElements = () => {
   const [salesSearch, setSalesSearch] = useRecoilState<string>(salesSearchState);
+  const setSalesSortValue = useSetRecoilState<string>(salesSortList);
+  const setSearchFilter = useSetRecoilState<string>(salesSearchFilter);
 
-  const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  const getSalesSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSalesSearch(e.target.value);
   };
   const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
-      console.log('enter', salesSearch);
-      getEventSearch(e);
+      console.log('엔터', salesSearch);
+      getSalesSearch(e);
     }
   };
 
+  const handleSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSalesSortValue(e.target.value);
+  };
+
+  const handleFilter = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSearchFilter(e.target.value);
+  };
+
   return (
-    <div className="my-[60px] flex justify-between sm:flex-col sm:gap-[16px] md:flex-row md:items-center md:gap-[0]">
+    <div className="my-10 flex justify-between sm:flex-col sm:gap-[16px] md:my-12 md:flex-row md:items-center md:gap-[0]">
       <div className="flex items-center sm:justify-between md:gap-[24px]">
         <div>
-          <select className="cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M">
-            <option>최신순</option>
-            <option>오래된순</option>
+          <select
+            className="cursor-pointer rounded-[16px] bg-[#F0F5F9] px-[16px] py-[8px] outline-none sm:prose-btn-S md:prose-btn-M"
+            onChange={handleSort}>
+            <option value="new">최신순</option>
+            <option value="old">오래된순</option>
           </select>
         </div>
         <div className="flex flex-col items-start gap-1">
@@ -41,12 +53,20 @@ const SalesInputElements = () => {
         </div>
       </div>
       <div>
-        <input
-          type="search"
-          placeholder="Search"
-          onKeyDown={handleEnter}
-          className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
-        />
+        <div className="flex gap-[10px]">
+          <select
+            className="prose-subtitle-S w-[150px] text-ellipsis rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black"
+            onChange={handleFilter}>
+            <option value="title">제목</option>
+            <option value="artist">아티스트</option>
+          </select>
+          <input
+            type="search"
+            placeholder="Search"
+            onKeyDown={handleEnter}
+            className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
+          />
+        </div>
       </div>
     </div>
   );

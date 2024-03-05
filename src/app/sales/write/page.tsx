@@ -12,21 +12,31 @@ const WritePage = () => {
   const [step, setStep] = useState<number>(1);
 
   const [writeValue] = useRecoilState(writeState);
-  const { articleTitle, editValue } = writeValue;
+  const { articleTitle, editValue, category } = writeValue;
 
   const [writingInfoValue] = useRecoilState(writingInfoState);
-  const { hashtag, thumbnailImage, startTime, endTime, productOptions, shippingOptions, bankAccount, poster } =
-    writingInfoValue;
+  const {
+    hashtag,
+    thumbnailImage,
+    titleProduct,
+    startTime,
+    endTime,
+    productOptions,
+    shippingOptions,
+    bankAccount,
+    imageFile,
+  } = writingInfoValue;
 
   const onDisable = () => {
     if (step === 1) {
-      if (!articleTitle || !editValue) return true;
+      if (category.label === '카테고리' || !articleTitle || !editValue) return true;
     }
     if (step === 2) {
       if (
         !hashtag ||
         hashtag.length === 0 ||
         !thumbnailImage ||
+        !titleProduct.price ||
         !startTime ||
         !endTime ||
         !productOptions ||
@@ -36,10 +46,11 @@ const WritePage = () => {
         !bankAccount.bank ||
         !bankAccount.name ||
         !bankAccount.number ||
-        !poster
+        !imageFile
       )
         return true;
     }
+    return false;
   };
 
   return (

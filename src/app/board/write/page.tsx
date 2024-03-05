@@ -54,7 +54,7 @@ const WritePage = () => {
 
   const onDisable = () => {
     if (step === 1) {
-      if (category.label === '카테고리|' || !articleTitle || !editValue) return true;
+      if (category.label === '카테고리' || !articleTitle || !editValue) return true;
     }
     if (step === 2) {
       if (category.label === '거래/교환/양도' || category.label === '이벤트/홍보') {
