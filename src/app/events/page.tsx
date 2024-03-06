@@ -7,9 +7,11 @@ import Link from 'next/link';
 import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
-import { useRecoilState } from 'recoil';
-import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { eventsListState, eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
+import { useRouter } from 'next/navigation';
+import { writingInfoState } from '@/atom/write';
 
 interface MockData {
   id: number;
@@ -199,9 +201,15 @@ const page = () => {
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const [gridCols, setGridCols] = useState('grid-cols-5');
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
+  const router = useRouter();
   const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
   const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
+
+  //글쓰기 관련 데이터
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+  const eventsList = useRecoilValue(eventsListState);
+  console.log('events', eventsList);
 
   const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
 
@@ -243,6 +251,10 @@ const page = () => {
       ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
       : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });
+
+  const eventsWriteButton = () => {
+    router.push('events/write');
+  };
 
   return (
     <div className="px-[8px]">
@@ -293,7 +305,7 @@ const page = () => {
         />
       </div>
       <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={() => null} />
+        <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
       </div>
     </div>
   );

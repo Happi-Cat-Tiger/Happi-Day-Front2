@@ -6,7 +6,7 @@ import { StaticMap } from 'react-kakao-maps-sdk';
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_KEY}&autoload=false&libraries=services`;
 
-const KakaoMap = () => {
+const KakaoMap = ({ mapAddress }: { mapAddress: string }) => {
   interface Location {
     lat: number;
     lng: number;
@@ -19,7 +19,6 @@ const KakaoMap = () => {
 
   const center: Location = coords;
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
-  const address = '서울시 노원구 노해로 437';
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -39,7 +38,7 @@ const KakaoMap = () => {
     if (kakaoLoaded) {
       window.kakao.maps.load(() => {
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(address, (result, status) => {
+        geocoder.addressSearch(mapAddress, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK) {
             const { x, y } = result[0].road_address || result[0].address;
             setCoords({ lat: Number(y), lng: Number(x) });
@@ -49,7 +48,7 @@ const KakaoMap = () => {
         });
       });
     }
-  }, [kakaoLoaded, address]);
+  }, [kakaoLoaded, mapAddress]);
 
   return (
     <>
