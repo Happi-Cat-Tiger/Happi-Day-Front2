@@ -13,7 +13,7 @@ import Reveiw from '../review/Review';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
-import KakaoMap from '@/containers/events/KakaoMap';
+import KakaoMap from '@/components/Map/KakaoMap';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -142,7 +142,7 @@ const page = () => {
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
             <p className="sm:prose-body-XS md:prose-body-S">서울 마포구 어울림마당로 5길 52 2층</p>
           </div>
-          <KakaoMap />
+          <KakaoMap mapAddress="서울시 노원구 노해로 437" />
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
             <p className="sm:prose-body-XS md:prose-body-S">2024-01-08 ~ 2024-01-09</p>

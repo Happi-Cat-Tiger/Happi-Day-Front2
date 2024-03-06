@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
+import KakaoMap from '@/components/Map/KakaoMap';
 
 const EventsPreviewWringStep = () => {
   const writingInfoValue = useRecoilValue(writingInfoState);
@@ -29,34 +30,40 @@ const EventsPreviewWringStep = () => {
       <p className=" prose-h4 md:prose-h3">{writeValue.articleTitle}</p>
       <div className="prose-body-XS flex items-center justify-center gap-2 md:prose-body-S">{formattedCurrentDate}</div>
       <hr />
-      <p className=" prose-body-XS text-left text-gray4 md:prose-body-S">{writingInfoValue.hashtag}</p>
+      <ul className=" prose-body-XS flex gap-[10px] text-left text-gray4 md:prose-body-S">
+        {writingInfoValue.hashtag.map((el, idx) => (
+          <li key={idx}>#{el}</li>
+        ))}
+      </ul>
       <hr />
       {writingInfoValue.thumbnailImage && (
-        <img
-          src={URL.createObjectURL(writingInfoValue.thumbnailImage)}
-          alt="썸네일 이미지"
-          className="h-[100%] w-[600px]"
-        />
+        <img src={URL.createObjectURL(writingInfoValue.thumbnailImage)} alt="썸네일 이미지" className=" w-[600px]" />
       )}
       {writingInfoValue.poster && (
-        <img src={URL.createObjectURL(writingInfoValue.poster)} alt="포스터 이미지" className="h-[100%] w-[600px]" />
+        <img src={URL.createObjectURL(writingInfoValue.poster)} alt="포스터 이미지" className=" w-[600px]" />
       )}
-      <div dangerouslySetInnerHTML={{ __html: writeValue.editValue }} className="prose-body-M md:prose-body-L" />
-      <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]">
-        <div>
+      <div
+        dangerouslySetInnerHTML={{ __html: writeValue.editValue }}
+        className="prose-body-M my-[50px] md:prose-body-L"
+      />
+      <div className="flex w-full flex-col items-center gap-[20px] bg-[#FEF9D0] py-[20px]">
+        <div className="flex flex-col gap-[5px]">
           <p>Place</p>
           <p>{writingInfoValue.location}</p>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-[5px]">
           <p>Loacation</p>
           <p>{writingInfoValue.eventAddress.address}</p>
           <p>{writingInfoValue.eventAddress.detailAddress}</p>
-          <div className="h-[200px] w-[200px] border border-red-200">카카오지도</div>
+          <div className="h-[200px] w-[200px]">
+            <KakaoMap mapAddress={writingInfoValue.eventAddress.address} />
+          </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-[5px]">
           <p>Date</p>
-          <p>{getDate(writingInfoValue.startTime)} ~ </p>
-          <p>{getDate(writingInfoValue.endTime)} ~ </p>
+          <p>
+            {getDate(writingInfoValue.startTime)} ~ {getDate(writingInfoValue.endTime)}
+          </p>
         </div>
       </div>
     </div>
