@@ -46,6 +46,11 @@ export const postBoardWriteApi = async ({
 export const fetchBoardAllApi = async (): Promise<BoardAllResponse> =>
   await apiInstance.get('/articles').then((response) => response.data);
 
+// 전체 글 조회 (검색)
+export const getSearchBoardAllApi = async ({ filter }: { filter: string }): Promise<BoardAllResponse> => {
+  return await apiInstance.get('/articles').then((response) => response.data);
+};
+
 // 카테고리별 글 전체 조회 - 구독 중 아티스트
 export const getBoardCategoriesOfSubscribeApi = async ({ categoryId }: { categoryId: number }) =>
   await apiInstance.get(`/articles/${categoryId}/list/subscribedArtists`).then((response) => response.data);
@@ -103,3 +108,26 @@ export const putBoardArticleApi = async ({
     })
     .then((response) => response.data);
 };
+
+// 댓글 작성
+export const postBoardCommentApi = async ({ articleId, content }: { articleId: number; content: string }) =>
+  await apiInstance.post(`/articles/${articleId}/comments`, { content });
+
+// 댓글 조회
+export const getBoardCommentApi = async ({ articleId }: { articleId: number }) =>
+  await apiInstance.get(`/articles/${articleId}/comments`);
+
+// 댓글 수정
+export const updateBoardCommentApi = async ({
+  articleId,
+  commentId,
+  content,
+}: {
+  articleId: number;
+  commentId: string;
+  content: string;
+}) => await apiInstance.put(`/articles/${articleId}/comments/${commentId}`, { content });
+
+// 댓글 삭제
+export const deleteBoardCommentApi = async ({ articleId, commentId }: { articleId: number; commentId: string }) =>
+  await apiInstance.delete(`/articles/${articleId}/comments/${commentId}`);

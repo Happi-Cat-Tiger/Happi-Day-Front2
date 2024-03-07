@@ -1,6 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
-import { deleteBoardArticleApi, postBoardWriteApi, putBoardArticleApi } from '@/api/board/boardApi';
+import {
+  deleteBoardArticleApi,
+  deleteBoardCommentApi,
+  postBoardCommentApi,
+  postBoardWriteApi,
+  putBoardArticleApi,
+} from '@/api/board/boardApi';
 import { toast } from 'react-toastify';
 import { BoardWritePayload } from '@/api/board/type';
 import { useRouter } from 'next/navigation';
@@ -55,6 +61,28 @@ export const usePutBoardArticleService = ({ articleId }: { articleId: number | n
       router.push(`/board/${categoryPath}/${id}`);
 
       toast('글이 수정되었습니다.');
+    },
+  });
+};
+
+export const usePostBoardCommentService = () => {
+  return useMutation({
+    mutationFn: ({ articleId, content }: { articleId: number; content: string }) =>
+      postBoardCommentApi({ articleId, content }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      toast('댓글이 작성되었습니다.');
+    },
+  });
+};
+
+export const useDeleteBoardCommentService = () => {
+  return useMutation({
+    mutationFn: ({ articleId, commentId }: { articleId: number; commentId: string }) =>
+      deleteBoardCommentApi({ articleId, commentId }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      toast('댓글이 삭제되었습니다.');
     },
   });
 };
