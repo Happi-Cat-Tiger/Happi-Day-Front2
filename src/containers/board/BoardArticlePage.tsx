@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { eventsCommentValue } from '@/atom/eventsAtom';
+import { useRecoilValue } from 'recoil';
 import Image from 'next/image';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRouter } from 'next/navigation';
@@ -13,44 +11,26 @@ import { useDeleteBoardArticleService } from '@/hooks/mutations/board/boardServi
 import { LoginState } from '@/atom/LoginState';
 import { getProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '../loading/LoadingSpinner';
+import { hdQueryClient } from '@/shared/hdQueryClient';
+import ArticleComments from '@/components/Article/ArticleComments';
 
 const BoardArticlePage = ({ params }: { params: any }) => {
-  const [comments, setComments] = useRecoilState(eventsCommentValue);
-  const [commentsValue, setCommentsValue] = useState<string>();
-  const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCommentsValue(e.target.value);
-  };
-
-  const addComments = () => {
-    if (commentsValue) {
-      const currentTime = new Date().toLocaleString();
-      const newComment = {
-        id: comments.length + 1,
-        user: '성동윤',
-        comment: `${commentsValue}`,
-        date: `${currentTime}`,
-      };
-
-      setComments([...comments, newComment]);
-      setCommentsValue('');
-    } else {
-      alert('댓글을 입력해주세요 !');
-    }
-  };
-
   const router = useRouter();
 
+  const queryClient = hdQueryClient;
+  const cachedData = queryClient.getQueryData(['board', 'article']);
+  console.log('캐시', cachedData, queryClient);
+  const isLoggedIn = useRecoilValue(LoginState);
+
+  const { data: userData, isLoading: isAuthLoading } = getProfileInfoService({ isLoggedIn });
   const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id });
   const deleteArticleMutation = useDeleteBoardArticleService({ articleId: params.id });
 
-  const isLoggedIn = useRecoilValue(LoginState);
-  const { data: userData, isLoading: isAuthLoading } = getProfileInfoService({ isLoggedIn });
-
-  if (isLoading) return <></>;
-  if (isAuthLoading) return <LoadingSpinner />;
+  if (isLoading || isAuthLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
   const isAuthor: boolean = boardArticle.user === userData.nickname;
+
   return (
     <div className="my-[40px] flex w-full flex-col px-2 md:my-[60px] md:px-0">
       <div
@@ -121,7 +101,6 @@ const BoardArticlePage = ({ params }: { params: any }) => {
           </div>
         </div>
       )}
-
       <div>
         <ul className="prose-body-XS flex gap-4 md:prose-body-S">
           <li className="flex items-center gap-[3px]">
@@ -131,36 +110,10 @@ const BoardArticlePage = ({ params }: { params: any }) => {
             <AiOutlineMessage /> 댓글 {boardArticle?.comments.length}
           </li>
         </ul>
-        <div className="my-[10px] flex flex-col gap-[5px]">
-          {comments.length &&
-            comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-                <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
-                <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.comment}</p>
-                <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.date}</p>
-              </div>
-            ))}
-        </div>
-        <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-5">
-          <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
-          <textarea
-            placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
-            className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
-            value={commentsValue}
-            onChange={getComments}
-          />
-        </div>
-        <div className="text-right">
-          <StyledButton
-            label="등록"
-            onClick={() => addComments()}
-            disabled={false}
-            className="rounded-[16px] bg-gray5 px-6 py-4 text-white sm:prose-btn-M md:prose-btn-L"
-          />
-        </div>
       </div>
+      {boardArticle.comments && (
+        <ArticleComments comments={boardArticle.comments} articleId={params.id} isAuthor={isAuthor} />
+      )}
     </div>
   );
 };
