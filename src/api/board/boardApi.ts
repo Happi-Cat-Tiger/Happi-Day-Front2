@@ -48,7 +48,7 @@ export const fetchBoardAllApi = async (): Promise<BoardAllResponse> =>
 
 // 카테고리별 글 전체 조회 - 구독 중 아티스트
 export const getBoardCategoriesOfSubscribeApi = async ({ categoryId }: { categoryId: number }) =>
-  await apiInstance.get(`/articles/${categoryId}/list/subscribedArtists`);
+  await apiInstance.get(`/articles/${categoryId}/list/subscribedArtists`).then((response) => response.data);
 
 // 카테고리별 글 전체 조회
 export const getBoardCategoriesApi = async ({ categoryId }: { categoryId: number }): Promise<BoardAllResponse> =>

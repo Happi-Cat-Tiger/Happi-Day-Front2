@@ -7,7 +7,7 @@ import PreviewWritingStep from '@/containers/write/PreviewWritingStep';
 import StyledButton from '@/components/Button/StyledButton';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
-import { usePatchBoardArticleService, usePostWriteBoardService } from '@/hooks/mutations/board/boardService';
+import { usePostWriteBoardService, usePutBoardArticleService } from '@/hooks/mutations/board/boardService';
 import { useSearchParams } from 'next/navigation';
 import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
 import LoadingSpinner from '@/containers/loading/LoadingSpinner';
@@ -30,7 +30,7 @@ const WritePage = () => {
 
   const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId });
   const writeBoardMutation = usePostWriteBoardService({ categoryId: category.id });
-  const modifyBoardMutation = usePatchBoardArticleService({ articleId });
+  const modifyBoardMutation = usePutBoardArticleService({ articleId });
 
   useEffect(() => {
     if (boardArticle && articleId) {
@@ -85,7 +85,6 @@ const WritePage = () => {
   };
 
   if (isLoading) return <LoadingSpinner />;
-
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />

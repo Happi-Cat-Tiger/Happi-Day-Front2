@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import BoardArticle from '@/containers/board/BoardArticle';
+import BoardArticlePage from '@/containers/board/BoardArticlePage';
 
 const page = ({ params }: { params: any }) => {
-  return <BoardArticle params={params} />;
+  return <BoardArticlePage params={params} />;
 };
 
 export default page;

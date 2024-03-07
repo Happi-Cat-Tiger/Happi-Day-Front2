@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
-import { deleteBoardArticleApi, patchBoardArticleApi, postBoardWriteApi } from '@/api/board/boardApi';
+import { deleteBoardArticleApi, postBoardWriteApi, putBoardArticleApi } from '@/api/board/boardApi';
 import { toast } from 'react-toastify';
 import { BoardWritePayload } from '@/api/board/type';
 import { useRouter } from 'next/navigation';
@@ -38,14 +38,21 @@ export const useDeleteBoardArticleService = ({ articleId }: { articleId: number 
   });
 };
 
-export const usePatchBoardArticleService = ({ articleId }: { articleId: number | null }) => {
+export const usePutBoardArticleService = ({ articleId }: { articleId: number | null }) => {
+  const router = useRouter();
+
   return useMutation({
     mutationFn: ({ title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }: BoardWritePayload) =>
-      patchBoardArticleApi({ articleId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
-    onSuccess: (data: any) => {
+      putBoardArticleApi({ articleId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
+    onSuccess: (data) => {
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'articleList'] });
       console.log(data);
+
+      // 작성한 글로 이동
+      const { categoryId, id } = data;
+      const categoryPath = BOARD.CATEGORY[categoryId - 1].path;
+      router.push(`/board/${categoryPath}/${id}`);
 
       toast('글이 수정되었습니다.');
     },
