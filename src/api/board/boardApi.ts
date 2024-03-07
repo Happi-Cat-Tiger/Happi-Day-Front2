@@ -124,10 +124,10 @@ export const updateBoardCommentApi = async ({
   content,
 }: {
   articleId: number;
-  commentId: string;
+  commentId: number;
   content: string;
 }) => await apiInstance.put(`/articles/${articleId}/comments/${commentId}`, { content });
 
 // 댓글 삭제
-export const deleteBoardCommentApi = async ({ articleId, commentId }: { articleId: number; commentId: string }) =>
+export const deleteBoardCommentApi = async ({ articleId, commentId }: { articleId: number; commentId: number }) =>
   await apiInstance.delete(`/articles/${articleId}/comments/${commentId}`);

@@ -6,6 +6,7 @@ import {
   postBoardCommentApi,
   postBoardWriteApi,
   putBoardArticleApi,
+  updateBoardCommentApi,
 } from '@/api/board/boardApi';
 import { toast } from 'react-toastify';
 import { BoardWritePayload } from '@/api/board/type';
@@ -78,11 +79,22 @@ export const usePostBoardCommentService = () => {
 
 export const useDeleteBoardCommentService = () => {
   return useMutation({
-    mutationFn: ({ articleId, commentId }: { articleId: number; commentId: string }) =>
+    mutationFn: ({ articleId, commentId }: { articleId: number; commentId: number }) =>
       deleteBoardCommentApi({ articleId, commentId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
       toast('댓글이 삭제되었습니다.');
+    },
+  });
+};
+
+export const useUpdateBoardCommentService = () => {
+  return useMutation({
+    mutationFn: ({ articleId, commentId, content }: { articleId: number; commentId: number; content: string }) =>
+      updateBoardCommentApi({ articleId, commentId, content }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      toast('댓글이 수정되었습니다.');
     },
   });
 };

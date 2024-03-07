@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import StyledSubmitButton from '../Button/StyledSubmitButton';
-import { AiOutlineEllipsis } from 'react-icons/ai';
-import { useDeleteBoardCommentService, usePostBoardCommentService } from '@/hooks/mutations/board/boardService';
+import {
+  useDeleteBoardCommentService,
+  usePostBoardCommentService,
+  useUpdateBoardCommentService,
+} from '@/hooks/mutations/board/boardService';
 
 const ArticleComments = ({
   comments,
   articleId,
-  isAuthor,
+  userNickname,
 }: {
   comments: any;
   articleId: number;
-  isAuthor: boolean;
+  userNickname: string;
 }) => {
   const postCommentMutation = usePostBoardCommentService();
   const deleteCommentMutation = useDeleteBoardCommentService();
+  const updateCommentMutation = useUpdateBoardCommentService();
 
   const [commentsValue, setCommentsValue] = useState<string>('');
   const [editComment, setEditComment] = useState({ isEdit: false, editValue: '', editId: 0 });
@@ -28,30 +32,49 @@ const ArticleComments = ({
       <div className="my-[10px] flex flex-col gap-[5px]">
         {comments.length &&
           comments.map((comment: any) => (
-            <div
-              key={comment.id}
-              className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-              {/* <AiOutlineEllipsis className="icon-default" /> */}
-              {isAuthor && (
-                <div className="absolute right-0">
+            <div className="flex gap-2 border-b-2 border-t-2 border-[#ddd]">
+              <div key={comment.id} className="relative flex flex-1 gap-[20px] pb-[70px] pt-[30px]">
+                <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
+                {editComment.isEdit && editComment.editId === comment.id ? (
+                  <input
+                    className="w-full border border-solid border-gray5 p-2 text-gray5 outline-none sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]"
+                    defaultValue={editComment.editValue}
+                    onChange={(e) => setEditComment({ ...editComment, editValue: e.target.value })}></input>
+                ) : (
+                  <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+                )}
+                <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.createdAt}</p>
+              </div>
+              {userNickname === comment.user && (
+                <div className=" divide-y-2 text-right">
                   <p
-                    onClick={() => setEditComment({ ...editComment, isEdit: !editComment.isEdit, editId: comment.id })}>
+                    className="px-1.5 py-1 hover:text-gray5 "
+                    onClick={() => {
+                      setEditComment({ editValue: comment.content, isEdit: !editComment.isEdit, editId: comment.id });
+                    }}>
                     수정
                   </p>
-                  <p onClick={() => deleteCommentMutation.mutate({ articleId: articleId, commentId: comment.id })}>
+                  <p
+                    className="px-1.5 py-1 hover:text-gray5"
+                    onClick={() => deleteCommentMutation.mutate({ articleId: articleId, commentId: comment.id })}>
                     삭제
                   </p>
+                  {editComment.isEdit && editComment.editId === comment.id && (
+                    <p
+                      className="px-1.5 py-1 hover:text-gray5"
+                      onClick={() => {
+                        updateCommentMutation.mutate({
+                          articleId: articleId,
+                          commentId: comment.id,
+                          content: editComment.editValue,
+                        });
+                        setEditComment({ editValue: '', isEdit: false, editId: 0 });
+                      }}>
+                      수정 등록
+                    </p>
+                  )}
                 </div>
               )}
-              <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
-              {editComment.isEdit && editComment.editId === comment.id ? (
-                <input
-                  className="w-full border-2 border-solid border-gray5 p-2 text-gray5 outline-none sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]"
-                  defaultValue={comment.content}></input>
-              ) : (
-                <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
-              )}
-              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.createdAt}</p>
             </div>
           ))}
       </div>
