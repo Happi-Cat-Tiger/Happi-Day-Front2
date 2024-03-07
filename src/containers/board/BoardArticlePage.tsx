@@ -112,7 +112,7 @@ const BoardArticlePage = ({ params }: { params: any }) => {
         </ul>
       </div>
       {boardArticle.comments && (
-        <ArticleComments comments={boardArticle.comments} articleId={params.id} isAuthor={isAuthor} />
+        <ArticleComments comments={boardArticle.comments} articleId={params.id} userNickname={userData.nickname} />
       )}
     </div>
   );
