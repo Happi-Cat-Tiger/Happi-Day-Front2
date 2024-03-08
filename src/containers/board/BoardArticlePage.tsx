@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
 import { useDeleteBoardArticleService } from '@/hooks/mutations/board/boardService';
 import { LoginState } from '@/atom/LoginState';
-import { getProfileInfoService } from '@/hooks/queries/user/userService';
+import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import ArticleComments from '@/components/Article/ArticleComments';
@@ -18,18 +18,19 @@ const BoardArticlePage = ({ params }: { params: any }) => {
   const router = useRouter();
 
   const queryClient = hdQueryClient;
-  const cachedData = queryClient.getQueryData(['board', 'article']);
-  console.log('캐시', cachedData, queryClient);
+  const cachedData = queryClient.getQueryData(['profile']);
   const isLoggedIn = useRecoilValue(LoginState);
+  console.log('is', isLoggedIn, cachedData);
 
-  const { data: userData, isLoading: isAuthLoading } = getProfileInfoService({ isLoggedIn });
   const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id });
+  // const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn });
   const deleteArticleMutation = useDeleteBoardArticleService({ articleId: params.id });
 
-  if (isLoading || isAuthLoading) return <LoadingSpinner />;
+  // if (isLoading || isAuthLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
-  const isAuthor: boolean = boardArticle.user === userData.nickname;
+  // const isAuthor: boolean = userData ? boardArticle.user === userData.nickname : false;
+  const isAuthor = false;
 
   return (
     <div className="my-[40px] flex w-full flex-col px-2 md:my-[60px] md:px-0">
@@ -38,7 +39,7 @@ const BoardArticlePage = ({ params }: { params: any }) => {
         onClick={() => window.history.back()}>
         ←
       </div>
-      {isAuthor && (
+      {true && (
         <div className="flex justify-end gap-3">
           <PrimaryButton
             label="수정"
@@ -111,9 +112,7 @@ const BoardArticlePage = ({ params }: { params: any }) => {
           </li>
         </ul>
       </div>
-      {boardArticle.comments && (
-        <ArticleComments comments={boardArticle.comments} articleId={params.id} userNickname={userData.nickname} />
-      )}
+      {boardArticle.comments && <ArticleComments comments={boardArticle.comments} articleId={params.id} />}
     </div>
   );
 };
