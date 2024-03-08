@@ -6,15 +6,7 @@ import {
   useUpdateBoardCommentService,
 } from '@/hooks/mutations/board/boardService';
 
-const ArticleComments = ({
-  comments,
-  articleId,
-  userNickname,
-}: {
-  comments: any;
-  articleId: number;
-  userNickname: string;
-}) => {
+const ArticleComments = ({ comments, articleId }: { comments: any; articleId: number }) => {
   const postCommentMutation = usePostBoardCommentService();
   const deleteCommentMutation = useDeleteBoardCommentService();
   const updateCommentMutation = useUpdateBoardCommentService();
@@ -27,6 +19,9 @@ const ArticleComments = ({
     await postCommentMutation.mutate({ articleId: articleId, content: commentsValue });
     setCommentsValue('');
   };
+
+  const isAuthor = false;
+
   return (
     <div>
       <div className="my-[10px] flex flex-col gap-[5px]">
@@ -45,7 +40,7 @@ const ArticleComments = ({
                 )}
                 <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.createdAt}</p>
               </div>
-              {userNickname === comment.user && (
+              {isAuthor && (
                 <div className=" divide-y-2 text-right">
                   <p
                     className="px-1.5 py-1 hover:text-gray5 "

@@ -32,6 +32,6 @@ export const useGetBoardArticleService = ({ articleId }: { articleId: number | n
   return useQuery({
     queryKey: ['board', 'article'],
     queryFn: () => getBoardArticleApi({ articleId }),
-    enabled: !!articleId,
+    enabled: !articleId,
   });
 };
