@@ -3,7 +3,6 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import ArtistProfileImage from '@/components/Image/ArtistProfileImage';
 import { SizeType } from '@/types/size';
-import { getTeamInfoService, getArtistInfoService } from '@/hooks/queries/artist/artistService';
 
 interface Props {
   id: number;
@@ -19,12 +18,9 @@ const ArtistProfileCard = ({ id, type, imageUrl, imageAlt, size, title }: Props)
     s: 'w-16 text-sm',
     m: 'w-24 text-base',
     l: 'w-32 text-lg',
-    xl: 'w-44 text-lg',
-    xxl: 'x-52 text-ls',
+    xl: 'w-44 text-xl',
+    xxl: 'x-52 text-xl',
   };
-
-  // const { data: teamInfo } = getTeamInfoService({ teamId: id });
-  // const { data: artistInfo } = getArtistInfoService({ artistId: id });
 
   return (
     <div className="m-2 cursor-pointer" onClick={() => router.push(`/mypage/my-subscribes/artist-info/${type}/${id}`)}>
