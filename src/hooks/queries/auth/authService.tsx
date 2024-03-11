@@ -1,19 +1,11 @@
 import { getSignoutApi } from '@/api/auth/authApi';
-import { getProfileInfoApi } from '@/api/user/userApi';
-import { LoginState } from '@/atom/LoginState';
 import { useQuery } from '@tanstack/react-query';
-import { useRecoilState } from 'recoil';
 
-export const getSignoutService = () => {
-  const [, setIsLoggedIn] = useRecoilState(LoginState);
-
-  const query = useQuery({
+export const useGetSignoutService = ({ isClick }: { isClick: boolean }) => {
+  const skipToken = isClick;
+  return useQuery<any>({
     queryKey: ['logout'],
-    queryFn: () => getSignoutApi(),
+    queryFn: () => (isClick ? getSignoutApi() : skipToken),
     enabled: false,
   });
-
-  if (query.isSuccess) setIsLoggedIn(false);
-
-  return query;
 };

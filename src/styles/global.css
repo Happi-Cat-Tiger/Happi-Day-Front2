@@ -78,7 +78,13 @@ body {
   .icon-default {
     @apply box-content h-6 w-6 cursor-pointer rounded-full border border-white p-2 hover:border hover:border-gray6;
   }
+  .icon-deco {
+    @apply box-content h-5 w-5 md:h-6 md:w-6;
+  }
   .text-input {
     @apply prose-body-XS w-full rounded-md border border-gray3 px-3 py-3 md:prose-body-S hover:bg-[#A0C3FF]/[0.1] focus:border-orange1 focus:bg-[#A0C3FF]/[0.1] focus:outline-none;
+  }
+  .nav-user-li {
+    @apply flex cursor-pointer gap-4 py-0.5 hover:bg-[#F5F5F5];
   }
 }
