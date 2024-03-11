@@ -1,14 +1,21 @@
 'use client';
 
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import React from 'react';
-
-const queryClient = new QueryClient();
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import React, { useState } from 'react';
+import { hdQueryClient } from '@/shared/hdQueryClient';
 
 interface ReactQueryWrapperProps {
   children: React.ReactNode;
 }
 
 export default function ReactQueryWrapper({ children }: ReactQueryWrapperProps) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  const [queryClient] = useState(() => hdQueryClient);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }

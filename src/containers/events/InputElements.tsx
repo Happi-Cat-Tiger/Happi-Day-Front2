@@ -6,11 +6,12 @@ import { useRecoilState } from 'recoil';
 const InputElements = () => {
   const [eventsSearch, setEventsSearch] = useRecoilState<string>(eventsSearchState);
   const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
-
   const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setEventsSearch(e.target.value);
   };
+
   const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
+    e.preventDefault();
     if (e.key === 'Enter') {
       console.log('엔터', eventsSearch);
       getEventSearch(e);

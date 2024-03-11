@@ -4,10 +4,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRecoilState } from 'recoil';
 import { writingInfoState } from '@/atom/write';
+import { eventsCardState } from '@/atom/eventsAtom';
 
 const DurationInput = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
   const { startTime, endTime } = writingInfoValue;
+
+  // 임시로 생성한 이벤트 duration값
+  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
 
   return (
     <div className="flex flex-col gap-2">

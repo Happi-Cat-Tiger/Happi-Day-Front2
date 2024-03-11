@@ -1,17 +1,23 @@
 import { writingInfoState } from '@/atom/write';
 import { useRecoilState } from 'recoil';
 import React from 'react';
+import { eventsCardState } from '@/atom/eventsAtom';
 
 const LocationInput = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { location } = writingInfoValue;
 
+  // 임시로 생성한 이벤트 location값
+  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
+
   const handleChangeLocation = (value: any) => {
     setWritingInfoValue({
       ...writingInfoValue,
       location: value,
     });
+    // 임시로 생성한 이벤트 location값
+    setEventsCardValue({ ...eventsCardValue, location: value });
   };
   return (
     <div className="flex flex-col gap-2">

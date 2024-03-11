@@ -20,7 +20,7 @@ const Nav = () => {
   }, []);
 
   // 로그아웃 api
-  const logoutQuery = getSignoutService();
+  // const logoutQuery = getSignoutService();
 
   const navList: { label: string; href: string }[] = [
     { label: '게시판', href: '/board' },
@@ -62,7 +62,10 @@ const Nav = () => {
                   <div className="group relative">
                     <AiOutlineUser className="icon-default rounded-full bg-[#F5F5F5] p-1" />
                     <div className="absolute hidden w-fit bg-white group-hover:flex">
-                      <button type="submit" onClick={() => logoutQuery.refetch()}>
+                      <button
+                        type="submit"
+                        //  onClick={() => logoutQuery.refetch()}
+                      >
                         로그아웃
                       </button>
                     </div>

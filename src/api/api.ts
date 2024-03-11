@@ -10,6 +10,10 @@ export const apiInstance = axios.create({
   withCredentials: true, // 서버와 클라이언트가 다른 도메인일 경우 필수
 });
 
+if (typeof window !== 'undefined') {
+  const token = localStorage.getItem('token');
+  if (token) apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 apiInstance.interceptors.request.use(
   (config) => {
     //요청을 보내기 전에 수행할 로직

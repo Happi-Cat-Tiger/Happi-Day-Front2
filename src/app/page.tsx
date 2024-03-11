@@ -12,7 +12,6 @@ import '../slider/slick-theme.css';
 import { useRouter } from 'next/navigation';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
-import { getProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 import { usegetSubscribedListService } from '@/hooks/queries/artist/artistService';
 import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
@@ -145,11 +144,10 @@ const Home = () => {
   ];
 
   // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
-  // const isLoggedIn = useRecoilValue(LoginState);
-  // const { data: userData, isLoading } = getProfileInfoService({ isLoggedIn });
+  const isLoggedIn = useRecoilValue(LoginState);
+  // const { data: userData, isLoading } = useGetProfileInfoService({ isLoggedIn });
 
   const router = useRouter();
-
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
