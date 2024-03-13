@@ -5,8 +5,16 @@ import {
   usePostBoardCommentService,
   useUpdateBoardCommentService,
 } from '@/hooks/mutations/board/boardService';
+import { hdQueryClient } from '@/shared/hdQueryClient';
+import { LoginState } from '@/atom/LoginState';
+import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
+import { ProfileResponse } from '@/api/user/type';
+import { BoardArticleResponse } from '@/api/board/type';
 
 const ArticleComments = ({ comments, articleId }: { comments: any; articleId: number }) => {
+  const isLoggedIn = useRecoilValue(LoginState);
+
   const postCommentMutation = usePostBoardCommentService();
   const deleteCommentMutation = useDeleteBoardCommentService();
   const updateCommentMutation = useUpdateBoardCommentService();
@@ -20,8 +28,10 @@ const ArticleComments = ({ comments, articleId }: { comments: any; articleId: nu
     setCommentsValue('');
   };
 
-  const isAuthor = false;
+  const articleData = hdQueryClient.getQueryData(['board', 'article', true]) as BoardArticleResponse;
+  const userData = hdQueryClient.getQueryData(['profile', true]) as ProfileResponse;
 
+  const isAuthor = isLoggedIn ? articleData?.user === userData?.nickname : false;
   return (
     <div>
       <div className="my-[10px] flex flex-col gap-[5px]">
@@ -74,11 +84,14 @@ const ArticleComments = ({ comments, articleId }: { comments: any; articleId: nu
           ))}
       </div>
       <form onSubmit={(e) => handleSubmit(e, commentsValue)}>
-        <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-5">
-          <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
+        <div
+          className="mb-[26px] flex flex-col gap-[26px] border-2 border-[#ddd] p-5"
+          onClick={() => !isLoggedIn && toast('로그인 해주세요')}>
+          <p className="text-gray4 sm:prose-body-XS md:prose-body-S">{userData?.nickname as string}</p>
           <textarea
-            placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
+            placeholder={isLoggedIn ? '댓글을 달아주세요' : '로그인 해주세요'}
             className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
+            disabled={!isLoggedIn}
             value={commentsValue}
             onChange={(e) => setCommentsValue(e.target.value)}
           />
@@ -89,7 +102,7 @@ const ArticleComments = ({ comments, articleId }: { comments: any; articleId: nu
             type="submit"
             isSubmitting={false}
             onClick={() => {}}
-            disabled={false}
+            disabled={!isLoggedIn}
             className="rounded-[16px] bg-gray5 px-6 py-4 text-white sm:prose-btn-M md:prose-btn-L"
           />
         </div>

@@ -1,5 +1,6 @@
 import { LoginState } from '@/atom/LoginState';
 import { useGetSignoutService } from '@/hooks/queries/auth/authService';
+import { hdQueryClient } from '@/shared/hdQueryClient';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -21,14 +22,23 @@ const NavDropdownUserMenu = () => {
   const router = useRouter();
 
   // 로그아웃 api
-  // const logoutQuery = useGetSignoutService({ isClick });
+  const logoutQuery = useGetSignoutService({ isClick });
 
-  // if (logoutQuery.isSuccess) {
-  //   setIsLoggedIn(false);
-  //   setIsClick(false);
-  //   toast('로그아웃되었습니다.');
-  // }
-
+  if (!!logoutQuery.data) {
+    console.log(
+      logoutQuery.isSuccess,
+      logoutQuery.isLoading,
+      logoutQuery.isFetched,
+      logoutQuery.data,
+      logoutQuery.status,
+    );
+    setIsLoggedIn(false);
+    localStorage.removeItem('token');
+    setIsClick(false);
+    toast('로그아웃되었습니다.');
+    // hdQueryClient.invalidateQueries({ queryKey: ['profile', true] });
+  }
+  // console.log(hdQueryClient.getQueryData(['profile', true]));
   return (
     <div className="group relative z-10">
       <AiOutlineUser className="icon-default rounded-full bg-[#F5F5F5] p-1" />
@@ -71,9 +81,11 @@ const NavDropdownUserMenu = () => {
           </ul>
         </div>
         <div>
-          <button className=" prose-btn-XS text-gray3 md:prose-btn-S" type="submit" onClick={() => setIsClick(true)}>
+          <div
+            className="prose-btn-XS text-gray3 md:prose-btn-S hover:cursor-pointer hover:underline"
+            onClick={() => setIsClick(true)}>
             로그아웃
-          </button>
+          </div>
         </div>
       </div>
     </div>

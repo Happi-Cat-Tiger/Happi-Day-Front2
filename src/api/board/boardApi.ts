@@ -1,5 +1,5 @@
 import apiInstance from '@/api/api';
-import { BoardAllResponse, BoardWritePatchPayload, BoardWritePostPayload } from './type';
+import { BoardAllResponse, BoardArticleResponse, BoardWritePatchPayload, BoardWritePostPayload } from './type';
 
 // 게시글 작성
 export const postBoardWriteApi = async ({
@@ -60,7 +60,7 @@ export const getBoardCategoriesApi = async ({ categoryId }: { categoryId: number
   await apiInstance.get(`/articles/${categoryId}/list`).then((response) => response.data);
 
 // 글 상세보기 (단일 조회)
-export const getBoardArticleApi = async ({ articleId }: { articleId: number | null }) =>
+export const getBoardArticleApi = async ({ articleId }: { articleId: number | null }): Promise<BoardArticleResponse> =>
   await apiInstance.get(`/articles/${articleId}`).then((response) => response.data);
 
 // 글 삭제

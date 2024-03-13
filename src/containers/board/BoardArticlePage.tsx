@@ -11,26 +11,29 @@ import { useDeleteBoardArticleService } from '@/hooks/mutations/board/boardServi
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import LoadingSpinner from '../loading/LoadingSpinner';
-import { hdQueryClient } from '@/shared/hdQueryClient';
 import ArticleComments from '@/components/Article/ArticleComments';
+import { ProfileResponse } from '@/api/user/type';
+import { BoardArticleResponse } from '@/api/board/type';
 
 const BoardArticlePage = ({ params }: { params: any }) => {
   const router = useRouter();
 
-  const queryClient = hdQueryClient;
-  const cachedData = queryClient.getQueryData(['profile']);
   const isLoggedIn = useRecoilValue(LoginState);
-  console.log('is', isLoggedIn, cachedData);
 
-  const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id });
-  // const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn });
+  const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id }) as {
+    data: BoardArticleResponse;
+    isLoading: boolean;
+  };
+  const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
+    data: ProfileResponse;
+    isLoading: boolean;
+  };
   const deleteArticleMutation = useDeleteBoardArticleService({ articleId: params.id });
 
-  // if (isLoading || isAuthLoading) return <LoadingSpinner />;
+  if (isLoading || isAuthLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
-  // const isAuthor: boolean = userData ? boardArticle.user === userData.nickname : false;
-  const isAuthor = false;
+  const isAuthor: boolean = isLoggedIn ? boardArticle.user === userData?.nickname : false;
 
   return (
     <div className="my-[40px] flex w-full flex-col px-2 md:my-[60px] md:px-0">
@@ -39,7 +42,7 @@ const BoardArticlePage = ({ params }: { params: any }) => {
         onClick={() => window.history.back()}>
         ←
       </div>
-      {true && (
+      {isAuthor && (
         <div className="flex justify-end gap-3">
           <PrimaryButton
             label="수정"

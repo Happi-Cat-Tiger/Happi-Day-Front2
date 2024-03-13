@@ -19,7 +19,7 @@ export const usePostWriteBoardService = ({ categoryId }: { categoryId: number })
     mutationFn: ({ title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }: BoardWritePayload) =>
       postBoardWriteApi({ categoryId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
     onSuccess: (data) => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'articleList'] });
 
       // 작성한 글로 이동
@@ -37,7 +37,7 @@ export const useDeleteBoardArticleService = ({ articleId }: { articleId: number 
   return useMutation({
     mutationFn: () => deleteBoardArticleApi({ articleId }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'articleList'] });
       toast('글이 삭제되었습니다.');
       router.push('/board');
@@ -52,9 +52,8 @@ export const usePutBoardArticleService = ({ articleId }: { articleId: number | n
     mutationFn: ({ title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }: BoardWritePayload) =>
       putBoardArticleApi({ articleId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
     onSuccess: (data) => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['board', 'articleList'] });
-      console.log(data);
 
       // 작성한 글로 이동
       const { categoryId, id } = data;
@@ -71,7 +70,7 @@ export const usePostBoardCommentService = () => {
     mutationFn: ({ articleId, content }: { articleId: number; content: string }) =>
       postBoardCommentApi({ articleId, content }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       toast('댓글이 작성되었습니다.');
     },
   });
@@ -82,7 +81,7 @@ export const useDeleteBoardCommentService = () => {
     mutationFn: ({ articleId, commentId }: { articleId: number; commentId: number }) =>
       deleteBoardCommentApi({ articleId, commentId }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       toast('댓글이 삭제되었습니다.');
     },
   });
@@ -93,7 +92,7 @@ export const useUpdateBoardCommentService = () => {
     mutationFn: ({ articleId, commentId, content }: { articleId: number; commentId: number; content: string }) =>
       updateBoardCommentApi({ articleId, commentId, content }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['board', 'article', true] });
       toast('댓글이 수정되었습니다.');
     },
   });
