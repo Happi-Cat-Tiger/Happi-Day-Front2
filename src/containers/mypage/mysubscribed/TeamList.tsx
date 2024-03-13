@@ -1,14 +1,14 @@
+'use client';
 import React, { useMemo, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
-import { TeamListType } from '@/types/artist';
 import { getTeamListApi } from '@/api/artist/artistApi';
 import useIntersectingState from '@/hooks/useIntersectingState';
 
 /** 무한스크롤 */
 const useInfiniteTeams = () => {
-  return useInfiniteQuery<TeamListType>({
-    queryKey: ['artist'],
+  const query = useInfiniteQuery({
+    queryKey: ['team', 'list'],
     queryFn: ({ pageParam }) => getTeamListApi(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
@@ -17,12 +17,16 @@ const useInfiniteTeams = () => {
       else return undefined;
     },
   });
+  return query;
 };
 
 const TeamList = () => {
-  const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
   const { data, fetchNextPage, isFetching } = useInfiniteTeams();
-  const teamList = data && useMemo(() => data?.pages.flatMap((teamList) => teamList.content), [data.pages]);
+  const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
+
+  const teamList = useMemo(() => data?.pages.flatMap((page) => page.content), [data?.pages]);
+
+  const isLastPage: boolean = teamList && data?.pages[0].last;
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;
@@ -32,21 +36,23 @@ const TeamList = () => {
 
   return (
     <>
-      {teamList?.map((item) => (
-        <ArtistProfileCard
-          key={item.id}
-          id={item.id}
-          type={'team'}
-          imageUrl={item.logoUrl}
-          imageAlt={item.name}
-          size={'m'}
-          title={item.name}
-        />
-      ))}
-      <div aria-hidden ref={observerRef} />
+      <div className="flex flex-wrap">
+        {teamList?.map((item) => (
+          <ArtistProfileCard
+            key={item.id}
+            id={item.id}
+            type={'team'}
+            imageUrl={item.logoUrl}
+            imageAlt={item.name}
+            size={'m'}
+            title={item.name}
+          />
+        ))}
+      </div>
+      {!isLastPage && <div aria-hidden ref={observerRef} />}
       <div className="flex h-16 items-center justify-center">
         {isFetching && (
-          <div className=" h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+          <div className=" text- h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
         )}
       </div>
     </>

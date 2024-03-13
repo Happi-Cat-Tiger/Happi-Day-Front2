@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import logo from 'public/images/logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiOutlineUser, AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { usePathname } from 'next/navigation';
 import useScrollControl from '@/hooks/useScrollControl';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
-import { getSignoutService } from '@/hooks/queries/auth/authService';
+import NavDropdownUserMenu from './Nav/NavDropdownUserMenu';
+import { NAV } from '@/constants/nav';
+import { v4 as uuidv4 } from 'uuid';
 
 const Nav = () => {
   // ssr hybrate 랜더링
@@ -18,15 +20,6 @@ const Nav = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // 로그아웃 api
-  const logoutQuery = getSignoutService();
-
-  const navList: { label: string; href: string }[] = [
-    { label: '게시판', href: '/board' },
-    { label: '이벤트', href: '/events' },
-    { label: '굿즈/공구', href: '/sales' },
-  ];
 
   const pathname = usePathname();
   const firstPath = '/' + pathname.split('/')[1];
@@ -47,8 +40,8 @@ const Nav = () => {
               </Link>
               <div className="flex items-center gap-5 md:gap-[50px]">
                 <ul className="hidden gap-[20px] md:flex md:gap-[50px]">
-                  {navList.map((navItem, idx) => (
-                    <Link key={idx} href={navItem.href}>
+                  {NAV.MENU_LIST.map((navItem) => (
+                    <Link key={uuidv4()} href={navItem.href}>
                       <li
                         className={`prose-h7 md:prose-h6 hover:text-orange2 ${
                           navItem.href === firstPath && 'text-orange2'
@@ -59,14 +52,7 @@ const Nav = () => {
                   ))}
                 </ul>
                 {isLoggedIn ? (
-                  <div className="group relative">
-                    <AiOutlineUser className="icon-default rounded-full bg-[#F5F5F5] p-1" />
-                    <div className="absolute hidden w-fit bg-white group-hover:flex">
-                      <button type="submit" onClick={() => logoutQuery.refetch()}>
-                        로그아웃
-                      </button>
-                    </div>
-                  </div>
+                  <NavDropdownUserMenu />
                 ) : (
                   <Link href="/auth/sign-in">
                     <div className="prose-h7 md:prose-h6 hover:text-orange2">로그인</div>
@@ -83,8 +69,8 @@ const Nav = () => {
           {isOpen && (
             <div className="absolute flex h-full w-full overflow-hidden bg-white md:hidden">
               <ul className="m-2 w-full">
-                {navList.map((navItem, idx) => (
-                  <Link key={idx} href={navItem.href}>
+                {NAV.MENU_LIST.map((navItem) => (
+                  <Link key={uuidv4()} href={navItem.href}>
                     <li
                       className={`prose-h7 border-b border-orange1 px-2 py-4 md:prose-h6 hover:text-orange2 ${
                         navItem.href === firstPath && 'text-orange2'

@@ -6,11 +6,12 @@ import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
-import { getBoardAllService } from '@/hooks/queries/board/boardServie';
+import { useGetBoardAllService } from '@/hooks/queries/board/boardServie';
 import { BOARD_CATEGORY } from '@/constants/board';
 import SubBanner from 'public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
+import InputElements from '@/containers/events/InputElements';
 
 const AllPage = () => {
   const [, setWriteValue] = useRecoilState(writeState);
@@ -18,7 +19,7 @@ const AllPage = () => {
 
   const [page, setPage] = useState(1);
 
-  const { data: boardAllData, isLoading } = getBoardAllService();
+  const { data: boardAllData, isLoading } = useGetBoardAllService();
 
   const postPerPage = 10;
   const indexOfLastPost = page * postPerPage;
@@ -35,17 +36,27 @@ const AllPage = () => {
     <div className="flex w-full flex-col gap-[40px] px-2 md:gap-[60px] md:px-0">
       <Image src={SubBanner} alt="구독 배너" className="h-auto w-screen" priority />
       <HorizontalLinkList category={BOARD_CATEGORY} />
+      <InputElements />
       <div className="flex flex-col gap-4">
         {boardAllData && (
           <div>
-            {boardAllData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <ArticleList
-                key={articleItem.id}
-                articleContent={articleItem}
-                navCategory="board"
-                detailCategory="free"
-              />
-            ))}
+            {boardAllData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => {
+              const categoryId = () => {
+                switch (articleItem.category) {
+                  case '자유':
+                    return 'free';
+                  case '홍보':
+                    return 'events';
+                  case '거래':
+                    return 'trade';
+                  case '친목':
+                    return 'friendship';
+                  case '주최관련':
+                    return 'organizing';
+                }
+              };
+              return <ArticleList key={articleItem.id} articleContent={articleItem} path={`/board/${categoryId()}`} />;
+            })}
           </div>
         )}
         {boardAllData && (

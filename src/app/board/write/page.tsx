@@ -1,41 +1,90 @@
 'use client';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import WritingStep from '@/containers/write/WritingStep';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BoardWritingInfoStep from '@/containers/write/BoardWritingInfoStep';
 import PreviewWritingStep from '@/containers/write/PreviewWritingStep';
 import StyledButton from '@/components/Button/StyledButton';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
-import { postWriteBoardService } from '@/hooks/mutations/board/boardService';
+import { usePostWriteBoardService, usePutBoardArticleService } from '@/hooks/mutations/board/boardService';
+import { useSearchParams } from 'next/navigation';
+import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+import { BOARD } from '@/constants/board';
 
 const WritePage = () => {
-  const [step, setStep] = useState<number>(1);
-
-  const [writeValue] = useRecoilState(writeState);
+  // 글쓰기 페이지는 작성/수정 상태로 나뉜다.
+  const [writeValue, setWriteValue] = useRecoilState(writeState);
   const { articleTitle, editValue, category } = writeValue;
 
-  const [writingInfoValue] = useRecoilState(writingInfoState);
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
   const { hashtag, thumbnailImage, eventAddress } = writingInfoValue;
 
-  const writeBoardMutation = postWriteBoardService({ categoryId: category.id });
+  const [step, setStep] = useState<number>(1);
 
-  console.log(writeValue, writingInfoValue);
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const articleId = id ? +id : null;
+
+  const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId });
+  const writeBoardMutation = usePostWriteBoardService({ categoryId: category.id });
+  const modifyBoardMutation = usePutBoardArticleService({ articleId });
+
+  useEffect(() => {
+    if (boardArticle && articleId) {
+      setWriteValue({
+        ...writeValue,
+        articleTitle: boardArticle.title,
+        editValue: boardArticle.content,
+        category: { id: boardArticle.categoryId, label: BOARD.CATEGORY[boardArticle.categoryId - 1].label },
+      });
+      setWritingInfoValue({
+        ...writingInfoValue,
+        hashtag: boardArticle.hashtags,
+        thumbnailImage: boardArticle.thumbnailImage,
+        eventAddress: {
+          address: boardArticle.eventAddress,
+          detailAddress: boardArticle.eventDetailAddress,
+        },
+      });
+    }
+  }, [boardArticle, articleId]);
+
   const onDisable = () => {
     if (step === 1) {
       if (category.label === '카테고리|' || !articleTitle || !editValue) return true;
     }
     if (step === 2) {
-      if (category.label === '거래/교환/양도') {
+      if (category.label === '거래/교환/양도' || category.label === '이벤트/홍보') {
         if (!hashtag || !thumbnailImage) return true;
-      } else if (category.label === '이벤트/홍보') {
-        if (!hashtag) return true;
-        // if (!hashtag || !thumbnailImage || !eventAddress.address) return true;
       } else {
         if (!hashtag) return true;
       }
     }
   };
+
+  const handleClick = async () => {
+    if (step === 3) {
+      const payloadData = {
+        title: articleTitle,
+        content: editValue,
+        hashtag: hashtag,
+        address: eventAddress.address,
+        detailAddress: eventAddress.detailAddress,
+        thumbnailImage: thumbnailImage,
+        imageFile: null,
+      };
+      if (mod === 'true') {
+        await modifyBoardMutation.mutate(payloadData);
+      } else {
+        await writeBoardMutation.mutate(payloadData);
+      }
+    } else setStep(step + 1);
+  };
+
+  if (isLoading) return <LoadingSpinner />;
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -56,19 +105,7 @@ const WritePage = () => {
           className="prose-btn-M rounded-2xl bg-[#E85ECF] px-5 py-3 text-white md:prose-btn-L hover:bg-pink2 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
           label={step === 3 ? '완료' : '다음'}
           disabled={onDisable()}
-          onClick={() => {
-            if (step === 3) {
-              writeBoardMutation.mutate({
-                title: articleTitle,
-                content: editValue,
-                hashtag: [hashtag],
-                eventAddress: eventAddress.address + ' ' + eventAddress.detailAddress,
-                thumbnailImage: thumbnailImage,
-                imageFile: thumbnailImage ? [thumbnailImage] : null,
-              });
-              alert('글 작성이 완료되었습니다');
-            } else setStep(step + 1);
-          }}
+          onClick={() => handleClick()}
         />
       </div>
       {step === 1 && <WritingStep />}

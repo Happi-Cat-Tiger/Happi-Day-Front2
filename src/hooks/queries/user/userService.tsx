@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { getProfileInfoApi } from '@/api/user/userApi';
-import { useRecoilValue } from 'recoil';
-import { LoginState } from '@/atom/LoginState';
 
 export interface Profile {
   id: number;
@@ -14,11 +12,11 @@ export interface Profile {
   nickname: string;
 }
 
-export const getProfileInfoService = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const query = useQuery({
+export const useGetProfileInfoService = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+  return useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfileInfoApi(),
-    enabled: isLoggedIn,
+    // enabled: !!isLoggedIn,
+    enabled: false,
   });
-  return query;
 };

@@ -25,7 +25,7 @@ export const postSigninService = () => {
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setIsLoggedIn(true);
-      // localStorage.setItem('log', JSON.stringify({ state: true }));
+      // localStorage.('log', JSON.stringify({ state: true }));
       const setTime = 60 * 1000 * 60;
 
       setTimeout(() => {

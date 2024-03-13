@@ -13,6 +13,7 @@ const InputElements = () => {
   };
 
   const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
+    e.preventDefault();
     if (e.key === 'Enter') {
       console.log('엔터', eventsSearch);
       getEventSearch(e);
