@@ -57,6 +57,7 @@ const page = () => {
                 startTime: null,
                 thumbnailImage: null,
                 titleProduct: { label: '', price: '' },
+                urlAddress: '',
               });
               router.push('/events');
             } else setStep(step + 1);

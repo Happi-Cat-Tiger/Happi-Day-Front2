@@ -20,12 +20,19 @@ export const eventsSearchState = atom({
   default: '',
 });
 
+// 이벤트 검색 필터
+export const eventsSearchFilter = atom({
+  key: 'eventsSearchFilter',
+  default: 'title',
+});
+
 // 이벤트 정렬
-export const eventsSortState = atom({
-  key: 'eventesSortState',
+export const eventsSortList = atom({
+  key: 'eventsSortList',
   default: 'new',
 });
 
+// 이벤트 카드
 interface CardProps {
   id: number;
   cardType: 'events' | 'sales';
@@ -47,7 +54,6 @@ interface CardProps {
   userProfileUrl: string;
 }
 
-// 이벤트 카드
 export const eventsCardState = atom<CardProps>({
   key: 'eventsCardState',
   default: {

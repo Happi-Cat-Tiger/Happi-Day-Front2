@@ -1,11 +1,13 @@
 'use client';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
-import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
-import { useRecoilState } from 'recoil';
+import { eventsSearchFilter, eventsSearchState, eventsSortList } from '@/atom/eventsAtom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 const InputElements = () => {
   const [eventsSearch, setEventsSearch] = useRecoilState<string>(eventsSearchState);
-  const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
+  const setEventsSortValue = useSetRecoilState<string>(eventsSortList);
+  const setSearchFilter = useSetRecoilState<string>(eventsSearchFilter);
+
   const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setEventsSearch(e.target.value);
   };
@@ -18,8 +20,12 @@ const InputElements = () => {
     }
   };
 
-  const handleSort = (e: any) => {
-    setEventSort(e.target.value);
+  const handleSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    setEventsSortValue(e.target.value);
+  };
+
+  const handleFilter = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSearchFilter(e.target.value);
   };
 
   return (
@@ -49,12 +55,20 @@ const InputElements = () => {
         </div>
       </div>
       <div>
-        <input
-          type="search"
-          placeholder="Search"
-          onKeyDown={handleEnter}
-          className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
-        />
+        <div className="flex gap-[10px]">
+          <select
+            className="prose-subtitle-S w-[150px] text-ellipsis rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black"
+            onChange={handleFilter}>
+            <option value="title">제목</option>
+            <option value="artist">아티스트</option>
+          </select>
+          <input
+            type="search"
+            placeholder="Search"
+            onKeyDown={handleEnter}
+            className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
+          />
+        </div>
       </div>
     </div>
   );

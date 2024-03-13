@@ -7,11 +7,10 @@ import Link from 'next/link';
 import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { eventsListState, eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
+import { useRecoilValue } from 'recoil';
+import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
-import { writingInfoState } from '@/atom/write';
 
 interface MockData {
   id: number;
@@ -47,8 +46,8 @@ const page = () => {
     {
       id: 2,
       thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
-      title: '방탄소년단 생일 카페2',
-      artist: '방탄소년단',
+      title: '타이틀',
+      artist: '아티스트',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.02',
       endDate: '2023.12.05',
@@ -61,8 +60,8 @@ const page = () => {
     {
       id: 3,
       thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
-      title: '방탄소년단 생일 카페3',
-      artist: '방탄소년단',
+      title: '환상적인 이벤트',
+      artist: '츄',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.03',
       endDate: '2023.12.05',
@@ -166,8 +165,8 @@ const page = () => {
       id: 10,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페10',
-      artist: '방탄소년단',
+      title: '테스트 타이틀',
+      artist: '아티스트',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.10',
       endDate: '2023.12.05',
@@ -181,8 +180,8 @@ const page = () => {
       id: 11,
       thumbnailUrl:
         'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페11',
-      artist: '방탄소년단',
+      title: '세븐틴 팬미팅',
+      artist: '세븐틴',
       place: '용산 슈퍼스타 떡볶이',
       startDate: '2023.12.11',
       endDate: '2023.12.05',
@@ -203,15 +202,17 @@ const page = () => {
 
   const [loading] = useState(false);
   const router = useRouter();
-  const [eventsSearch, setEventsSearch] = useRecoilState(eventsSearchState);
-  const [eventSort, setEventSort] = useRecoilState<string>(eventsSortState);
+  const eventsSearch = useRecoilValue(eventsSearchState);
+  const eventsSortValue = useRecoilValue<string>(eventsSortList);
+  const searchFilterValue = useRecoilValue<string>(eventsSearchFilter);
 
-  //글쓰기 관련 데이터
-  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
-  const eventsList = useRecoilValue(eventsListState);
-  console.log('events', eventsList);
-
-  const filteredItem: MockData[] = mockData.filter((el) => el.title.includes(eventsSearch));
+  const filteredItem: MockData[] = mockData.filter((el) =>
+    searchFilterValue === 'title'
+      ? el.title.includes(eventsSearch)
+      : searchFilterValue === 'artist'
+        ? el.artist.includes(eventsSearch)
+        : null,
+  );
 
   const pageChange = (page: number) => {
     setPage(page);
@@ -247,7 +248,7 @@ const page = () => {
   }
 
   const sortedItem = filteredItem.sort((a, b) => {
-    return eventSort === 'new'
+    return eventsSortValue === 'new'
       ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
       : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
   });
@@ -299,7 +300,7 @@ const page = () => {
       <div className="my-[100px] text-center">
         <PaginationComponent
           page={page}
-          totalItemsCount={filteredItem.length}
+          totalItemsCount={sortedItem.length}
           pageChange={pageChange}
           countPerPage={itemsPerPage}
         />
