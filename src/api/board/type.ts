@@ -30,14 +30,25 @@ export interface BoardAllResponse {
   totalPages: number;
 }
 
+export interface BoardArticleComments {
+  id: number;
+  user: string;
+  content: string;
+  createdAt: string;
+}
 export interface BoardArticleResponse {
-  artists: any[];
-  comments: any[];
+  id: number;
+  categoryId: number;
+  thumbnailImage: string | null;
+  eventAddress: string | null;
+  eventDetailAddress: string | null;
+  artists: string[];
+  comments: BoardArticleComments[];
   content: string;
   hashtags: string[];
   imageUrl: string[];
   likeUsersNum: number;
-  teams: any[];
+  teams: string[];
   title: string;
   updatedAt: string;
   user: string;

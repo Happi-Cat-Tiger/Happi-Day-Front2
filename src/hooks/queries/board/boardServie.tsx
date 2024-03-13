@@ -4,7 +4,7 @@ import {
   getBoardCategoriesApi,
   getSearchBoardAllApi,
 } from '@/api/board/boardApi';
-import { BoardAllResponse } from '@/api/board/type';
+import { BoardAllResponse, BoardArticleResponse } from '@/api/board/type';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetBoardAllService = () => {
@@ -29,9 +29,10 @@ export const useGetBoardCategoriesService = ({ categoryId }: { categoryId: numbe
 };
 
 export const useGetBoardArticleService = ({ articleId }: { articleId: number | null }) => {
-  return useQuery({
-    queryKey: ['board', 'article'],
-    queryFn: () => getBoardArticleApi({ articleId }),
-    enabled: !articleId,
+  const skipToken = !!articleId;
+  return useQuery<boolean | BoardArticleResponse>({
+    queryKey: ['board', 'article', !!articleId],
+    queryFn: () => (articleId ? getBoardArticleApi({ articleId }) : skipToken),
+    // enabled: !articleId,
   });
 };
