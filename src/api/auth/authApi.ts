@@ -1,6 +1,7 @@
 import apiInstance from '@/api/api';
+import { AuthSigninPayload, AuthSignupPayload } from './type';
 
-export const postSigninApi = async ({ username, password }: { username: string; password: string }) =>
+export const postSigninApi = async ({ username, password }: AuthSigninPayload) =>
   await apiInstance.post('/auth/login', { username, password });
 
 export const getSignoutApi = async () => await apiInstance.get('/auth/logout');
@@ -14,15 +15,7 @@ export const postSignupApi = async ({
   phone,
   termsPrivacy,
   termsService,
-}: {
-  username: string;
-  password: string;
-  nickname: string;
-  realname: string;
-  phone: string;
-  termsPrivacy: boolean;
-  termsService: boolean;
-}) =>
+}: AuthSignupPayload) =>
   await apiInstance.post('auth/signup', {
     username,
     password,
