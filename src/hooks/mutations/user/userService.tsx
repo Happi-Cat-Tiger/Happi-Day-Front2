@@ -1,20 +1,40 @@
 import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
-import { updateProfileInfoApi } from '../../../api/user/userApi';
+import { patchProfileInfoApi, patchProfileImageApi, patchBasicProfileImageApi } from '../../../api/user/userApi';
 
-export const updateProfileInfoService = ({
-  nickName,
+export const usePatchProfileInfoService = ({
+  nickname,
   phone,
-  profileImage,
+  password,
 }: {
-  nickName?: string;
+  nickname?: string;
   phone?: string;
-  profileImage?: string;
+  password?: string;
 }) => {
   const mutation = useMutation({
-    mutationFn: () => updateProfileInfoApi({ nickName, phone, profileImage }),
+    mutationFn: () => patchProfileInfoApi({ nickname, phone, password }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+  });
+  return mutation;
+};
+
+export const usePatchProfileImageService = ({ formData }: { formData: FormData }) => {
+  const mutation = useMutation<FormData>({
+    mutationFn: () => patchProfileImageApi({ formData }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['profile', 'image'] });
+    },
+  });
+  return mutation;
+};
+
+export const usePatchBasicProfileImageService = () => {
+  const mutation = useMutation({
+    mutationFn: () => patchBasicProfileImageApi(),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['profile', 'image'] });
     },
   });
   return mutation;

@@ -10,6 +10,13 @@ import Slick from 'react-slick';
 import { settings } from '@/slider/setting';
 import '../slider/slick.css';
 import '../slider/slick-theme.css';
+<<<<<<< HEAD
+=======
+import { useRouter } from 'next/navigation';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { LoginState } from '@/atom/LoginState';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+>>>>>>> f681639 (Feat : 프로필 수정 api 연결)
 
 interface MockData {
   id: number;
@@ -27,7 +34,98 @@ interface MockData {
 }
 
 const Home = () => {
+<<<<<<< HEAD
   const mockData = MOCKDATA.appPage;
+=======
+  const mockData = [
+    {
+      id: 1,
+      thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
+      title: '방탄소년단 생일 카페1',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      startDate: '2023.12.04',
+      endDate: '2023.12.05',
+      location: '서울시 용산구',
+      like: 1,
+      comment: 1,
+      view: 1,
+      joinCount: 1,
+    },
+    {
+      id: 2,
+      thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
+      title: '방탄소년단 생일 카페2',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      startDate: '2023.12.04',
+      endDate: '2023.12.05',
+      location: '서울시 용산구',
+      like: 2,
+      comment: 2,
+      view: 2,
+      joinCount: 2,
+    },
+    {
+      id: 3,
+      thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
+      title: '방탄소년단 생일 카페3',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      startDate: '2023.12.04',
+      endDate: '2023.12.05',
+      location: '서울시 용산구',
+      like: 3,
+      comment: 3,
+      view: 3,
+      joinCount: 3,
+    },
+    {
+      id: 4,
+      thumbnailUrl:
+        'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
+      title: '방탄소년단 생일 카페4',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      startDate: '2023.12.04',
+      endDate: '2023.12.05',
+      location: '서울시 용산구',
+      like: 4,
+      comment: 4,
+      view: 4,
+      joinCount: 4,
+    },
+    {
+      id: 5,
+      thumbnailUrl:
+        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+      title: '방탄소년단 생일 카페5',
+      artist: '방탄소년단',
+      place: '용산 슈퍼스타 떡볶이',
+      startDate: '2023.12.04',
+      endDate: '2023.12.05',
+      location: '서울시 용산구',
+      like: 5,
+      comment: 5,
+      view: 5,
+      joinCount: 5,
+    },
+  ];
+
+  // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
+  const isLoggedIn = useRecoilValue(LoginState);
+  // const { data: userData, isLoading } = useGetProfileInfoService({ isLoggedIn });
+
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return <LoadingSpinner />;
+
+>>>>>>> f681639 (Feat : 프로필 수정 api 연결)
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">

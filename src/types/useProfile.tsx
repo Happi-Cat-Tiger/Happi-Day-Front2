@@ -1,7 +1,7 @@
 export type UserProfileInfo = {
-  realName: string;
-  userName: string;
-  nickName: string;
+  realname: string;
+  username: string;
+  nickname: string;
   phone: string;
   password: string;
 };
