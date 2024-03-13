@@ -2,7 +2,7 @@ import React from 'react';
 import { AuthInputPlaceholder } from '@/types/auth';
 import { useForm } from 'react-hook-form';
 import { AUTH_REACT_HOOK_FORM } from '@/constants/auth';
-import { postSigninService, postSignupService } from '@/hooks/mutations/auth/authService';
+import { usePostSigninService, usePostSignupService } from '@/hooks/mutations/auth/authService';
 
 interface AuthInputProps {
   inputPlaceHolder: AuthInputPlaceholder[];
@@ -27,8 +27,8 @@ type FormValues = {
 };
 
 const AuthInput = ({ inputPlaceHolder }: AuthInputProps) => {
-  const signinMutation = postSigninService();
-  const signupMutation = postSignupService();
+  const signinMutation = usePostSigninService();
+  const signupMutation = usePostSignupService();
   const {
     register,
     handleSubmit,

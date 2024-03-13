@@ -1,11 +1,11 @@
 'use client';
 import AuthInput from '@/components/Auth/AuthInput';
 import { SIGN_IN } from '@/constants/auth';
-import { hostSigninService } from '@/hooks/mutations/auth/authService';
+import { useHostSigninService } from '@/hooks/mutations/auth/authService';
 import Link from 'next/link';
 
 const signIn = () => {
-  const hostLogin = hostSigninService();
+  const hostLogin = useHostSigninService();
   return (
     <div className="m-auto flex w-[360px] flex-col items-center gap-[37px] px-2 pb-[130px] pt-20 md:gap-10 md:py-[120px]">
       <div
