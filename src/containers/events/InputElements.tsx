@@ -8,15 +8,15 @@ const InputElements = () => {
   const setEventsSortValue = useSetRecoilState<string>(eventsSortList);
   const setSearchFilter = useSetRecoilState<string>(eventsSearchFilter);
 
-  const getEventSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setEventsSearch(e.target.value);
+  const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      setEventsSearch(e.target.value);
+    }
   };
 
-  const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
-    e.preventDefault();
-    if (e.key === 'Enter') {
-      console.log('엔터', eventsSearch);
-      getEventSearch(e);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length === 0) {
+      setEventsSearch('');
     }
   };
 
@@ -65,7 +65,8 @@ const InputElements = () => {
           <input
             type="search"
             placeholder="Search"
-            onKeyDown={handleEnter}
+            onKeyUp={handleEnter}
+            onChange={handleChange}
             className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
           />
         </div>
