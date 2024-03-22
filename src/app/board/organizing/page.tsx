@@ -1,65 +1,82 @@
 'use client';
 import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
 import LinkButton from '@/components/Button/LinkButton';
-import Card from '@/components/Card';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { BOARD_CATEGORY } from '@/constants/board';
 import SubBanner from 'public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import HorizontalLinkList from '@/components/List/HorizontalLinkList';
 import { useGetBoardCategoriesService } from '@/hooks/queries/board/boardServie';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { boardSearchState } from '@/atom/boardAtom';
+import useSetPage from '@/hooks/useSetPage';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+import BoardInputElements from '@/containers/board/BoardInputElements';
+import BoardCard from '@/components/Card/BoardCard';
 
 const OrganizingPage = () => {
   const [, setWriteValue] = useRecoilState(writeState);
   const [, setWritingInfoValue] = useRecoilState(writingInfoState);
+  const [boardSearch, setBoardSearch] = useRecoilState(boardSearchState);
 
-  const [page, setPage] = useState(1);
+  // pagination
+  const { page, postPerPage, indexOfFirstPost, indexOfLastPost, pageChange } = useSetPage();
 
+  // api
   const { data: boardOrganizingData, isLoading } = useGetBoardCategoriesService({ categoryId: 5 });
 
-  const postPerPage = 10;
-  const indexOfLastPost = page * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-
-  const pageChange = (page: number) => {
-    setPage(page);
-  };
-
-  if (isLoading) return <></>;
+  if (isLoading) return <LoadingSpinner />;
   console.log(boardOrganizingData);
+
+  const filteredItem = boardOrganizingData?.content.filter((el) => el.title.includes(boardSearch.searchValue));
+
+  const sortedItem = filteredItem?.sort((a, b) => {
+    const [aT, bT] = [new Date(a.date).getTime(), new Date(b.date).getTime()];
+    return boardSearch.sort === 'new' ? aT - bT : bT - aT;
+  });
 
   return (
     <div className="flex w-full flex-col gap-[40px] px-2 md:gap-[60px] md:px-0">
       <Image src={SubBanner} alt="구독 배너" className="h-auto w-screen" priority />
       <HorizontalLinkList category={BOARD_CATEGORY} />
+      <BoardInputElements />
       <div className="flex flex-col gap-4">
-        {boardOrganizingData && (
+        {filteredItem?.length === 0 ? (
+          <div className="flex flex-col items-center gap-[5px] text-gray5">
+            <AiOutlineSearch style={{ fontSize: 80, color: '#9CA3AF', marginBottom: 10 }} />
+            <p>검색결과가 존재하지 않습니다.</p>
+            <p>다시 검색해주세요 !</p>
+          </div>
+        ) : (
           <div className="grid grid-cols-2 place-items-center md:grid-cols-5">
-            {boardOrganizingData.content.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => (
-              <Card
-                key={articleItem.id}
-                id={articleItem.id}
-                cardType="board"
-                thumbnailUrl={articleItem.thumbnailUrl}
-                title={articleItem.title}
-                artist=""
-                location="장소"
-                startTime=""
-                endTime=""
-                address="지역"
-                joinMember={10}
-                likeCount={100}
-                commentCount={articleItem.commentNum}
-                viewCount={articleItem.viewCount}
-              />
-            ))}
+            {sortedItem?.slice(indexOfFirstPost, indexOfLastPost).map((articleItem) => {
+              return (
+                <BoardCard
+                  key={articleItem.id}
+                  id={articleItem.id}
+                  path="/board/organizing"
+                  thumbnailUrl={articleItem.thumbnailUrl}
+                  title={articleItem.title}
+                  location="장소"
+                  address="지역"
+                  likeCount={100}
+                  commentCount={articleItem.commentNum}
+                  viewCount={articleItem.viewCount}
+                />
+              );
+            })}
           </div>
         )}
-
-        <PaginationComponent countPerPage={postPerPage} page={page} totalItemsCount={20} pageChange={pageChange} />
+        {boardOrganizingData && (
+          <PaginationComponent
+            countPerPage={postPerPage}
+            page={page}
+            totalItemsCount={boardOrganizingData?.totalElements}
+            pageChange={pageChange}
+          />
+        )}
         <div className="flex justify-end">
           <Link href="/board/write" passHref legacyBehavior>
             <LinkButton
