@@ -9,14 +9,6 @@ export const BOARD_CATEGORY: CategoryNav[] = [
   { pageTitle: '주최관련', navigate: '/board/organizing' },
 ];
 
-export const BOARD_CATEGORY_LIST = [
-  { id: 2, label: '이벤트/홍보' },
-  { id: 3, label: '거래/교환/양도' },
-  { id: 4, label: '친목/동행' },
-  { id: 1, label: '자유' },
-  { id: 5, label: '주최관련' },
-];
-
 export const BOARD = {
   CATEGORY: [
     { id: 1, label: '자유', path: 'free' },
@@ -25,4 +17,21 @@ export const BOARD = {
     { id: 4, label: '친목/동행', path: 'friendship' },
     { id: 5, label: '주최관련', path: 'organizing' },
   ],
+};
+
+export const BOARD_PATH = (boardCategory: string): 'events' | 'free' | 'trade' | 'friendship' | 'organizing' => {
+  switch (boardCategory) {
+    case '자유':
+      return 'free';
+    case '홍보':
+      return 'events';
+    case '거래':
+      return 'trade';
+    case '친목':
+      return 'friendship';
+    case '주최관련':
+      return 'organizing';
+    default:
+      return 'free';
+  }
 };
