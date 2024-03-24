@@ -8,9 +8,10 @@ import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilValue } from 'recoil';
-import { eventsSearchState, eventsSortState } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { getAllEvents, getOngoingEvents } from '@/hooks/queries/events/eventsService';
+import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
+import { useRouter } from 'next/navigation';
 
 // interface MockData {
 //   id: number;
@@ -223,11 +224,21 @@ const page = () => {
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const [gridCols, setGridCols] = useState('grid-cols-5');
 
-  const [loading, setLoading] = useState(false);
   const eventsSearch = useRecoilValue(eventsSearchState);
-  const eventSort = useRecoilValue<string>(eventsSortState);
+  const eventSort = useRecoilValue<string>(eventsSortList);
 
-  const filteredItem: EventsList[] = apiData?.filter((el: EventsList) => el.title.includes(eventsSearch));
+  const [loading] = useState(false);
+  const router = useRouter();
+  const eventsSortValue = useRecoilValue<string>(eventsSortList);
+  const searchFilterValue = useRecoilValue<string>(eventsSearchFilter);
+
+  const filteredItem: EventsList[] = apiData?.filter((el: EventsList) =>
+    searchFilterValue === 'title'
+      ? el.title.includes(eventsSearch)
+      : searchFilterValue === 'artist'
+        ? el.artists.includes(eventsSearch)
+        : null,
+  );
 
   const pageChange = (page: number) => {
     setPage(page);
@@ -276,6 +287,10 @@ const page = () => {
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
+  const eventsWriteButton = () => {
+    router.push('events/write');
+  };
+
   return (
     <div className="px-[8px]">
       <EventGuide />
@@ -321,13 +336,13 @@ const page = () => {
       <div className="my-[100px] text-center">
         <PaginationComponent
           page={page}
-          totalItemsCount={filteredItem?.length}
+          totalItemsCount={sortedItem.length}
           pageChange={pageChange}
           countPerPage={itemsPerPage}
         />
       </div>
       <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={() => null} />
+        <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
       </div>
     </div>
   );

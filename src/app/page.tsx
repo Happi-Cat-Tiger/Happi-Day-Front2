@@ -10,6 +10,11 @@ import Slick from 'react-slick';
 import '../slider/slick.css';
 import '../slider/slick-theme.css';
 import { useRouter } from 'next/navigation';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { LoginState } from '@/atom/LoginState';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
+import { getSalesPostListApi } from '@/api/sales/salesApi';
 
 interface MockData {
   id: number;
@@ -58,6 +63,10 @@ const settings = {
 };
 
 const Home = () => {
+  // const { data } = usegetSubscribedListService();
+  // console.log(data);
+  // const { data } = getSalesPostListService();
+  // const { res } = getSalesPostListApi();
   const mockData = [
     {
       id: 1,
@@ -133,7 +142,18 @@ const Home = () => {
     },
   ];
 
+  // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
+  const isLoggedIn = useRecoilValue(LoginState);
+  // const { data: userData, isLoading } = useGetProfileInfoService({ isLoggedIn });
+
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return <LoadingSpinner />;
 
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
@@ -239,19 +259,19 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 게시글</h3>
             <ul className="flex h-full w-full flex-col justify-between">
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
               <li className="flex h-[65px] items-center justify-between border-b-[1px]">
-                <ArticleList />
+                <ArticleList path="/" />
               </li>
             </ul>
           </div>

@@ -1,18 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { getProfileInfoApi } from '@/api/user/userApi';
+import { ProfileResponse } from '@/api/user/type';
 
-export interface Profile {
-  realName: string;
-  userType: 'user' | 'admin';
-  userName: string;
-  phone: string;
-  profileImage: string;
-}
-
-export const getProfileInfoService = () => {
-  return useQuery<Profile[], AxiosError>({
-    queryKey: ['profile'],
-    queryFn: getProfileInfoApi,
+export const useGetProfileInfoService = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+  const skipToken = !!isLoggedIn;
+  return useQuery<boolean | ProfileResponse>({
+    queryKey: ['profile', isLoggedIn],
+    queryFn: () => (isLoggedIn ? getProfileInfoApi() : skipToken),
+    // enabled: !!isLoggedIn,
   });
 };

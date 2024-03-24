@@ -29,3 +29,45 @@ export interface BoardAllResponse {
   totalElements: number;
   totalPages: number;
 }
+
+export interface BoardArticleComments {
+  id: number;
+  user: string;
+  content: string;
+  createdAt: string;
+}
+export interface BoardArticleResponse {
+  id: number;
+  categoryId: number;
+  thumbnailImage: string | null;
+  eventAddress: string | null;
+  eventDetailAddress: string | null;
+  artists: string[];
+  comments: BoardArticleComments[];
+  content: string;
+  hashtags: string[];
+  imageUrl: string[];
+  likeUsersNum: number;
+  teams: string[];
+  title: string;
+  updatedAt: string;
+  user: string;
+  viewCount: number;
+}
+
+export interface BoardWritePayload {
+  title: string;
+  content: string;
+  hashtag: string[];
+  address: string;
+  detailAddress: string;
+  thumbnailImage: File | null;
+  imageFile: File[] | null;
+}
+
+export interface BoardWritePostPayload extends BoardWritePayload {
+  categoryId: number;
+}
+export interface BoardWritePatchPayload extends BoardWritePayload {
+  articleId: number | null;
+}

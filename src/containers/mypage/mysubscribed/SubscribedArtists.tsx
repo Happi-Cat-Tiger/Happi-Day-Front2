@@ -1,10 +1,10 @@
 import React from 'react';
 import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
 import ArtistProfileList from '@/components/List/ArtistProfileList';
-import { getSubscribedListService } from '@/hooks/queries/artist/artistService';
+import { usegetSubscribedListService } from '@/hooks/queries/artist/artistService';
 
 const SubscribedArtists = () => {
-  const { data: subscribedListData, isLoading } = getSubscribedListService();
+  const { data: subscribedListData, isLoading } = usegetSubscribedListService();
 
   if (isLoading) {
     return <div>Loading...</div>;

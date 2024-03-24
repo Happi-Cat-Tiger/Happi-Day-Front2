@@ -2,22 +2,36 @@ import React from 'react';
 import DaumPost from '../Tool/DaumPost';
 import { useRecoilState } from 'recoil';
 import { writingInfoState } from '@/atom/write';
+import { eventsCardState } from '@/atom/eventsAtom';
 
 const AddressInput = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { eventAddress } = writingInfoValue;
 
+  // 임시로 생성한 이벤트 hashtags값
+  const [eventsCardValue, setEventsCardValue] = useRecoilState(eventsCardState);
+
   const handleChangeAdress = (value: any) => {
     setWritingInfoValue({
       ...writingInfoValue,
       eventAddress: { ...eventAddress, address: value },
+    });
+    // 임시로 생성한 이벤트 address값
+    setEventsCardValue({
+      ...eventsCardValue,
+      address: { address: value, detailAddress: eventsCardValue.address.detailAddress },
     });
   };
   const handleChangeDetail = (value: any) => {
     setWritingInfoValue({
       ...writingInfoValue,
       eventAddress: { ...eventAddress, detailAddress: value },
+    });
+    // 임시로 생성한 이벤트 address값
+    setEventsCardValue({
+      ...eventsCardValue,
+      address: { address: eventsCardValue.address.address, detailAddress: value },
     });
   };
 

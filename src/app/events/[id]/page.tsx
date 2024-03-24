@@ -13,11 +13,9 @@ import Reveiw from '../review/Review';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
-import KakaoMap from '@/containers/events/KakaoMap';
-import { getEventsDetail } from '@/hooks/queries/events/eventsService';
-import { useRouter } from 'next/navigation';
+import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
+import { getEventsDetail } from '@/hooks/queries/events/eventsService';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -150,7 +148,7 @@ const page = () => {
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
             <p className="sm:prose-body-XS md:prose-body-S">{data?.location}</p>
           </div>
-          {/* <KakaoMap /> */}
+          <KakaoMap mapAddress="서울시 노원구 노해로 437" />
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
             <p className="sm:prose-body-XS md:prose-body-S">

@@ -6,20 +6,19 @@ import { StaticMap } from 'react-kakao-maps-sdk';
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_KEY}&autoload=false&libraries=services`;
 
-const KakaoMap = () => {
+const KakaoMap = ({ mapAddress }: { mapAddress: string }) => {
   interface Location {
     lat: number;
     lng: number;
   }
 
-  const [coords, setCoords] = useState({
+  const [coords, setCoords] = useState<Location>({
     lat: 0,
     lng: 0,
   });
 
   const center: Location = coords;
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
-  const address = '서울시 노원구 노해로 437';
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -37,17 +36,19 @@ const KakaoMap = () => {
 
   useEffect(() => {
     if (kakaoLoaded) {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(address, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          const { x, y } = result[0].road_address || result[0].address;
-          setCoords({ lat: Number(y), lng: Number(x) });
-        } else {
-          console.error('Failed to convert address to coordinates:', status);
-        }
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(mapAddress, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK) {
+            const { x, y } = result[0].road_address || result[0].address;
+            setCoords({ lat: Number(y), lng: Number(x) });
+          } else {
+            console.error('Failed to convert address to coordinates:', status);
+          }
+        });
       });
     }
-  }, [kakaoLoaded, address]);
+  }, [kakaoLoaded, mapAddress]);
 
   return (
     <>

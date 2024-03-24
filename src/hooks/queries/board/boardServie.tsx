@@ -1,27 +1,38 @@
-import { fetchBoardAllApi, getBoardArticleApi, getBoardCategoriesApi } from '@/api/board/boardApi';
-import { BoardAllResponse } from '@/api/board/type';
+import {
+  fetchBoardAllApi,
+  getBoardArticleApi,
+  getBoardCategoriesApi,
+  getSearchBoardAllApi,
+} from '@/api/board/boardApi';
+import { BoardAllResponse, BoardArticleResponse } from '@/api/board/type';
 import { useQuery } from '@tanstack/react-query';
 
-export const getBoardAllService = () => {
-  const query = useQuery<BoardAllResponse>({
+export const useGetBoardAllService = () => {
+  return useQuery<BoardAllResponse, Error>({
     queryKey: ['board', 'all'],
     queryFn: () => fetchBoardAllApi(),
   });
-  return query;
 };
 
-export const getBoardCategoriesService = ({ categoryId }: { categoryId: number }) => {
-  const query = useQuery<BoardAllResponse>({
-    queryKey: ['board', 'event'],
+export const useGetBoardSearchAllService = ({ filter }: { filter: string }) => {
+  return useQuery<BoardAllResponse, Error>({
+    queryKey: ['board', 'all', 'search'],
+    queryFn: () => getSearchBoardAllApi({ filter }),
+  });
+};
+
+export const useGetBoardCategoriesService = ({ categoryId }: { categoryId: number }) => {
+  return useQuery<BoardAllResponse, Error>({
+    queryKey: ['board', 'categoryList'],
     queryFn: () => getBoardCategoriesApi({ categoryId }),
   });
-  return query;
 };
 
-export const getBoardArticleService = ({ articleId }: { articleId: number }) => {
-  const query = useQuery({
-    queryKey: ['board', 'article'],
-    queryFn: () => getBoardArticleApi({ articleId }),
+export const useGetBoardArticleService = ({ articleId }: { articleId: number | null }) => {
+  const skipToken = !!articleId;
+  return useQuery<boolean | BoardArticleResponse>({
+    queryKey: ['board', 'article', !!articleId],
+    queryFn: () => (articleId ? getBoardArticleApi({ articleId }) : skipToken),
+    // enabled: !articleId,
   });
-  return query;
 };
