@@ -1,21 +1,31 @@
 import { atom } from 'recoil';
 
-export const salesSearchState = atom({
-  key: 'salesSearchState',
-  default: '',
-});
-
-export const salesSortState = atom({
-  key: 'salesSortState',
-  default: 'new',
-});
-
+// 상세페이지 옵션 선택
 export const handleOptionSelectState = atom({
   key: 'handleOptionSelectState',
   default: false,
 });
 
+// 상세페이지 유저정보 입력
 export const handleInputSelectState = atom({
   key: 'handleInputSelectState',
   default: false,
+});
+
+// 굿즈/공구 검색
+export const salesSearchState = atom({
+  key: 'salesSearchState',
+  default: '',
+});
+
+// 굿즈/공구 검색 필터
+export const salesSearchFilter = atom({
+  key: 'salesSearchFilter',
+  default: 'title',
+});
+
+// 굿즈/공구 정렬
+export const salesSortList = atom({
+  key: 'salesSortList',
+  default: 'new',
 });

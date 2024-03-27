@@ -8,183 +8,40 @@ import '../../styles/global.css';
 import EncourageSubscription from '@/containers/sales/EncourageSubscription';
 import SalesInputElements from '@/containers/sales/SalesInputElements';
 import { writeInitState, writeState, writingInfoInitState, writingInfoState } from '@/atom/write';
-import { useRecoilState } from 'recoil';
-import { salesSearchState, salesSortState } from '@/atom/salesAtom';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { salesSearchState, salesSortList, salesSearchFilter } from '@/atom/salesAtom';
 import { AiOutlineSearch } from 'react-icons/ai';
-
-interface MockData {
-  id: number;
-  thumbnailUrl: string;
-  title: string;
-  artist: string;
-  startDate: string;
-  endDate: string;
-  joinMember: number;
-  like: number;
-  comment: number;
-  view: number;
-  joinCount: number;
-}
+import { SalesCategoriesList } from '@/types/sales';
 
 const Page = () => {
-  const mockData = [
-    {
-      id: 1,
-      thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 1,
-      comment: 1,
-      view: 1,
-      joinCount: 1,
-    },
-    {
-      id: 2,
-      thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 2,
-      comment: 2,
-      view: 2,
-      joinCount: 2,
-    },
-    {
-      id: 3,
-      thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 3,
-      comment: 3,
-      view: 3,
-      joinCount: 3,
-    },
-    {
-      id: 4,
-      thumbnailUrl:
-        'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 4,
-      comment: 4,
-      view: 4,
-      joinCount: 4,
-    },
-    {
-      id: 5,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 6,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 7,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 8,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 9,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 10,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '뉴진스 굿즈',
-      artist: '뉴진스',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
-      joinMember: 2,
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-  ];
-
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageGrid, setItemsPerPageGrid] = useState(5);
-  const indexOfLastPost = page * itemsPerPage;
-  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
-
-  const [loading, setLoading] = useState(false);
-  const [salesSearch, setsalesSearch] = useRecoilState(salesSearchState);
-  const [salesSort, setsalesSort] = useRecoilState<string>(salesSortState);
-
-  const filteredItem = mockData.filter((el) => el.title.includes(salesSearch));
-
+  const [loading] = useState(false);
+  const salesSearch = useRecoilValue(salesSearchState);
+  const salesSortValue = useRecoilValue<string>(salesSortList);
+  const searchFilterValue = useRecoilValue<string>(salesSearchFilter);
+  const [selectedCategory, setSelectedCategory] = useState<'goods' | 'groupbuy'>('goods');
   const [, setWriteValue] = useRecoilState(writeState);
   const [, setWritingInfoValue] = useRecoilState(writingInfoState);
 
-  const pageChange = (page: number) => {
-    setPage(page);
-  };
+  const resetSearchState = useResetRecoilState(salesSearchState);
+  const resetSortList = useResetRecoilState(salesSortList);
+  const resetSearchFilter = useResetRecoilState(salesSearchFilter);
+
+  const filteredItem: SalesCategoriesList[] = mockData.filter((el) =>
+    searchFilterValue === 'title'
+      ? el.title.includes(salesSearch)
+      : searchFilterValue === 'artist'
+        ? el.artist.includes(salesSearch)
+        : null,
+  );
+
+  const sortedItem = filteredItem.sort((a, b) => {
+    return salesSortValue === 'new'
+      ? new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+      : new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
+  });
 
   useEffect(() => {
     const handleResize = () => {
@@ -216,21 +73,58 @@ const Page = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setSelectedCategory('goods');
+    resetSearchState();
+    resetSortList();
+    resetSearchFilter();
+  }, [resetSearchState, resetSortList, resetSearchFilter]);
+
+  const handleCategoryClick = (clickedCategory: 'goods' | 'groupbuy') => {
+    setSelectedCategory(clickedCategory);
+    resetSearchState();
+    resetSortList();
+    resetSearchFilter();
+  };
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
 
-  const sortedItem = filteredItem.sort((a, b) => {
-    return salesSort === 'new'
-      ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+  const currentCategoryItems = sortedItem.filter((el) => {
+    return selectedCategory === 'goods' ? el.categoryId === 1 : el.categoryId === 2;
   });
+
+  const totalItemsCount = currentCategoryItems.length;
+  const indexOfLastPost = page * itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
+  const currentPosts = currentCategoryItems.slice(indexOfFirstPost, indexOfLastPost);
+
+  const pageChange = (page: number) => {
+    setPage(page);
+  };
 
   return (
     <div className="grid px-[8px]">
+      <div className="flex pt-12">
+        <div
+          className={`prose-h6 cursor-pointer p-2 md:prose-h4 ${
+            selectedCategory === 'goods' ? 'text-orange-500 underline' : ''
+          }`}
+          onClick={() => handleCategoryClick('goods')}>
+          굿즈
+        </div>
+        <div
+          className={`prose-h6 cursor-pointer p-2 md:prose-h4 ${
+            selectedCategory === 'groupbuy' ? 'text-orange-500 underline' : ''
+          }`}
+          onClick={() => handleCategoryClick('groupbuy')}>
+          공구
+        </div>
+      </div>
       <EncourageSubscription />
       <SalesInputElements />
-      {sortedItem.length === 0 ? (
+      {filteredItem.length === 0 ? (
         <div className="flex flex-col items-center gap-[5px] text-gray5">
           <AiOutlineSearch style={{ fontSize: 80, color: '#9CA3AF', marginBottom: 10 }} />
           <p>검색결과가 존재하지 않습니다.</p>
@@ -238,7 +132,7 @@ const Page = () => {
         </div>
       ) : (
         <div className={`grid grid-cols-${itemsPerPageGrid} max-w-[1280px] grid-rows-2 gap-2.5`}>
-          {sortedItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
+          {currentPosts.map((el: SalesCategoriesList, idx: number) => (
             <Card
               key={idx}
               id={el.id}
@@ -246,8 +140,8 @@ const Page = () => {
               thumbnailUrl={el.thumbnailUrl}
               title={el.title}
               artist={el.artist}
-              startTime={el.startDate}
-              endTime={el.endDate}
+              startTime={el.startTime}
+              endTime={el.endTime}
               joinMember={el.joinMember}
               likeCount={el.like}
               commentCount={el.comment}
@@ -259,7 +153,7 @@ const Page = () => {
       <div className="my-[100px] text-center">
         <PaginationComponent
           page={page}
-          totalItemsCount={filteredItem.length}
+          totalItemsCount={totalItemsCount}
           pageChange={pageChange}
           countPerPage={itemsPerPage}
         />
@@ -282,3 +176,153 @@ const Page = () => {
 };
 
 export default Page;
+
+const mockData: SalesCategoriesList[] = [
+  {
+    categoryId: 1,
+    id: 1,
+    thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 18),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 1,
+    comment: 1,
+    view: 1,
+    joinCount: 1,
+  },
+  {
+    categoryId: 1,
+    id: 2,
+    thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 17),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 2,
+    comment: 2,
+    view: 2,
+    joinCount: 2,
+  },
+  {
+    categoryId: 1,
+    id: 3,
+    thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 16),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 3,
+    comment: 3,
+    view: 3,
+    joinCount: 3,
+  },
+  {
+    categoryId: 1,
+    id: 4,
+    thumbnailUrl:
+      'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 15),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 4,
+    comment: 4,
+    view: 4,
+    joinCount: 4,
+  },
+  {
+    categoryId: 1,
+    id: 5,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 14),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+  {
+    categoryId: 1,
+    id: 6,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '뉴진스 굿즈',
+    artist: '뉴진스',
+    startTime: new Date(2024, 2, 13),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+  {
+    categoryId: 2,
+    id: 7,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '에스파 공구',
+    artist: '에스파',
+    startTime: new Date(2024, 2, 12),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+  {
+    categoryId: 2,
+    id: 8,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '에스파 공구',
+    artist: '에스파',
+    startTime: new Date(2024, 2, 20),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+  {
+    categoryId: 2,
+    id: 9,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '에스파 공구',
+    artist: '에스파',
+    startTime: new Date(2024, 2, 19, 15, 30, 0),
+    endTime: new Date(2024, 2, 20, 15, 30, 0),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+  {
+    categoryId: 2,
+    id: 10,
+    thumbnailUrl:
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+    title: '에스파 공구',
+    artist: '에스파',
+    startTime: new Date(2024, 2, 17),
+    endTime: new Date(2024, 2, 20),
+    joinMember: 2,
+    like: 5,
+    comment: 5,
+    view: 5,
+    joinCount: 5,
+  },
+];

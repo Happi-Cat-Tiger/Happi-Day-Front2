@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { handleOptionSelectState, handleInputSelectState } from '@/atom/salesAtom';
 import Link from 'next/link';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import OptionsSelect from '@/containers/sales/OptionsSelect';
 import SalesInformation from '@/containers/sales/SalesInformation';
 import StyledSubmitButton from '@/components/Button/StyledSubmitButton';
@@ -18,8 +18,6 @@ const Page = () => {
   ];
 
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const isAllOptionsSelected = useRecoilValue(handleOptionSelectState);
   const isAllInputsSelected = useRecoilValue(handleInputSelectState);
   const [isChecked, setIsChecked] = useState(false);

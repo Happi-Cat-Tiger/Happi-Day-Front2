@@ -26,7 +26,7 @@ const SalesPreviewWritingStep = () => {
     .padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
 
   return (
-    <div className="mb-[200px] mt-[50px] flex w-full flex-col px-[8px] md:mt-[100px]">
+    <div className="pointer-events-none mb-[200px] mt-[50px] flex w-full flex-col px-[8px] md:mt-[100px]">
       <div className="flex w-full border-b-[1px] border-gray6 pb-[30px] sm:flex-col md:flex-row md:justify-between">
         <div className="h-full w-full">
           <div className="flex flex-col items-center gap-[7px]">
@@ -41,9 +41,9 @@ const SalesPreviewWritingStep = () => {
             </div>
             <div className="flex w-full justify-between px-1">
               <div className="prose-body-M flex gap-1 text-gray4">
-                {writingInfoValue.hashtag.map((content, index) => (
+                {writingInfoValue.hashtag.map((hashtag, index) => (
                   <div key={index} className="rounded-2xl border-[1px] border-gray4 px-2">
-                    <div>#{content}</div>
+                    <div>#{hashtag.label}</div>
                   </div>
                 ))}
               </div>
@@ -227,7 +227,9 @@ const SalesPreviewWritingStep = () => {
         />
       </div>
       <div className="m-auto my-[100px] w-[400px] md:w-[600px] lg:w-[800px]">
-        <div>{writingInfoValue.poster && <img src={URL.createObjectURL(writingInfoValue.poster)} alt="Poster" />}</div>
+        <div>
+          {writingInfoValue.imageFile && <img src={URL.createObjectURL(writingInfoValue.imageFile)} alt="Poster" />}
+        </div>
         <div className="sm:prose-body-S md:prose-body-L" dangerouslySetInnerHTML={{ __html: writeValue.editValue }} />
       </div>
     </div>
