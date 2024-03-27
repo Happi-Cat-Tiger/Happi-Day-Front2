@@ -8,12 +8,28 @@ const Review = () => {
   const [reveiwValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const { starRate, review } = reveiwValue;
 
+  const getDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${
+      (hour < 10 ? '0' : '') + hour
+    }:${(min < 10 ? '0' : '') + min}:${(sec < 10 ? '0' : '') + sec}`;
+  };
+
   const onChangeReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewValue({
       ...reveiwValue,
       review: e.target.value,
+      date: getDate(),
     });
   };
+
+  console.log('review', reveiwValue);
 
   return (
     <>

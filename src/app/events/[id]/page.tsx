@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
 import '../../../slider/slick.css';
@@ -14,6 +14,8 @@ import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
+import { useRouter } from 'next/navigation';
+import { LoginState } from '@/atom/LoginState';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -56,11 +58,11 @@ const page = () => {
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '' });
+    setReviewValue({ starRate: 0, review: '', date: '' });
   };
 
-  // 임시 로그인 상태
-  const userState = false;
+  // 로그인 상태
+  const loginState = useRecoilValue(LoginState);
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
@@ -83,11 +85,41 @@ const page = () => {
     }
   };
 
+  // 이벤트 수정
+  const router = useRouter();
+  const putEvents = () => {
+    router.push('/events/write');
+  };
+  // 이벤트 삭제
+  const deleteEvents = () => {
+    if (confirm('이벤트를 삭제하시겠습니까?')) {
+      router.push('/events');
+    } else {
+      return;
+    }
+  };
+
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
-      <Link href="/events">
-        <div className="cursor-pointer text-[30px]">←</div>
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/events">
+          <div className="cursor-pointer text-[30px]">←</div>
+        </Link>
+        <div className="flex items-center gap-[10px]">
+          <StyledButton
+            label="수정"
+            onClick={putEvents}
+            disabled={false}
+            className="rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+          />
+          <StyledButton
+            label="삭제"
+            onClick={deleteEvents}
+            disabled={false}
+            className="rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+          />
+        </div>
+      </div>
       <div className="relative mb-[100px] flex w-full flex-col items-center gap-[16px]">
         <h3 className="sm:prose-h4 md:prose-h3">세븐틴 호시 생일 카페</h3>
         <ul className="flex gap-[16px] text-gray4 sm:prose-body-XS md:prose-body-S">
@@ -169,7 +201,7 @@ const page = () => {
             </div>
           ))}
         </div>
-        {userState ? (
+        {!loginState ? (
           <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
             <p className="prose-subtitle-M text-gray5">로그인 후 댓글을 남겨주세요!</p>
           </div>
@@ -198,12 +230,14 @@ const page = () => {
       <div className="mt-[100px]">
         <div className="my-[20px] flex justify-between">
           <p className="prose-h4">이벤트 후기</p>
-          <StyledButton
-            label="후기 작성하기"
-            onClick={() => modalState()}
-            disabled={false}
-            className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
-          />
+          {loginState && (
+            <StyledButton
+              label="후기 작성하기"
+              onClick={() => modalState()}
+              disabled={false}
+              className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
+            />
+          )}
         </div>
         <TwoButtonModal
           isOpen={isModal}
@@ -212,13 +246,17 @@ const page = () => {
           buttonLabel="등록"
           onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {allReview.length > 0 ? (
+        {!loginState ? (
+          <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
+            <p className="prose-subtitle-M text-gray5">로그인 후 후기를 작성해주세요!</p>
+          </div>
+        ) : allReview.length > 0 ? (
           allReview.map((review) => (
             <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
               <div className="flex items-center gap-[10px]">
                 <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
                 <p className="prose-body-S text-gray4">닉네임</p>
-                <p className="prose-body-XS text-gray5">2023.12.03</p>
+                <p className="prose-body-XS text-gray5">{review.date}</p>
               </div>
               <div className="flex">
                 {[...Array(review.starRate)].map((el, idx) => (
