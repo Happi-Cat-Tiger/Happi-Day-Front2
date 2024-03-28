@@ -58,7 +58,7 @@ const page = () => {
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '', date: '' });
+    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: null });
   };
 
   // 로그인 상태
@@ -98,6 +98,18 @@ const page = () => {
       return;
     }
   };
+
+  const [reviewUrl, setReviewUrl] = useState<string | ArrayBuffer | null>(null);
+  const getReviewFile = () => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setReviewUrl(reader.result);
+    };
+    if (reviewValue && reviewValue.reviewImage instanceof File) {
+      reader.readAsDataURL(reviewValue.reviewImage);
+    }
+  };
+  getReviewFile();
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -268,30 +280,7 @@ const page = () => {
               </div>
               <div className="h-[250px] w-[100%] overflow-hidden">
                 <Slick {...settings}>
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                  />
+                  <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src={reviewUrl as string} />
                 </Slick>
               </div>
               <div className="mt-[30px]">
