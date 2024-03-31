@@ -1,13 +1,13 @@
 import { eventsReviewValue } from '@/atom/eventsAtom';
-import React, { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react';
+import React, { ChangeEvent, Dispatch, DragEvent, SetStateAction, useCallback, useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 
 const Review = () => {
-  const [reveiwValue, setReviewValue] = useRecoilState(eventsReviewValue);
-  const { starRate, review, reviewImage } = reveiwValue;
+  const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
+  const { starRate, review, reviewImage } = reviewValue;
 
   const getDate = () => {
     const date = new Date();
@@ -24,16 +24,19 @@ const Review = () => {
 
   const onChangeReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewValue({
-      ...reveiwValue,
+      ...reviewValue,
       review: e.target.value,
       date: getDate(),
     });
   };
 
-  const handleChangeThumbnail = (value: File, reveiwValue: any) => {
+  const handleChangeThumbnail = (value: File, reviewValue: any) => {
+    const updatedImageArr = [...reviewValue.reviewImage];
+    updatedImageArr.push(value);
+
     setReviewValue({
-      ...reveiwValue,
-      reviewImage: value,
+      ...reviewValue,
+      reviewImage: updatedImageArr,
     });
   };
 
@@ -41,12 +44,12 @@ const Review = () => {
 
   // drag & drop
   const handleDrop = useCallback(
-    (e: DragEvent<HTMLLabelElement>, setIsActive?: Dispatch<SetStateAction<boolean>>, reveiwValue?: any) => {
+    (e: DragEvent<HTMLLabelElement>, setIsActive?: Dispatch<SetStateAction<boolean>>, reviewValue?: any) => {
       e.preventDefault();
       const file = e.dataTransfer?.files[0];
 
       if (file && file.type.includes('image')) {
-        handleChangeThumbnail(file, reveiwValue);
+        handleChangeThumbnail(file, reviewValue);
       }
       if (setIsActive) setIsActive(false);
     },
@@ -55,20 +58,32 @@ const Review = () => {
 
   // 이미지 첨부하기
   const handleUpload = useCallback(
-    (e: ChangeEvent<HTMLInputElement>, setIsActive?: Dispatch<SetStateAction<boolean>>, reveiwValue?: any) => {
+    (e: ChangeEvent<HTMLInputElement>, setIsActive?: Dispatch<SetStateAction<boolean>>, reviewValue?: any) => {
       e.preventDefault();
-      const file = e.target?.files?.[0];
+      const files = e.target?.files;
+      let fileArr = [];
 
-      // image 파일이 맞다면 imgFile에 file을 저장하고, 이미지 url 정보를 가져오는 함수를 호출
-      if (file && file.type.includes('image')) {
-        handleChangeThumbnail(file, reveiwValue);
-      } else console.error('No file selected');
+      if (!files || files.length === 0) {
+        console.error('No files selected');
+        return;
+      }
+
+      for (let i = 0; i < files.length; i++) {
+        fileArr.push(files[i]);
+
+        fileArr.map((el: any) => {
+          if (el.type.includes('image')) {
+            handleChangeThumbnail(el, reviewValue);
+          } else {
+            console.error('Invalid file type:', el.name);
+          }
+        });
+      }
+
       if (setIsActive) setIsActive(false);
     },
     [],
   );
-
-  console.log('review', reveiwValue);
 
   return (
     <>
@@ -83,7 +98,7 @@ const Review = () => {
                 size="50"
                 className="cursor-pointer"
                 key={idx}
-                onClick={() => setReviewValue({ ...reveiwValue, starRate: idx + 1 })}
+                onClick={() => setReviewValue({ ...reviewValue, starRate: idx + 1 })}
               />
             ))}
             {[...Array(5 - starRate)].map((el, idx) => (
@@ -91,7 +106,7 @@ const Review = () => {
                 size="50"
                 className="cursor-pointer text-gray6"
                 key={idx}
-                onClick={() => setReviewValue({ ...reveiwValue, starRate: starRate + idx + 1 })}
+                onClick={() => setReviewValue({ ...reviewValue, starRate: starRate + idx + 1 })}
               />
             ))}
           </div>
@@ -114,7 +129,7 @@ const Review = () => {
               onDragEnter={() => setIsActive(true)}
               onDragLeave={() => setIsActive(false)}
               onDragOver={(event) => event.preventDefault()}
-              onDrop={(event) => handleDrop(event, setIsActive, reveiwValue)}
+              onDrop={(event) => handleDrop(event, setIsActive, reviewValue)}
               htmlFor="dropzone-file-t">
               <div className="flex flex-col items-center justify-center pb-6 pt-5">
                 <AiOutlineCloudUpload className="mb-4 h-8 w-8 text-gray-500" />
@@ -128,12 +143,14 @@ const Review = () => {
                 type="file"
                 className="hidden"
                 multiple
-                onChange={(e) => handleUpload(e, setIsActive, reveiwValue)}
+                onChange={(e) => handleUpload(e, setIsActive, reviewValue)}
               />
             </label>
             <div className="mx-auto w-2/3 rounded-lg border-2 border-gray-300 bg-gray-100 p-5">
               {reviewImage ? (
-                <img src={reviewImage ? URL.createObjectURL(reviewImage) : ''} className="mx-auto h-auto w-[250px]" />
+                reviewImage.map((el) => (
+                  <img src={el ? URL.createObjectURL(el) : ''} className="mx-auto h-auto w-[250px]" />
+                ))
               ) : (
                 <p className="prose-body-XS text-center text-gray-600 md:prose-body-S">이미지 미리보기</p>
               )}

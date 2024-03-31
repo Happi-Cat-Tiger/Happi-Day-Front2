@@ -58,7 +58,7 @@ const page = () => {
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: null });
+    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
   // 로그인 상태
@@ -99,17 +99,7 @@ const page = () => {
     }
   };
 
-  const [reviewUrl, setReviewUrl] = useState<string | ArrayBuffer | null>(null);
-  const getReviewFile = () => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setReviewUrl(reader.result);
-    };
-    if (reviewValue && reviewValue.reviewImage instanceof File) {
-      reader.readAsDataURL(reviewValue.reviewImage);
-    }
-  };
-  getReviewFile();
+  console.log('allReview', allReview);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -280,7 +270,12 @@ const page = () => {
               </div>
               <div className="h-[250px] w-[100%] overflow-hidden">
                 <Slick {...settings}>
-                  <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src={reviewUrl as string} />
+                  {review.reviewImage.map((el) => (
+                    <img
+                      className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                      src={el ? URL.createObjectURL(el) : ''}
+                    />
+                  ))}
                 </Slick>
               </div>
               <div className="mt-[30px]">

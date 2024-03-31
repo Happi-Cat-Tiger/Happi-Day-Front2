@@ -89,7 +89,7 @@ export interface reviewProps {
   starRate: number;
   review: string;
   date: string;
-  reviewImage: File | null;
+  reviewImage: [];
 }
 
 export const eventsReviewValue = atom({
@@ -98,7 +98,7 @@ export const eventsReviewValue = atom({
     starRate: 0,
     review: '',
     date: '',
-    reviewImage: null,
+    reviewImage: [],
   } as reviewProps,
 });
 
