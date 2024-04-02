@@ -198,7 +198,7 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 굿즈</h3>
             <StyledButton
               label="More+"
-              onClick={() => router.push('/sales')}
+              onClick={() => router.push('/sales/1')}
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
@@ -229,7 +229,7 @@ const Home = () => {
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
             <StyledButton
               label="More+"
-              onClick={() => router.push('/sales')}
+              onClick={() => router.push('/sales/2')}
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>

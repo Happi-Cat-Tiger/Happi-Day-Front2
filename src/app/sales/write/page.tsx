@@ -1,20 +1,20 @@
 'use client';
 import StepProgressBar from '@/components/Bar/StepProgressBar';
 import WritingStep from '@/containers/write/WritingStep';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SalesWritingInfoStep from '@/containers/write/SalesWritingInfoStep';
 import StyledButton from '@/components/Button/StyledButton';
 import { useRecoilState } from 'recoil';
+import { useSearchParams } from 'next/navigation';
+import { useGetSalesArticleService } from '@/hooks/queries/sales/salesService';
 import { writeState, writingInfoState } from '@/atom/write';
 import SalesPreviewWritingStep from '@/containers/write/SalesPreviewWritingStep';
+import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 
 const WritePage = () => {
-  const [step, setStep] = useState<number>(1);
-
-  const [writeValue] = useRecoilState(writeState);
+  const [writeValue, setWriteValue] = useRecoilState(writeState);
   const { articleTitle, editValue, category } = writeValue;
-
-  const [writingInfoValue] = useRecoilState(writingInfoState);
+  const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
   const {
     hashtag,
     thumbnailImage,
@@ -23,9 +23,42 @@ const WritePage = () => {
     endTime,
     productOptions,
     shippingOptions,
-    bankAccount,
+    accountName,
+    accountUser,
+    accountNumber,
     imageFile,
   } = writingInfoValue;
+
+  const [step, setStep] = useState<number>(1);
+
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const salesId = id ? +id : null;
+
+  const { data: salesArticle, isLoading } = useGetSalesArticleService({ salesId });
+  const writeSalesMutation = usePostWriteSalesService({ categoryId: category.id });
+  const modifySalesMutation = usePutSalesArticleService({ articlsalesIdeId });
+
+  useEffect(() => {
+    if (salesArticle && salesId) {
+      setWriteValue({
+        ...writeValue,
+        articleTitle: boardArticle.title,
+        editValue: boardArticle.content,
+        category: { id: boardArticle.categoryId, label: BOARD.CATEGORY[boardArticle.categoryId - 1].label },
+      });
+      setWritingInfoValue({
+        ...writingInfoValue,
+        hashtag: boardArticle.hashtags,
+        thumbnailImage: boardArticle.thumbnailImage,
+        eventAddress: {
+          address: boardArticle.eventAddress,
+          detailAddress: boardArticle.eventDetailAddress,
+        },
+      });
+    }
+  }, [salesArticle, salesId]);
 
   const onDisable = () => {
     if (step === 1) {
@@ -43,15 +76,34 @@ const WritePage = () => {
         productOptions.length === 0 ||
         !shippingOptions ||
         shippingOptions.length === 0 ||
-        !bankAccount.bank ||
-        !bankAccount.name ||
-        !bankAccount.number ||
+        !accountName ||
+        !accountUser ||
+        !accountNumber ||
         !imageFile
       )
         return true;
     }
     return false;
   };
+
+  const handleClick = async () => {
+    if (step === 3) {
+      const payloadData = {
+        title: articleTitle,
+        content: editValue,
+        hashtag: hashtag,
+        thumbnailImage: thumbnailImage,
+        imageFile: null,
+      };
+      if (mod === 'true') {
+        await modifySalesMutation.mutate(payloadData);
+      } else {
+        await writeSalesMutation.mutate(payloadData);
+      }
+    } else setStep(step + 1);
+  };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="mx-auto my-[40px] flex h-full w-full flex-col items-center justify-center md:my-[60px] md:max-w-[1280px]">
