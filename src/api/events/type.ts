@@ -1,17 +1,19 @@
 export interface EventsWritePayload {
   title: string;
-  content: string;
-  hashtag: string[];
+  startTime: Date | null;
+  endTime: Date | null;
+  description: string;
   address: string;
-  detailAddress: string;
-  thumbnailImage: File | null;
-  imageFile: File[] | null;
+  location: string;
+  hashtags: string[];
+  thumbnailFile: File | null;
+  imageFile: File | null;
 }
 
-export interface EventsWritePostPayload extends EventsWritePayload {
-  eventId: number;
-}
+// export interface EventsWritePatchPayload extends EventsWritePayload {
+//   id: number;
+// }
 
-export interface EvnetsWritePatchPayload extends EventsWritePayload {
-  eventId: number | null;
-}
+// export interface EvnetsWritePatchPayload extends EventsWritePayload {
+//   id: number | null;
+// }

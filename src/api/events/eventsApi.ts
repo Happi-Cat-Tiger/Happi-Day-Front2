@@ -1,38 +1,50 @@
 import apiInstance from '../api';
-import { EventsWritePostPayload, EvnetsWritePatchPayload } from './type';
+import { EventsWritePayload } from './type';
 
 // 이벤트 생성
 export const postEventsWriteApi = async ({
-  eventId,
   title,
-  content,
-  hashtag,
+  startTime,
+  endTime,
+  description,
   address,
-  detailAddress,
-  thumbnailImage,
+  location,
+  hashtags,
+  thumbnailFile,
   imageFile,
-}: EventsWritePostPayload) => {
+}: EventsWritePayload) => {
   const formData = new FormData();
   const articleJson = new Blob(
     [
       JSON.stringify({
         title: title,
-        content: content,
-        hashtag: hashtag,
-        eventAddress: address,
-        eventDetailAddress: detailAddress,
+        startTime: startTime,
+        endTime: endTime,
+        description: description,
+        address: address,
+        location: location,
+        hashtags: hashtags,
       }),
     ],
     {
       type: 'application/json',
     },
   );
-  formData.append('article', articleJson);
-  thumbnailImage && formData.append('thumbnailImage', thumbnailImage);
-  imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
+  formData.append('title', title);
+  formData.append('description', description);
+  formData.append('address', address);
+  formData.append('location', location);
+  formData.append('hashtags', JSON.stringify(hashtags));
+  formData.append('thumbnailFile', thumbnailFile || ''); // 파일 또는 빈 문자열
+  formData.append('imageFile', imageFile || ''); // 파일 또는 빈 문자열
+
+  // Date 객체를 문자열로 변환하여 append
+  formData.append('startTime', startTime ? startTime.toISOString() : '');
+  formData.append('endTime', endTime ? endTime.toISOString() : '');
+  // imageUrl && imageUrl.forEach((file) => formData.append('imageFile', file));
 
   return await apiInstance
-    .post(`/events/${eventId}`, formData, {
+    .post(`/events`, formData, {
       headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
       transformRequest: [
         function () {
@@ -64,24 +76,29 @@ export const fetchSubscribedOngoing = async () =>
 
 // 이벤트 수정
 export const putEventsApi = async ({
-  eventId,
   title,
-  content,
-  hashtag,
+  startTime,
+  endTime,
+  description,
   address,
-  detailAddress,
-  thumbnailImage,
+  location,
+  hashtags,
+  thumbnailFile,
   imageFile,
-}: EvnetsWritePatchPayload) => {
+}: EventsWritePayload) => {
   const formData = new FormData();
   const articleJson = new Blob(
     [
       JSON.stringify({
         title: title,
-        content: content,
-        hashtag: hashtag,
-        eventAddress: address,
-        eventDetailAddress: detailAddress,
+        startTime: startTime,
+        endTime: endTime,
+        description: description,
+        address: address,
+        location: location,
+        hashtags: hashtags,
+        thumbnailFile: thumbnailFile,
+        imageFile: imageFile,
       }),
     ],
     {
@@ -89,11 +106,12 @@ export const putEventsApi = async ({
     },
   );
   formData.append('article', articleJson);
-  thumbnailImage && formData.append('thumbnailImage', thumbnailImage);
-  imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
+  thumbnailFile && formData.append('thumbnailFile', thumbnailFile);
+  imageFile && formData.append('imageFile', imageFile);
+  // imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
 
   return await apiInstance
-    .put(`/events/${eventId}`, formData, {
+    .put(`/events/${1}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
       transformRequest: [
         function () {

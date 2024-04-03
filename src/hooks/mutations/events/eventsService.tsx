@@ -12,13 +12,35 @@ import {
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { toast } from 'react-toastify';
 
-export const usePostWriteEventsService = ({ eventId }: { eventId: number }) => {
+export const usePostWriteEventsService = () => {
   return useMutation({
-    mutationFn: ({ title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }: EventsWritePayload) =>
-      postEventsWriteApi({ eventId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
+    mutationFn: ({
+      title,
+      startTime,
+      endTime,
+      description,
+      address,
+      location,
+      hashtags,
+      thumbnailFile,
+      imageFile,
+    }: EventsWritePayload) =>
+      postEventsWriteApi({
+        title,
+        startTime,
+        endTime,
+        description,
+        address,
+        location,
+        hashtags,
+        thumbnailFile,
+        imageFile,
+      }),
     onSuccess: (data) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['events', 'eventsList'] });
+
+      toast('글이 작성되었습니다.');
     },
   });
 };
@@ -37,12 +59,32 @@ export const useDeleteEventsService = ({ eventId }: { eventId: number }) => {
   });
 };
 
-export const usePutBoardEventsService = ({ eventId }: { eventId: number }) => {
+export const usePutBoardEventsService = ({ id }: { id: number }) => {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: ({ title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }: EventsWritePayload) =>
-      putEventsApi({ eventId, title, content, hashtag, address, detailAddress, thumbnailImage, imageFile }),
+    mutationFn: ({
+      title,
+      startTime,
+      endTime,
+      description,
+      address,
+      location,
+      hashtags,
+      thumbnailFile,
+      imageFile,
+    }: EventsWritePayload) =>
+      putEventsApi({
+        title,
+        startTime,
+        endTime,
+        description,
+        address,
+        location,
+        hashtags,
+        thumbnailFile,
+        imageFile,
+      }),
     onSuccess: (data) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['events', 'eventsList'] });

@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
 import { useRouter } from 'next/navigation';
+import { usePostWriteEventsService } from '@/hooks/mutations/events/eventsService';
 
 const page = () => {
   const [step, setStep] = useState<number>(1);
@@ -16,12 +17,51 @@ const page = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { articleTitle, editValue } = writeValue;
+  const { endTime, eventAddress, hashtag, location, poster, startTime, thumbnailImage } = writingInfoValue;
+
+  const WriteEventsMutaion = usePostWriteEventsService();
 
   console.log(writeValue, writingInfoValue);
 
   const onDisable = () => {
     if (step === 1) {
       if (!articleTitle || !editValue) return true;
+    }
+  };
+
+  const handleClick = async () => {
+    if (step === 3) {
+      alert('글 작성이 완료되었습니다');
+      // setWriteValue({ articleTitle: '', category: { ...writeValue.category }, editValue: '' });
+      // setWritingInfoValue({
+      //   bankAccount: { bank: '', name: '', number: '' },
+      //   endTime: null,
+      //   eventAddress: { address: '', detailAddress: '' },
+      //   hashtag: [],
+      //   location: '',
+      //   poster: null,
+      //   productOptions: [],
+      //   shippingOptions: [],
+      //   startTime: null,
+      //   thumbnailImage: null,
+      //   titleProduct: { label: '', price: '' },
+      //   urlAddress: '',
+      // });
+      const payloadData = {
+        title: articleTitle,
+        startTime: startTime,
+        endTime: endTime,
+        description: editValue,
+        address: eventAddress.address,
+        location: location,
+        hashtags: hashtag,
+        thumbnailFile: thumbnailImage,
+        imageFile: poster,
+      };
+      console.log('payloadData', payloadData);
+      await WriteEventsMutaion.mutate(payloadData);
+    } else {
+      setStep(step + 1);
     }
   };
   const router = useRouter();
@@ -39,29 +79,7 @@ const page = () => {
           className="prose-btn-M rounded-2xl bg-[#E85ECF] px-5 py-3 text-white md:prose-btn-L hover:bg-pink2 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
           label={step === 3 ? '완료' : '다음'}
           disabled={onDisable()}
-          onClick={() => {
-            if (step === 3) {
-              alert('글 작성이 완료되었습니다');
-              /* 저장처리 로직 구현 예정 */
-              // 저장처리 후 writeValue 및 writingInfoValue값 초기화
-              setWriteValue({ articleTitle: '', category: { ...writeValue.category }, editValue: '' });
-              setWritingInfoValue({
-                bankAccount: { bank: '', name: '', number: '' },
-                endTime: null,
-                eventAddress: { address: '', detailAddress: '' },
-                hashtag: [],
-                location: '',
-                poster: null,
-                productOptions: [],
-                shippingOptions: [],
-                startTime: null,
-                thumbnailImage: null,
-                titleProduct: { label: '', price: '' },
-                urlAddress: '',
-              });
-              router.push('/events');
-            } else setStep(step + 1);
-          }}
+          onClick={() => handleClick()}
         />
       </div>
       {step === 1 && <EventsWritingStep />}
