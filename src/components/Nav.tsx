@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { usePathname } from 'next/navigation';
 import useScrollControl from '@/hooks/useScrollControl';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { LoginState } from '@/atom/LoginState';
 import NavDropdownUserMenu from './Nav/NavDropdownUserMenu';
 import { NAV } from '@/constants/nav';
@@ -14,8 +14,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Nav = () => {
   // ssr hybrate 랜더링
-  const isLoggedIn = useRecoilValue(LoginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
+
   const [isClient, setIsClient] = useState(false);
+
+  if (!localStorage.getItem('token')) {
+    console.log('토큰이 없습니다');
+    setIsLoggedIn(false);
+  }
 
   useEffect(() => {
     setIsClient(true);
