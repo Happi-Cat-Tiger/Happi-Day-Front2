@@ -18,8 +18,8 @@ interface MockData {
   title: string;
   artist: string;
   place: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   location: string;
   like: number;
   comment: number;
@@ -28,6 +28,7 @@ interface MockData {
 }
 
 const page = () => {
+  const date = new Date();
   const mockData = [
     {
       id: 1,
@@ -35,8 +36,8 @@ const page = () => {
       title: '방탄소년단 생일 카페1',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.01',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 1,
       comment: 1,
@@ -49,8 +50,8 @@ const page = () => {
       title: '타이틀',
       artist: '아티스트',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.02',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 2,
       comment: 2,
@@ -63,8 +64,8 @@ const page = () => {
       title: '환상적인 이벤트',
       artist: '츄',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.03',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 3,
       comment: 3,
@@ -78,8 +79,8 @@ const page = () => {
       title: '방탄소년단 생일 카페4',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 4,
       comment: 4,
@@ -93,8 +94,8 @@ const page = () => {
       title: '방탄소년단 생일 카페5',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.05',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -108,8 +109,8 @@ const page = () => {
       title: '방탄소년단 생일 카페6',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.06',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -123,8 +124,8 @@ const page = () => {
       title: '방탄소년단 생일 카페7',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.07',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -138,8 +139,8 @@ const page = () => {
       title: '방탄소년단 생일 카페8',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.08',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -153,8 +154,8 @@ const page = () => {
       title: '방탄소년단 생일 카페9',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.09',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -168,8 +169,8 @@ const page = () => {
       title: '테스트 타이틀',
       artist: '아티스트',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.10',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
@@ -183,8 +184,8 @@ const page = () => {
       title: '세븐틴 팬미팅',
       artist: '세븐틴',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.11',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,
