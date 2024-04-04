@@ -14,31 +14,36 @@ export const postEventsWriteApi = async ({
   imageFile,
 }: EventsWritePayload) => {
   const formData = new FormData();
-
-  // 필요한 필드를 FormData에 추가
-  formData.append('title', title);
-  formData.append('description', description);
-  formData.append('address', address);
-  formData.append('location', location);
-  formData.append('hashtags', JSON.stringify(hashtags));
-
+  const eventJson = new Blob(
+    [
+      JSON.stringify({
+        title: title,
+        startTime: startTime,
+        endTime: endTime,
+        description: description,
+        address: address,
+        location: location,
+        hashtags: hashtags,
+      }),
+    ],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('event', eventJson);
   thumbnailFile && formData.append('thumbnailFile', thumbnailFile);
   imageFile && formData.append('imageFile', imageFile);
 
-  // Date 객체를 ISO 문자열로 변환하여 추가
-  formData.append('startTime', startTime ? startTime.toISOString() : '');
-  formData.append('endTime', endTime ? endTime.toISOString() : '');
-
-  try {
-    const response = await apiInstance.post(`/events`, formData, {
+  return await apiInstance
+    .post(`/events`, formData, {
       headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
-    });
-    return response.data;
-  } catch (error) {
-    // 오류 처리
-    console.error('Error:', error);
-    throw error;
-  }
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
 };
 
 // 이벤트 전체 조회
