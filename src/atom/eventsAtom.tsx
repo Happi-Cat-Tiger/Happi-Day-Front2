@@ -88,7 +88,8 @@ export const eventsListState = atom({
 export interface reviewProps {
   starRate: number;
   review: string;
-  // image: string;
+  date: string;
+  reviewImage: [];
 }
 
 export const eventsReviewValue = atom({
@@ -96,7 +97,8 @@ export const eventsReviewValue = atom({
   default: {
     starRate: 0,
     review: '',
-    // image: '',
+    date: '',
+    reviewImage: [],
   } as reviewProps,
 });
 
