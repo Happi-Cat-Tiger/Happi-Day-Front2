@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
 import '../../../slider/slick.css';
@@ -16,6 +16,7 @@ import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
 import { getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { LoginState } from '@/atom/LoginState';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -63,6 +64,10 @@ const page = () => {
 
   // 임시 로그인 상태
   const userState = false;
+
+  // 로그인 상태
+  const isLoggedIn = useRecoilValue(LoginState);
+  console.log('test', isLoggedIn);
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);

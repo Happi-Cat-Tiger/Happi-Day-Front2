@@ -12,6 +12,7 @@ import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
 import { getAllEvents, getOngoingEvents } from '@/hooks/queries/events/eventsService';
 import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
 import { useRouter } from 'next/navigation';
+import { LoginState } from '@/atom/LoginState';
 
 interface EventsList {
   id: number;
@@ -34,6 +35,9 @@ interface EventsList {
 const page = () => {
   const { data } = getAllEvents();
   // const { data } = getOngoingEvents();
+
+  // 로그인 상태
+  const isLoggedIn = useRecoilValue(LoginState);
 
   const apiData = data?.content;
 
@@ -161,9 +165,11 @@ const page = () => {
           countPerPage={itemsPerPage}
         />
       </div>
-      <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
-      </div>
+      {isLoggedIn && (
+        <div className="text-right">
+          <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
+        </div>
+      )}
     </div>
   );
 };
