@@ -24,7 +24,7 @@ export const usePatchProfileImageService = ({ formData }: { formData: FormData }
   const mutation = useMutation<FormData>({
     mutationFn: () => patchProfileImageApi({ formData }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['profile', 'image'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
   return mutation;
@@ -34,7 +34,7 @@ export const usePatchBasicProfileImageService = () => {
   const mutation = useMutation({
     mutationFn: () => patchBasicProfileImageApi(),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['profile', 'image'] });
+      hdQueryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
   return mutation;
