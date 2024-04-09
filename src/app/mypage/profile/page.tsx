@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormLabel from '@/components/Form/FormLabel';
 import basicProfileImage from '../../../../public/images/basicProfileImage.jpg';
 import ProfileEdit from '@/containers/mypage/ProfileEdit';
@@ -8,17 +8,13 @@ import SubmitButton from '@/components/Button/SubmitButton';
 import StyledSubmitButton from '@/components/Button/StyledSubmitButton';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 
-const MockData = {
-  profileImageUrl: basicProfileImage,
-  realName: '전미혜',
-  userName: 'algp1205@naver.com',
-  nickName: '우왕쓰',
-  phone: '010-8667-4402',
-};
-
 const Page = () => {
   const [open, setOpen] = useState(false);
   const { data } = useGetProfileInfoService();
+  useEffect(() => {
+    if (data) {
+    }
+  }, [data]);
   return (
     data && (
       <div>

@@ -4,7 +4,6 @@ import ProfileImageEdit from '../../containers/mypage/ProfileImageEdit';
 import FormTextInput from '@/components/Form/FormTextInput';
 import FormLabel from '@/components/Form/FormLabel';
 import Input from '@/components/Input/Input';
-import basicProfileImage from '../../../public/images/basicProfileImage.jpg';
 
 //TODO 전역 userData 가져오기
 
@@ -18,7 +17,6 @@ interface Props {
   nickname: string;
 }
 const ProfileEdit = ({ data }: { data: Props }) => {
-  console.log(data);
   return (
     data && (
       <div className="mx-2 rounded-lg md:mx-6 md:my-6 md:max-w-[1280px] md:border md:border-gray6">
