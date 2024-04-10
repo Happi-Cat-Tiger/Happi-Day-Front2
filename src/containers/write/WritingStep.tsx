@@ -16,6 +16,10 @@ const WritingStep = () => {
     { id: 1, label: '자유' },
     { id: 5, label: '주최관련' },
   ];
+  const salesDropdownOpt = [
+    { id: 1, label: '굿즈' },
+    { id: 2, label: '공구' },
+  ];
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
 
@@ -48,6 +52,13 @@ const WritingStep = () => {
         {firstPath === 'board' && (
           <CategoryDropdown
             dropdownOpt={dropdownOpt}
+            dropValue={category}
+            handleChangeCategory={handleChangeCategory}
+          />
+        )}
+        {firstPath === 'sales' && (
+          <CategoryDropdown
+            dropdownOpt={salesDropdownOpt}
             dropValue={category}
             handleChangeCategory={handleChangeCategory}
           />

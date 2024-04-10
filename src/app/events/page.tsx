@@ -19,14 +19,14 @@ interface EventsList {
   thumbnailUrl: string;
   title: string;
   artists: string;
+  startTime: Date;
+  endTime: Date;
   location: string;
-  startTime: string;
-  endTime: string;
   updatedAt: string;
   likeCount: number;
   commentCount: number;
   viewCount: number;
-  reveiwCount: number;
+  reviewCount: number;
   teams?: [];
   hashtags: [];
   nickname: string;
@@ -103,14 +103,6 @@ const page = () => {
       : new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
   });
 
-  const getDate = (value: string) => {
-    const date = new Date(value);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
-  };
-
   const eventsWriteButton = () => {
     router.push('events/write');
   };
@@ -147,8 +139,8 @@ const page = () => {
                 title={el.title}
                 artist={el.artists}
                 location={el.location}
-                startTime={getDate(el.startTime)}
-                endTime={getDate(el.endTime)}
+                startTime={el.startTime}
+                endTime={el.endTime}
                 address={el.location}
                 likeCount={el.likeCount}
                 commentCount={el.commentCount}

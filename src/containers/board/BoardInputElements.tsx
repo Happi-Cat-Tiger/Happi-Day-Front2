@@ -1,33 +1,25 @@
 'use client';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
-import { salesSearchState, salesSearchFilter, salesSortList } from '@/atom/salesAtom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
+import { boardSearchState } from '@/atom/boardAtom';
 
-const SalesInputElements = () => {
-  const [salesSearch, setSalesSearch] = useRecoilState<string>(salesSearchState);
-  const setSalesSortValue = useSetRecoilState<string>(salesSortList);
-  const setSearchFilter = useSetRecoilState<string>(salesSearchFilter);
+const BoardInputElements = () => {
+  const [boardSearch, setBoardSearch] = useRecoilState(boardSearchState);
 
-  const getSalesSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSalesSearch(e.target.value);
-  };
   const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      console.log('엔터', salesSearch);
-      getSalesSearch(e);
-    }
+    if (e.key === 'Enter') setBoardSearch({ ...boardSearch, searchValue: e.target.value });
   };
 
   const handleSort = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSalesSortValue(e.target.value);
+    setBoardSearch({ ...boardSearch, sort: e.target.value });
   };
 
   const handleFilter = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(e.target.value);
+    setBoardSearch({ ...boardSearch, searchFilter: e.target.value });
   };
 
   return (
-    <div className="my-10 flex justify-between sm:flex-col sm:gap-[16px] md:my-12 md:flex-row md:items-center md:gap-[0]">
+    <div className="my-[60px] flex justify-between sm:flex-col sm:gap-[16px] md:flex-row md:items-center md:gap-[0]">
       <div className="flex items-center sm:justify-between md:gap-[24px]">
         <div>
           <select
@@ -47,7 +39,7 @@ const SalesInputElements = () => {
           <div className="flex justify-center gap-2">
             <input id="ongoing" type="checkbox" />
             <label htmlFor="ongoing" className="sm:prose-body-XS md:prose-body-M">
-              진행중인 굿즈만 보기
+              진행중인 이벤트만 보기
             </label>
           </div>
         </div>
@@ -60,16 +52,18 @@ const SalesInputElements = () => {
             <option value="title">제목</option>
             <option value="artist">아티스트</option>
           </select>
-          <input
-            type="search"
-            placeholder="Search"
-            onKeyDown={handleEnter}
-            className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
-          />
+          <div>
+            <input
+              type="search"
+              placeholder="Search"
+              onKeyDown={handleEnter}
+              className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default SalesInputElements;
+export default BoardInputElements;

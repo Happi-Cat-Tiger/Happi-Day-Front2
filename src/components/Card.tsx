@@ -12,8 +12,8 @@ interface CardProps {
   title: string;
   artist: string;
   location?: string;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   address?: string;
   joinMember?: number;
   likeCount: number;
@@ -37,6 +37,15 @@ const Card = ({
   viewCount,
 }: CardProps) => {
   const router = useRouter();
+
+  const getDate = (value: Date) => {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+  };
+
   return (
     <div
       key={id}
@@ -49,8 +58,8 @@ const Card = ({
         <span className="prose-h6">{title}</span>
         <span className="prose-body-S text-orange2">{artist}</span>
         {cardType === 'events' && <span className="prose-body-S">{location}</span>}
-        <span className="prose-body-XS">{`${startTime} ~ ${endTime}`}</span>
-        <div className="flex w-full flex-row justify-between text-gray5">
+        <span className="prose-body-XS">{`${getDate(startTime)} ~ ${getDate(endTime)}`}</span>
+        <div className="mt-5 flex w-full flex-row justify-between text-gray5">
           {cardType === 'events' ? (
             <span className="prose-body-XXS">{address}</span>
           ) : (

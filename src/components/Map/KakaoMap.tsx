@@ -24,6 +24,7 @@ const KakaoMap = ({ mapAddress }: { mapAddress: string }) => {
     const script = document.createElement('script');
     script.src = KAKAO_SDK_URL;
     script.async = true;
+    script.type = 'text/javascript';
     script.onload = () => {
       setKakaoLoaded(true);
     };
@@ -52,12 +53,14 @@ const KakaoMap = ({ mapAddress }: { mapAddress: string }) => {
 
   return (
     <>
-      <Script type="text/javascript" src={KAKAO_SDK_URL} strategy="beforeInteractive" />
-      <StaticMap
-        center={center}
-        marker={{ position: center }}
-        style={{ width: '200px', height: '200px' }}
-        level={3}></StaticMap>
+      {kakaoLoaded && (
+        <StaticMap
+          center={center}
+          marker={{ position: center }}
+          style={{ width: '200px', height: '200px' }}
+          level={3}
+        />
+      )}
     </>
   );
 };

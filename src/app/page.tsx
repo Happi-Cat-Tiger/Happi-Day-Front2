@@ -22,8 +22,8 @@ interface MockData {
   title: string;
   artist: string;
   place: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   location: string;
   like: number;
   comment: number;
@@ -67,6 +67,7 @@ const Home = () => {
   // console.log(data);
   // const { data } = getSalesPostListService();
   // const { res } = getSalesPostListApi();
+  const date = new Date();
   const mockData = [
     {
       id: 1,
@@ -74,8 +75,8 @@ const Home = () => {
       title: '방탄소년단 생일 카페1',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 1,
       comment: 1,
@@ -88,8 +89,8 @@ const Home = () => {
       title: '방탄소년단 생일 카페2',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 2,
       comment: 2,
@@ -102,8 +103,8 @@ const Home = () => {
       title: '방탄소년단 생일 카페3',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 3,
       comment: 3,
@@ -117,8 +118,8 @@ const Home = () => {
       title: '방탄소년단 생일 카페4',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 4,
       comment: 4,
@@ -132,8 +133,8 @@ const Home = () => {
       title: '방탄소년단 생일 카페5',
       artist: '방탄소년단',
       place: '용산 슈퍼스타 떡볶이',
-      startDate: '2023.12.04',
-      endDate: '2023.12.05',
+      startDate: date,
+      endDate: date,
       location: '서울시 용산구',
       like: 5,
       comment: 5,

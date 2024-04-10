@@ -40,7 +40,7 @@ const BankAccountInput = () => {
       </div>
       <input
         type="number"
-        defaultValue={bankAccount.number}
+        defaultValue={bankAccount.number ?? undefined}
         onChange={(e) =>
           setWritingInfoValue({
             ...writingInfoValue,

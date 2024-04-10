@@ -19,6 +19,7 @@ import { getEventsDetail } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
+import { useRouter } from 'next/navigation';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -61,15 +62,14 @@ const page = () => {
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '' });
+    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
-  // 임시 로그인 상태
-  const userState = false;
+  console.log('comments', comments);
+  console.log('commentsValue', commentsValue);
 
   // 로그인 상태
   const isLoggedIn = useRecoilValue(LoginState);
-  console.log('test', isLoggedIn);
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
@@ -80,7 +80,7 @@ const page = () => {
       const currentTime = new Date().toLocaleString();
       const newComment = {
         id: comments.length + 1,
-        user: '성동윤',
+        user: userData.nickname,
         comment: `${commentsValue}`,
         date: `${currentTime}`,
       };
@@ -115,12 +115,45 @@ const page = () => {
   // // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
   console.log(data);
+  // 이벤트 수정
+  const router = useRouter();
+  const putEvents = () => {
+    router.push('/events/write');
+  };
+  // 이벤트 삭제
+  const deleteEvents = () => {
+    if (confirm('이벤트를 삭제하시겠습니까?')) {
+      router.push('/events');
+    } else {
+      return;
+    }
+  };
+
+  console.log('allReview', allReview);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
-      <Link href="/events">
-        <div className="cursor-pointer text-[30px]">←</div>
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/events">
+          <div className="cursor-pointer text-[30px]">←</div>
+        </Link>
+        {isAuthor && (
+          <div className="flex items-center gap-[10px]">
+            <StyledButton
+              label="수정"
+              onClick={putEvents}
+              disabled={false}
+              className="rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+            />
+            <StyledButton
+              label="삭제"
+              onClick={deleteEvents}
+              disabled={false}
+              className="rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+            />
+          </div>
+        )}
+      </div>
       <div className="relative mb-[100px] flex w-full flex-col items-center gap-[16px]">
         <h3 className="sm:prose-h4 md:prose-h3">{data?.title}</h3>
         <ul className="flex gap-[16px] text-gray4 sm:prose-body-XS md:prose-body-S">
@@ -189,14 +222,14 @@ const page = () => {
             </div>
           ))}
         </div>
-        {userState ? (
+        {!isLoggedIn ? (
           <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
             <p className="prose-subtitle-M text-gray5">로그인 후 댓글을 남겨주세요!</p>
           </div>
         ) : (
           <>
             <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-gray6 p-[20px]">
-              <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
+              <p className="text-gray4 sm:prose-body-XS md:prose-body-S">{userData.nickname}</p>
               <textarea
                 placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
                 className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
@@ -218,12 +251,14 @@ const page = () => {
       <div className="mt-[100px]">
         <div className="my-[20px] flex justify-between">
           <p className="prose-h4">이벤트 후기</p>
-          <StyledButton
-            label="후기 작성하기"
-            onClick={() => modalState()}
-            disabled={false}
-            className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
-          />
+          {isLoggedIn && (
+            <StyledButton
+              label="후기 작성하기"
+              onClick={() => modalState()}
+              disabled={false}
+              className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
+            />
+          )}
         </div>
         <TwoButtonModal
           isOpen={isModal}
@@ -232,13 +267,17 @@ const page = () => {
           buttonLabel="등록"
           onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {allReview.length > 0 ? (
+        {!isLoggedIn ? (
+          <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
+            <p className="prose-subtitle-M text-gray5">로그인 후 후기를 작성해주세요!</p>
+          </div>
+        ) : allReview.length > 0 ? (
           allReview.map((review) => (
             <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
               <div className="flex items-center gap-[10px]">
-                <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-                <p className="prose-body-S text-gray4">닉네임</p>
-                <p className="prose-body-XS text-gray5">2023.12.03</p>
+                <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                <p className="prose-body-S text-gray4">{userData.nickname}</p>
+                <p className="prose-body-XS text-gray5">{review.date}</p>
               </div>
               <div className="flex">
                 {[...Array(review.starRate)].map((el, idx) => (
@@ -250,30 +289,12 @@ const page = () => {
               </div>
               <div className="h-[250px] w-[100%] overflow-hidden">
                 <Slick {...settings}>
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg"
-                  />
-                  <img
-                    className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                    src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png"
-                  />
+                  {review.reviewImage.map((el) => (
+                    <img
+                      className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                      src={el ? URL.createObjectURL(el) : ''}
+                    />
+                  ))}
                 </Slick>
               </div>
               <div className="mt-[30px]">
