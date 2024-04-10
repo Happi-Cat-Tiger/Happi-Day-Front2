@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 
 interface CardProps {
   id: number;
@@ -41,9 +42,8 @@ const Card = ({
       key={id}
       onClick={() => router.push(`${cardType}/${id}`)}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
-      {/*이미지 url의 경로를 next.config.js에 경로 설정해야함*/}
       {thumbnailUrl && (
-        <Image src={thumbnailUrl} width={150} height={140} alt="thumbnail" className="flex-1 rounded-[4px]" priority />
+        <Image src={thumbnailUrl} width={100} height={140} alt="thumbnail" className="flex-1 rounded-[4px]" priority />
       )}
       <div className="flex flex-1 flex-col items-center justify-center gap-1 border-t-[1px] border-black">
         <span className="prose-h6">{title}</span>
@@ -57,9 +57,18 @@ const Card = ({
             <span className="prose-body-XXS">참여중인 인원 {joinMember}명</span>
           )}
           <div className="prose-body-XXS flex gap-[8px]">
-            <span>♥️{likeCount}</span>
-            <span>💬{commentCount}</span>
-            <span>👁️{viewCount}</span>
+            <span className="flex items-center gap-[2px]">
+              <AiFillHeart style={{ color: 'red' }} />
+              {likeCount}
+            </span>
+            <span className="flex items-center gap-[2px] ">
+              <AiOutlineMessage />
+              {commentCount}
+            </span>
+            <span className="flex items-center gap-[2px]">
+              <AiTwotoneEye />
+              {viewCount}
+            </span>
           </div>
         </div>
       </div>

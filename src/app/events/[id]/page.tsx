@@ -17,6 +17,8 @@ import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
 import { getEventsDetail } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
+import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
+import { ProfileResponse } from '@/api/user/type';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -103,6 +105,15 @@ const page = () => {
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
+  const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
+    data: ProfileResponse;
+    isLoading: boolean;
+  };
+
+  console.log('user', userData);
+
+  // // 작성자만 수정/삭제 가능
+  const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
   console.log(data);
 
   return (
@@ -129,18 +140,14 @@ const page = () => {
           </li>
         </ul>
         <ul className="flex w-full gap-[16px] border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 sm:prose-body-XS md:prose-body-S">
-          {data?.hashtags.map((el: string, idx: number) => <li key={idx}>{el}</li>)}
-          <li>#세븐틴</li>
-          <li>#호시</li>
+          {data?.hashtags.map((el: string, idx: number) => <li key={idx}>#{el}</li>)}
         </ul>
         <img
           src={data?.thumbnailUrl}
           alt="썸네일 이미지"
-          className="my-[30px] sm:h-[300px] sm:w-[300px] md:h-[600px] md:w-[600px] lg:h-[800px] lg:w-[800px]"
+          className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]"
         />
-        <div className="my-[30px] bg-green-200 sm:h-[300px] sm:w-[300px] md:h-[600px] md:w-[600px] lg:h-[800px] lg:w-[800px]">
-          poster
-        </div>
+        <img src={data?.imageUrl} alt="썸네일 이미지" className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]" />
         <div className="my-[100px] sm:w-[400px] md:w-[600px] lg:w-[800px]">
           <p className="sm:prose-body-S md:prose-body-L">{data?.description}</p>
         </div>
@@ -153,7 +160,7 @@ const page = () => {
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
             <p className="sm:prose-body-XS md:prose-body-S">{data?.location}</p>
           </div>
-          <KakaoMap mapAddress="서울시 노원구 노해로 437" />
+          <KakaoMap mapAddress={data?.address} />
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
             <p className="sm:prose-body-XS md:prose-body-S">
