@@ -14,8 +14,13 @@ import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { getEventsDetail } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
+import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
+import { ProfileResponse } from '@/api/user/type';
+import { useRouter } from 'next/navigation';
+import { useDeleteEventsService } from '@/hooks/mutations/events/eventsService';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -48,7 +53,7 @@ const settings = {
   ],
 };
 
-const page = () => {
+const page = ({ params }: { params: any }) => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
   const [commentsValue, setCommentsValue] = useState<string>();
 
@@ -61,8 +66,11 @@ const page = () => {
     setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
+  console.log('comments', comments);
+  console.log('commentsValue', commentsValue);
+
   // 로그인 상태
-  const loginState = useRecoilValue(LoginState);
+  const isLoggedIn = useRecoilValue(LoginState);
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
@@ -73,7 +81,7 @@ const page = () => {
       const currentTime = new Date().toLocaleString();
       const newComment = {
         id: comments.length + 1,
-        user: '성동윤',
+        user: userData.nickname,
         comment: `${commentsValue}`,
         date: `${currentTime}`,
       };
@@ -85,15 +93,42 @@ const page = () => {
     }
   };
 
+  const path = usePathname();
+  const pathId = Number(path.replace('/events/', ''));
+
+  const { data } = getEventsDetail({ eventId: pathId });
+
+  const getDate = (value: string) => {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+  };
+
+  const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
+    data: ProfileResponse;
+    isLoading: boolean;
+  };
+
+  console.log('user', userData);
+
+  // // 작성자만 수정/삭제 가능
+  const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
+  console.log(data);
+
   // 이벤트 수정
   const router = useRouter();
   const putEvents = () => {
-    router.push('/events/write');
+    router.push(`/events/write?mod=true&id=${pathId}`);
   };
+
   // 이벤트 삭제
+  const deleteEventsMutation = useDeleteEventsService({ eventId: pathId });
+
   const deleteEvents = () => {
     if (confirm('이벤트를 삭제하시겠습니까?')) {
-      router.push('/events');
+      deleteEventsMutation.mutate();
     } else {
       return;
     }
@@ -107,89 +142,78 @@ const page = () => {
         <Link href="/events">
           <div className="cursor-pointer text-[30px]">←</div>
         </Link>
-        <div className="flex items-center gap-[10px]">
-          <StyledButton
-            label="수정"
-            onClick={putEvents}
-            disabled={false}
-            className="rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
-          />
-          <StyledButton
-            label="삭제"
-            onClick={deleteEvents}
-            disabled={false}
-            className="rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
-          />
-        </div>
+        {isAuthor && (
+          <div className="flex items-center gap-[10px]">
+            <StyledButton
+              label="수정"
+              onClick={putEvents}
+              disabled={false}
+              className="rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+            />
+            <StyledButton
+              label="삭제"
+              onClick={deleteEvents}
+              disabled={false}
+              className="rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-S md:prose-btn-M"
+            />
+          </div>
+        )}
       </div>
       <div className="relative mb-[100px] flex w-full flex-col items-center gap-[16px]">
-        <h3 className="sm:prose-h4 md:prose-h3">세븐틴 호시 생일 카페</h3>
+        <h3 className="sm:prose-h4 md:prose-h3">{data?.title}</h3>
         <ul className="flex gap-[16px] text-gray4 sm:prose-body-XS md:prose-body-S">
-          <li className="flex items-center gap-[3px]">🧑 닉네임</li>
           <li className="flex items-center gap-[3px]">
-            <AiOutlineMessage />
-            0건
+            <img src={data?.userProfileUrl} className="h-[20px] w-[20px]" /> {data?.username}
           </li>
           <li className="flex items-center gap-[3px]">
-            <AiTwotoneEye /> 481회
+            <AiOutlineMessage />
+            {data?.commentCount}건
+          </li>
+          <li className="flex items-center gap-[3px]">
+            <AiTwotoneEye /> {data?.viewCount}회
           </li>
           <li className="flex items-center gap-[3px]">
             <AiOutlineClockCircle />
-            24-01-08 19:30
+            {getDate(data?.updatedAt)}
           </li>
         </ul>
         <ul className="flex w-full gap-[16px] border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 sm:prose-body-XS md:prose-body-S">
-          <li>#세븐틴</li>
-          <li>#호시</li>
+          {data?.hashtags.map((el: string, idx: number) => <li key={idx}>#{el}</li>)}
         </ul>
-        <div className="my-[30px] bg-blue-200 sm:h-[300px] sm:w-[300px] md:h-[600px] md:w-[600px] lg:h-[800px] lg:w-[800px]">
-          thumbnail
-        </div>
-        <div className="my-[30px] bg-green-200 sm:h-[300px] sm:w-[300px] md:h-[600px] md:w-[600px] lg:h-[800px] lg:w-[800px]">
-          poster
-        </div>
+        <img
+          src={data?.thumbnailUrl}
+          alt="썸네일 이미지"
+          className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]"
+        />
+        <img src={data?.imageUrl} alt="썸네일 이미지" className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]" />
         <div className="my-[100px] sm:w-[400px] md:w-[600px] lg:w-[800px]">
-          <p className="sm:prose-body-S md:prose-body-L">
-            이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에
-            관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가
-            설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에
-            관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가
-            설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명이벤트에
-            관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가
-            설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
-            이벤트에 관한 추가 설명 이벤트에 관한 추가 설명이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한
-            추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
-            이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명이벤트에 관한
-            추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
-            이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에
-            관한 추가 설명 이벤트에 관한 추가 설명이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가
-            설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
-            이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명 이벤트에 관한 추가 설명
-          </p>
+          <p className="sm:prose-body-S md:prose-body-L">{data?.description}</p>
         </div>
         <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]">
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Place</h6>
-            <p className="sm:prose-body-XS md:prose-body-S">카페 소공원</p>
+            <p className="sm:prose-body-XS md:prose-body-S">{data?.address}</p>
           </div>
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Location</h6>
-            <p className="sm:prose-body-XS md:prose-body-S">서울 마포구 어울림마당로 5길 52 2층</p>
+            <p className="sm:prose-body-XS md:prose-body-S">{data?.location}</p>
           </div>
-          <KakaoMap mapAddress="서울시 노원구 노해로 437" />
+          <KakaoMap mapAddress={data?.address} />
           <div className="flex flex-col items-center">
             <h6 className="text-gray5 sm:prose-h7 md:prose-h6">Date</h6>
-            <p className="sm:prose-body-XS md:prose-body-S">2024-01-08 ~ 2024-01-09</p>
+            <p className="sm:prose-body-XS md:prose-body-S">
+              {getDate(data?.startTime)} ~ {getDate(data?.endTime)}
+            </p>
           </div>
         </div>
       </div>
       <div>
         <ul className="flex gap-[16px] sm:prose-body-XS md:prose-body-S">
           <li className="flex items-center gap-[3px]">
-            <AiFillHeart style={{ color: 'red' }} /> 좋아요 30
+            <AiFillHeart style={{ color: 'red' }} /> 좋아요 {data?.likeCount}
           </li>
           <li className="flex items-center gap-[3px]">
-            <AiOutlineMessage /> 댓글 16
+            <AiOutlineMessage /> 댓글 {data?.commentCount}
           </li>
         </ul>
         <div className="my-[10px] flex flex-col gap-[5px]">
@@ -203,14 +227,14 @@ const page = () => {
             </div>
           ))}
         </div>
-        {!loginState ? (
+        {!isLoggedIn ? (
           <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
             <p className="prose-subtitle-M text-gray5">로그인 후 댓글을 남겨주세요!</p>
           </div>
         ) : (
           <>
             <div className="mb-[26px] flex flex-col gap-[26px] border-2 border-gray6 p-[20px]">
-              <p className="text-gray4 sm:prose-body-XS md:prose-body-S">작성자 닉네임</p>
+              <p className="text-gray4 sm:prose-body-XS md:prose-body-S">{userData.nickname}</p>
               <textarea
                 placeholder="이 곳에 다녀온 후기를 간단하게 작성해주세요! 더 길게 작성하고 싶으면 자유게시판으로 ~~"
                 className="w-full text-gray5 outline-none sm:prose-body-XS md:prose-body-S"
@@ -232,7 +256,7 @@ const page = () => {
       <div className="mt-[100px]">
         <div className="my-[20px] flex justify-between">
           <p className="prose-h4">이벤트 후기</p>
-          {loginState && (
+          {isLoggedIn && (
             <StyledButton
               label="후기 작성하기"
               onClick={() => modalState()}
@@ -248,7 +272,7 @@ const page = () => {
           buttonLabel="등록"
           onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {!loginState ? (
+        {!isLoggedIn ? (
           <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
             <p className="prose-subtitle-M text-gray5">로그인 후 후기를 작성해주세요!</p>
           </div>
@@ -256,8 +280,8 @@ const page = () => {
           allReview.map((review) => (
             <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
               <div className="flex items-center gap-[10px]">
-                <img src="" className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-                <p className="prose-body-S text-gray4">닉네임</p>
+                <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                <p className="prose-body-S text-gray4">{userData.nickname}</p>
                 <p className="prose-body-XS text-gray5">{review.date}</p>
               </div>
               <div className="flex">

@@ -7,24 +7,76 @@ import EventsPreviewWringStep from '@/containers/events/EventsPreviewWringStep';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { usePostWriteEventsService, usePutEventsService } from '@/hooks/mutations/events/eventsService';
 
 const page = () => {
   const [step, setStep] = useState<number>(1);
+
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const eventId = id ? +id : null;
+
+  console.log('mod', mod);
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { articleTitle, editValue } = writeValue;
+  const { endTime, eventAddress, hashtag, location, imageFile, startTime, thumbnailImage } = writingInfoValue;
 
-  console.log(writeValue, writingInfoValue);
+  const writeEventsMutaion = usePostWriteEventsService();
+  const modifyEventsMutation = usePutEventsService({ eventId: eventId });
+
+  console.log('value', writeValue, writingInfoValue);
 
   const onDisable = () => {
     if (step === 1) {
       if (!articleTitle || !editValue) return true;
     }
   };
-  const router = useRouter();
+
+  const handleClick = async () => {
+    if (step === 3) {
+      alert('글 작성이 완료되었습니다');
+      // setWriteValue({ articleTitle: '', category: { ...writeValue.category }, editValue: '' });
+      // setWritingInfoValue({
+      //   bankAccount: { bank: '', name: '', number: '' },
+      //   endTime: null,
+      //   eventAddress: { address: '', detailAddress: '' },
+      //   hashtag: [],
+      //   location: '',
+      //   poster: null,
+      //   productOptions: [],
+      //   shippingOptions: [],
+      //   startTime: null,
+      //   thumbnailImage: null,
+      //   titleProduct: { label: '', price: '' },
+      //   urlAddress: '',
+      // });
+      const payloadData = {
+        eventId: eventId,
+        title: articleTitle,
+        startTime: startTime,
+        endTime: endTime,
+        description: editValue,
+        address: eventAddress.address,
+        location: location,
+        hashtags: hashtag,
+        thumbnailFile: thumbnailImage,
+        imageFile: imageFile,
+      };
+      if (mod === 'true') {
+        await modifyEventsMutation.mutate(payloadData);
+      } else {
+        await writeEventsMutaion.mutate(payloadData);
+      }
+      console.log('payloadData', payloadData);
+    } else {
+      setStep(step + 1);
+    }
+  };
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />
@@ -39,29 +91,7 @@ const page = () => {
           className="prose-btn-M rounded-2xl bg-[#E85ECF] px-5 py-3 text-white md:prose-btn-L hover:bg-pink2 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
           label={step === 3 ? '완료' : '다음'}
           disabled={onDisable()}
-          onClick={() => {
-            if (step === 3) {
-              alert('글 작성이 완료되었습니다');
-              /* 저장처리 로직 구현 예정 */
-              // 저장처리 후 writeValue 및 writingInfoValue값 초기화
-              setWriteValue({ articleTitle: '', category: { ...writeValue.category }, editValue: '' });
-              setWritingInfoValue({
-                bankAccount: { bank: '', name: '', number: '' },
-                endTime: null,
-                eventAddress: { address: '', detailAddress: '' },
-                hashtag: [],
-                location: '',
-                poster: null,
-                productOptions: [],
-                shippingOptions: [],
-                startTime: null,
-                thumbnailImage: null,
-                titleProduct: { label: '', price: '' },
-                urlAddress: '',
-              });
-              router.push('/events');
-            } else setStep(step + 1);
-          }}
+          onClick={() => handleClick()}
         />
       </div>
       {step === 1 && <EventsWritingStep />}

@@ -8,191 +8,38 @@ import EventGuide from '@/containers/events/EventGuide';
 import InputElements from '@/containers/events/InputElements';
 import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRecoilValue } from 'recoil';
-import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
 import { AiOutlineSearch, AiOutlineSend } from 'react-icons/ai';
+import { getAllEvents, getOngoingEvents } from '@/hooks/queries/events/eventsService';
+import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
 import { useRouter } from 'next/navigation';
+import { LoginState } from '@/atom/LoginState';
 
-interface MockData {
+interface EventsList {
   id: number;
   thumbnailUrl: string;
   title: string;
-  artist: string;
-  place: string;
-  startDate: Date;
-  endDate: Date;
+  artists: string;
+  startTime: Date;
+  endTime: Date;
   location: string;
-  like: number;
-  comment: number;
-  view: number;
-  joinCount: number;
+  updatedAt: string;
+  likeCount: number;
+  commentCount: number;
+  viewCount: number;
+  reviewCount: number;
+  teams?: [];
+  hashtags: [];
+  nickname: string;
 }
 
 const page = () => {
-  const date = new Date();
-  const mockData = [
-    {
-      id: 1,
-      thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
-      title: '방탄소년단 생일 카페1',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 1,
-      comment: 1,
-      view: 1,
-      joinCount: 1,
-    },
-    {
-      id: 2,
-      thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
-      title: '타이틀',
-      artist: '아티스트',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 2,
-      comment: 2,
-      view: 2,
-      joinCount: 2,
-    },
-    {
-      id: 3,
-      thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
-      title: '환상적인 이벤트',
-      artist: '츄',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 3,
-      comment: 3,
-      view: 3,
-      joinCount: 3,
-    },
-    {
-      id: 4,
-      thumbnailUrl:
-        'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
-      title: '방탄소년단 생일 카페4',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 4,
-      comment: 4,
-      view: 4,
-      joinCount: 4,
-    },
-    {
-      id: 5,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 6,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페6',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 7,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페7',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 8,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페8',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 9,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페9',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 10,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '테스트 타이틀',
-      artist: '아티스트',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-    {
-      id: 11,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '세븐틴 팬미팅',
-      artist: '세븐틴',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-  ];
+  const { data } = getAllEvents();
+  // const { data } = getOngoingEvents();
+
+  // 로그인 상태
+  const isLoggedIn = useRecoilValue(LoginState);
+
+  const apiData = data?.content;
 
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -201,17 +48,19 @@ const page = () => {
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const [gridCols, setGridCols] = useState('grid-cols-5');
 
+  const eventsSearch = useRecoilValue(eventsSearchState);
+  const eventSort = useRecoilValue<string>(eventsSortList);
+
   const [loading] = useState(false);
   const router = useRouter();
-  const eventsSearch = useRecoilValue(eventsSearchState);
   const eventsSortValue = useRecoilValue<string>(eventsSortList);
   const searchFilterValue = useRecoilValue<string>(eventsSearchFilter);
 
-  const filteredItem: MockData[] = mockData.filter((el) =>
+  const filteredItem: EventsList[] = apiData?.filter((el: EventsList) =>
     searchFilterValue === 'title'
       ? el.title.includes(eventsSearch)
       : searchFilterValue === 'artist'
-        ? el.artist.includes(eventsSearch)
+        ? el.artists.includes(eventsSearch)
         : null,
   );
 
@@ -248,10 +97,10 @@ const page = () => {
     return <h2>Loading...</h2>;
   }
 
-  const sortedItem = filteredItem.sort((a, b) => {
-    return eventsSortValue === 'new'
-      ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      : new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+  const sortedItem = filteredItem?.sort((a, b) => {
+    return eventSort === 'new'
+      ? new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+      : new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
   });
 
   const eventsWriteButton = () => {
@@ -271,7 +120,7 @@ const page = () => {
         </Link>
       </div>
       <InputElements />
-      {sortedItem.length === 0 ? (
+      {sortedItem?.length === 0 ? (
         <div className="flex flex-col items-center gap-[5px] text-gray5">
           <AiOutlineSearch style={{ fontSize: 80, color: '#9CA3AF', marginBottom: 10 }} />
           <p>검색결과가 존재하지 않습니다.</p>
@@ -279,23 +128,25 @@ const page = () => {
         </div>
       ) : (
         <div className={`grid ${gridCols} max-w-[1280px] grid-rows-2 justify-items-center gap-[10px]`}>
-          {sortedItem.slice(indexOfFirstPost, indexOfLastPost).map((el: MockData, idx: number) => (
-            <Card
-              key={idx}
-              id={el.id}
-              cardType="events"
-              thumbnailUrl={el.thumbnailUrl}
-              title={el.title}
-              artist={el.artist}
-              location={el.place}
-              startTime={el.startDate}
-              endTime={el.endDate}
-              address={el.location}
-              likeCount={el.like}
-              commentCount={el.comment}
-              viewCount={el.view}
-            />
-          ))}
+          {sortedItem
+            ?.slice(indexOfFirstPost, indexOfLastPost)
+            .map((el: EventsList, idx: number) => (
+              <Card
+                key={idx}
+                id={el.id}
+                cardType="events"
+                thumbnailUrl={el.thumbnailUrl}
+                title={el.title}
+                artist={el.artists}
+                location={el.location}
+                startTime={el.startTime}
+                endTime={el.endTime}
+                address={el.location}
+                likeCount={el.likeCount}
+                commentCount={el.commentCount}
+                viewCount={el.viewCount}
+              />
+            ))}
         </div>
       )}
       <div className="my-[100px] text-center">
@@ -306,9 +157,11 @@ const page = () => {
           countPerPage={itemsPerPage}
         />
       </div>
-      <div className="text-right">
-        <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
-      </div>
+      {isLoggedIn && (
+        <div className="text-right">
+          <PrimaryButton label="글쓰기" onClick={eventsWriteButton} />
+        </div>
+      )}
     </div>
   );
 };

@@ -39,8 +39,8 @@ const EventsPreviewWringStep = () => {
       {writingInfoValue.thumbnailImage && (
         <img src={URL.createObjectURL(writingInfoValue.thumbnailImage)} alt="썸네일 이미지" className=" w-[600px]" />
       )}
-      {writingInfoValue.poster && (
-        <img src={URL.createObjectURL(writingInfoValue.poster)} alt="포스터 이미지" className=" w-[600px]" />
+      {writingInfoValue.imageFile && (
+        <img src={URL.createObjectURL(writingInfoValue.imageFile)} alt="포스터 이미지" className=" w-[600px]" />
       )}
       <div
         dangerouslySetInnerHTML={{ __html: writeValue.editValue }}
