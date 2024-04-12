@@ -10,10 +10,6 @@ export interface EventsWritePayload {
   imageFile: File | null;
 }
 
-// export interface EventsWritePatchPayload extends EventsWritePayload {
-//   id: number;
-// }
-
-// export interface EvnetsWritePatchPayload extends EventsWritePayload {
-//   id: number | null;
-// }
+export interface EventsWritePatchPayload extends EventsWritePayload {
+  eventId: number | null;
+}

@@ -7,21 +7,29 @@ import EventsPreviewWringStep from '@/containers/events/EventsPreviewWringStep';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { writeState, writingInfoState } from '@/atom/write';
-import { useRouter } from 'next/navigation';
-import { usePostWriteEventsService } from '@/hooks/mutations/events/eventsService';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { usePostWriteEventsService, usePutEventsService } from '@/hooks/mutations/events/eventsService';
 
 const page = () => {
   const [step, setStep] = useState<number>(1);
+
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const eventId = id ? +id : null;
+
+  console.log('mod', mod);
 
   const [writeValue, setWriteValue] = useRecoilState(writeState);
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
   const { articleTitle, editValue } = writeValue;
-  const { endTime, eventAddress, hashtag, location, poster, startTime, thumbnailImage } = writingInfoValue;
+  const { endTime, eventAddress, hashtag, location, imageFile, startTime, thumbnailImage } = writingInfoValue;
 
-  const WriteEventsMutaion = usePostWriteEventsService();
+  const writeEventsMutaion = usePostWriteEventsService();
+  const modifyEventsMutation = usePutEventsService({ eventId: eventId });
 
-  console.log(writeValue, writingInfoValue);
+  console.log('value', writeValue, writingInfoValue);
 
   const onDisable = () => {
     if (step === 1) {
@@ -48,6 +56,7 @@ const page = () => {
       //   urlAddress: '',
       // });
       const payloadData = {
+        eventId: eventId,
         title: articleTitle,
         startTime: startTime,
         endTime: endTime,
@@ -56,15 +65,18 @@ const page = () => {
         location: location,
         hashtags: hashtag,
         thumbnailFile: thumbnailImage,
-        imageFile: poster,
+        imageFile: imageFile,
       };
+      if (mod === 'true') {
+        await modifyEventsMutation.mutate(payloadData);
+      } else {
+        await writeEventsMutaion.mutate(payloadData);
+      }
       console.log('payloadData', payloadData);
-      await WriteEventsMutaion.mutate(payloadData);
     } else {
       setStep(step + 1);
     }
   };
-  const router = useRouter();
   return (
     <section className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 md:max-w-[996px]">
       <StepProgressBar step={step} />

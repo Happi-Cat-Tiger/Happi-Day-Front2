@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { EventsWritePayload } from '@/api/events/type';
+import { EventsWritePatchPayload, EventsWritePayload } from '@/api/events/type';
 import {
   deleteEventsApi,
   deleteEventsCommentApi,
@@ -59,7 +59,7 @@ export const useDeleteEventsService = ({ eventId }: { eventId: number }) => {
   });
 };
 
-export const usePutBoardEventsService = ({ id }: { id: number }) => {
+export const usePutEventsService = ({ eventId }: { eventId: number | null }) => {
   const router = useRouter();
 
   return useMutation({
@@ -73,8 +73,9 @@ export const usePutBoardEventsService = ({ id }: { id: number }) => {
       hashtags,
       thumbnailFile,
       imageFile,
-    }: EventsWritePayload) =>
+    }: EventsWritePatchPayload) =>
       putEventsApi({
+        eventId,
         title,
         startTime,
         endTime,
@@ -88,6 +89,11 @@ export const usePutBoardEventsService = ({ id }: { id: number }) => {
     onSuccess: (data) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       hdQueryClient.invalidateQueries({ queryKey: ['events', 'eventsList'] });
+
+      const { eventId } = data;
+      router.push(`/events/${eventId}`);
+
+      toast('글이 수정되었습니다.');
     },
   });
 };

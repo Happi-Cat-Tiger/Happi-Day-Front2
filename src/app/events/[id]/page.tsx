@@ -20,6 +20,7 @@ import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
+import { useDeleteEventsService } from '@/hooks/mutations/events/eventsService';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -52,7 +53,7 @@ const settings = {
   ],
 };
 
-const page = () => {
+const page = ({ params }: { params: any }) => {
   const [comments, setComments] = useRecoilState(eventsCommentValue);
   const [commentsValue, setCommentsValue] = useState<string>();
 
@@ -115,15 +116,19 @@ const page = () => {
   // // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
   console.log(data);
+
   // 이벤트 수정
   const router = useRouter();
   const putEvents = () => {
-    router.push('/events/write');
+    router.push(`/events/write?mod=true&id=${pathId}`);
   };
+
   // 이벤트 삭제
+  const deleteEventsMutation = useDeleteEventsService({ eventId: pathId });
+
   const deleteEvents = () => {
     if (confirm('이벤트를 삭제하시겠습니까?')) {
-      router.push('/events');
+      deleteEventsMutation.mutate();
     } else {
       return;
     }

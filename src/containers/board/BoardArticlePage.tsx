@@ -18,6 +18,8 @@ import { BoardArticleResponse } from '@/api/board/type';
 const BoardArticlePage = ({ params }: { params: any }) => {
   const router = useRouter();
 
+  console.log('params', params);
+
   const isLoggedIn = useRecoilValue(LoginState);
 
   const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id }) as {

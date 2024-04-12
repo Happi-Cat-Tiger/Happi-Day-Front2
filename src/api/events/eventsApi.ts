@@ -1,5 +1,5 @@
 import apiInstance from '../api';
-import { EventsWritePayload } from './type';
+import { EventsWritePatchPayload, EventsWritePayload } from './type';
 
 // 이벤트 생성
 export const postEventsWriteApi = async ({
@@ -67,6 +67,7 @@ export const fetchSubscribedOngoing = async () =>
 
 // 이벤트 수정
 export const putEventsApi = async ({
+  eventId,
   title,
   startTime,
   endTime,
@@ -76,9 +77,9 @@ export const putEventsApi = async ({
   hashtags,
   thumbnailFile,
   imageFile,
-}: EventsWritePayload) => {
+}: EventsWritePatchPayload) => {
   const formData = new FormData();
-  const articleJson = new Blob(
+  const eventJson = new Blob(
     [
       JSON.stringify({
         title: title,
@@ -88,21 +89,18 @@ export const putEventsApi = async ({
         address: address,
         location: location,
         hashtags: hashtags,
-        thumbnailFile: thumbnailFile,
-        imageFile: imageFile,
       }),
     ],
     {
       type: 'application/json',
     },
   );
-  formData.append('article', articleJson);
+  formData.append('event', eventJson);
   thumbnailFile && formData.append('thumbnailFile', thumbnailFile);
   imageFile && formData.append('imageFile', imageFile);
-  // imageFile && imageFile.forEach((file) => formData.append('imageFile', file));
 
   return await apiInstance
-    .put(`/events/${1}`, formData, {
+    .put(`/events/${eventId}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
       transformRequest: [
         function () {
