@@ -18,8 +18,6 @@ const page = () => {
   const id = searchParams.get('id') || null;
   const eventId = id ? +id : null;
 
-  console.log('mod', mod);
-
   const [writeValue, setWriteValue] = useRecoilState(writeState);
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
@@ -28,8 +26,6 @@ const page = () => {
 
   const writeEventsMutaion = usePostWriteEventsService();
   const modifyEventsMutation = usePutEventsService({ eventId: eventId });
-
-  console.log('value', writeValue, writingInfoValue);
 
   const onDisable = () => {
     if (step === 1) {

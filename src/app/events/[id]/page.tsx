@@ -15,12 +15,13 @@ import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
-import { getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { getAllEventsComment, getEventsDetail } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
-import { useDeleteEventsService } from '@/hooks/mutations/events/eventsService';
+import { useDeleteEventsService, usePostEventCommentService } from '@/hooks/mutations/events/eventsService';
+import Image from 'next/image';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -53,9 +54,17 @@ const settings = {
   ],
 };
 
-const page = ({ params }: { params: any }) => {
-  const [comments, setComments] = useRecoilState(eventsCommentValue);
+const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
+  const writeCommentMutation = usePostEventCommentService();
+
+  const path = usePathname();
+  const pathId = Number(path.replace('/events/', ''));
+
+  const { data } = getEventsDetail({ eventId: pathId });
+  const commentData = getAllEventsComment({ eventId: pathId });
+  const comments = commentData.data?.data.content;
+  console.log('comments', comments);
 
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
@@ -66,9 +75,6 @@ const page = ({ params }: { params: any }) => {
     setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
-  console.log('comments', comments);
-  console.log('commentsValue', commentsValue);
-
   // 로그인 상태
   const isLoggedIn = useRecoilValue(LoginState);
 
@@ -78,32 +84,28 @@ const page = ({ params }: { params: any }) => {
 
   const addComments = () => {
     if (commentsValue) {
-      const currentTime = new Date().toLocaleString();
       const newComment = {
-        id: comments.length + 1,
-        user: userData.nickname,
-        comment: `${commentsValue}`,
-        date: `${currentTime}`,
+        eventId: pathId,
+        content: `${commentsValue}`,
       };
 
-      setComments([...comments, newComment]);
-      setCommentsValue('');
+      writeCommentMutation.mutate(newComment);
     } else {
       alert('댓글을 입력해주세요 !');
     }
   };
-
-  const path = usePathname();
-  const pathId = Number(path.replace('/events/', ''));
-
-  const { data } = getEventsDetail({ eventId: pathId });
 
   const getDate = (value: string) => {
     const date = new Date(value);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${
+      (hours < 10 ? '0' : '') + hours
+    }:${(minutes < 10 ? '0' : '') + minutes}:${(seconds < 10 ? '0' : '') + seconds}`;
   };
 
   const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
@@ -111,11 +113,9 @@ const page = ({ params }: { params: any }) => {
     isLoading: boolean;
   };
 
-  console.log('user', userData);
-
   // // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
-  console.log(data);
+  console.log('data', data);
 
   // 이벤트 수정
   const router = useRouter();
@@ -133,8 +133,6 @@ const page = ({ params }: { params: any }) => {
       return;
     }
   };
-
-  console.log('allReview', allReview);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -217,13 +215,18 @@ const page = ({ params }: { params: any }) => {
           </li>
         </ul>
         <div className="my-[10px] flex flex-col gap-[5px]">
-          {comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-              <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
-              <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.comment}</p>
-              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.date}</p>
+          {comments.map((comment: { id: number; username: string; content: string; updatedAt: Date }, idx: number) => (
+            <div key={idx} className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
+              <div className="flex items-center gap-[5px] sm:w-[25%] md:w-[10%]">
+                <div className="h-[20px] w-[20px] rounded-[50%]">
+                  <Image width={30} height={30} alt="유저 프로필 이미지" src={userData.imageUrl} />
+                </div>
+                <p className="text-gray4 sm:prose-body-XS md:prose-body-S ">{comment.username}</p>
+              </div>
+              <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">
+                {getDate(comment.updatedAt.toLocaleString())}
+              </p>
             </div>
           ))}
         </div>

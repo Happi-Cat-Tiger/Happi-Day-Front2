@@ -2,10 +2,8 @@ import { atom } from 'recoil';
 
 // 이벤트 댓글
 interface CommentProps {
-  id: number;
-  user: string;
-  comment: string;
-  date: string;
+  eventId: number;
+  content: string;
 }
 const commentsMockup: CommentProps[] = [];
 
