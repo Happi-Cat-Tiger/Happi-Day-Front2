@@ -20,7 +20,11 @@ import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
-import { useDeleteEventsService, usePostEventCommentService } from '@/hooks/mutations/events/eventsService';
+import {
+  useDeleteEventsCommentService,
+  useDeleteEventsService,
+  usePostEventCommentService,
+} from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
 
 const settings = {
@@ -56,7 +60,6 @@ const settings = {
 
 const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
-  const writeCommentMutation = usePostEventCommentService();
 
   const path = usePathname();
   const pathId = Number(path.replace('/events/', ''));
@@ -82,20 +85,8 @@ const page = () => {
     setCommentsValue(e.target.value);
   };
 
-  const addComments = () => {
-    if (commentsValue) {
-      const newComment = {
-        eventId: pathId,
-        content: `${commentsValue}`,
-      };
-
-      writeCommentMutation.mutate(newComment);
-    } else {
-      alert('댓글을 입력해주세요 !');
-    }
-  };
-
-  const getDate = (value: string) => {
+  // Date 변환 함수
+  const getDate = (value: string, type?: string) => {
     const date = new Date(value);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -103,17 +94,20 @@ const page = () => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${
-      (hours < 10 ? '0' : '') + hours
-    }:${(minutes < 10 ? '0' : '') + minutes}:${(seconds < 10 ? '0' : '') + seconds}`;
+    return type === 'all'
+      ? `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${(hours < 10 ? '0' : '') + hours}:${
+          (minutes < 10 ? '0' : '') + minutes
+        }:${(seconds < 10 ? '0' : '') + seconds}`
+      : `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
+  // 프로필 정보
   const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
     data: ProfileResponse;
     isLoading: boolean;
   };
 
-  // // 작성자만 수정/삭제 가능
+  // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
   console.log('data', data);
 
@@ -129,6 +123,35 @@ const page = () => {
   const deleteEvents = () => {
     if (confirm('이벤트를 삭제하시겠습니까?')) {
       deleteEventsMutation.mutate();
+    } else {
+      return;
+    }
+  };
+
+  // 댓글 작성
+  const writeCommentMutation = usePostEventCommentService();
+
+  const addComments = () => {
+    if (commentsValue) {
+      const newComment = {
+        eventId: pathId,
+        content: `${commentsValue}`,
+      };
+
+      writeCommentMutation.mutate(newComment);
+    } else {
+      alert('댓글을 입력해주세요 !');
+    }
+  };
+
+  // 댓글 수정
+
+  // 댓글 삭제
+  const deleteCommentMutation = useDeleteEventsCommentService();
+
+  const deleteComment = (e: any) => {
+    if (confirm('댓글을 삭제하시겠습니까?')) {
+      deleteCommentMutation.mutate({ eventId: pathId, commentId: e.target.value });
     } else {
       return;
     }
@@ -223,10 +246,26 @@ const page = () => {
                 </div>
                 <p className="text-gray4 sm:prose-body-XS md:prose-body-S ">{comment.username}</p>
               </div>
-              <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+              <p className="px-[30px] sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
               <p className="prose-body-XXS absolute bottom-[10px] text-gray3">
-                {getDate(comment.updatedAt.toLocaleString())}
+                {getDate(comment.updatedAt.toLocaleString(), 'all')}
               </p>
+              {isAuthor && (
+                <div className="absolute bottom-[10px] right-0 flex gap-[10px]">
+                  <StyledButton
+                    label="수정"
+                    onClick={() => console.log('')}
+                    disabled={false}
+                    className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                  />
+                  <button
+                    value={comment.id}
+                    onClick={(e) => deleteComment(e)}
+                    className="md:prose-btn-s rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-XS">
+                    삭제
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
