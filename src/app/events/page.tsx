@@ -35,6 +35,7 @@ interface EventsList {
 const page = () => {
   const { data } = getAllEvents();
   // const { data } = getOngoingEvents();
+  console.log('data', data);
 
   // 로그인 상태
   const isLoggedIn = useRecoilValue(LoginState);
@@ -138,6 +139,7 @@ const page = () => {
                 thumbnailUrl={el.thumbnailUrl}
                 title={el.title}
                 artist={el.artists}
+                hashtags={el.hashtags}
                 location={el.location}
                 startTime={el.startTime}
                 endTime={el.endTime}
