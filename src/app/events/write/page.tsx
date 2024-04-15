@@ -24,6 +24,8 @@ const page = () => {
   const { articleTitle, editValue } = writeValue;
   const { endTime, eventAddress, hashtag, location, imageFile, startTime, thumbnailImage } = writingInfoValue;
 
+  console.log('editValue', editValue);
+
   const writeEventsMutaion = usePostWriteEventsService();
   const modifyEventsMutation = usePutEventsService({ eventId: eventId });
 

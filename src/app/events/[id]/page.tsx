@@ -24,6 +24,7 @@ import {
   useDeleteEventsCommentService,
   useDeleteEventsService,
   usePostEventCommentService,
+  useUpdateEventsCommentService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
 
@@ -65,9 +66,10 @@ const page = () => {
   const pathId = Number(path.replace('/events/', ''));
 
   const { data } = getEventsDetail({ eventId: pathId });
+
   const commentData = getAllEventsComment({ eventId: pathId });
   const comments = commentData.data?.data.content;
-  console.log('comments', comments);
+  const [isUpdate, setIsUpdate] = useState({ isEdit: false, editValue: '', editId: 0 });
 
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
@@ -145,6 +147,15 @@ const page = () => {
   };
 
   // 댓글 수정
+  const updateCommentMutation = useUpdateEventsCommentService();
+
+  const updateComment = (e: any) => {
+    const value = e.target.value;
+    setIsUpdate({ editValue: isUpdate.editValue, isEdit: !isUpdate.isEdit, editId: value });
+    isUpdate.editValue &&
+      updateCommentMutation.mutate({ eventId: pathId, commentId: e.target.value, content: isUpdate.editValue });
+  };
+  console.log('isUpdate.editId', isUpdate.editValue);
 
   // 댓글 삭제
   const deleteCommentMutation = useDeleteEventsCommentService();
@@ -208,7 +219,7 @@ const page = () => {
         />
         <img src={data?.imageUrl} alt="썸네일 이미지" className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]" />
         <div className="my-[100px] sm:w-[400px] md:w-[600px] lg:w-[800px]">
-          <p className="sm:prose-body-S md:prose-body-L">{data?.description}</p>
+          <p className="sm:prose-body-S md:prose-body-L">{data?.description.replace('<p>', '').replace('</p>', '')}</p>
         </div>
         <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]">
           <div className="flex flex-col items-center">
@@ -246,18 +257,25 @@ const page = () => {
                 </div>
                 <p className="text-gray4 sm:prose-body-XS md:prose-body-S ">{comment.username}</p>
               </div>
-              <p className="px-[30px] sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+              {isUpdate.isEdit && isUpdate.editId == comment.id ? (
+                <textarea
+                  className="w-[100%] border-2 border-gray-200"
+                  onChange={(e) => setIsUpdate({ ...isUpdate, editValue: e.target.value })}
+                />
+              ) : (
+                <p className="px-[30px] sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+              )}
               <p className="prose-body-XXS absolute bottom-[10px] text-gray3">
                 {getDate(comment.updatedAt.toLocaleString(), 'all')}
               </p>
               {isAuthor && (
                 <div className="absolute bottom-[10px] right-0 flex gap-[10px]">
-                  <StyledButton
-                    label="수정"
-                    onClick={() => console.log('')}
-                    disabled={false}
-                    className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS"
-                  />
+                  <button
+                    value={comment.id}
+                    onClick={(e) => updateComment(e)}
+                    className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS">
+                    수정
+                  </button>
                   <button
                     value={comment.id}
                     onClick={(e) => deleteComment(e)}
