@@ -47,8 +47,6 @@ const Card = ({
     const day = date.getDate();
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
-
-  console.log('hast', hashtags);
   return (
     <div
       key={id}

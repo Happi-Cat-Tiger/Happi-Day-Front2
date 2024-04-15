@@ -3,7 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
-import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
+import {
+  AiTwotoneEye,
+  AiOutlineClockCircle,
+  AiOutlineMessage,
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineArrowUp,
+} from 'react-icons/ai';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
@@ -24,6 +31,8 @@ import {
   useDeleteEventsCommentService,
   useDeleteEventsService,
   usePostEventCommentService,
+  usePostEventJoin,
+  usePostEventLike,
   useUpdateEventsCommentService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
@@ -111,7 +120,6 @@ const page = () => {
 
   // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
-  console.log('data', data);
 
   // 이벤트 수정
   const router = useRouter();
@@ -155,7 +163,6 @@ const page = () => {
     isUpdate.editValue &&
       updateCommentMutation.mutate({ eventId: pathId, commentId: e.target.value, content: isUpdate.editValue });
   };
-  console.log('isUpdate.editId', isUpdate.editValue);
 
   // 댓글 삭제
   const deleteCommentMutation = useDeleteEventsCommentService();
@@ -166,6 +173,20 @@ const page = () => {
     } else {
       return;
     }
+  };
+
+  // 이벤트 좋아요
+  const likeEventsMutation = usePostEventLike();
+
+  const likeEvent = () => {
+    likeEventsMutation.mutate({ eventId: pathId });
+  };
+
+  // 이벤트 참여하기
+  const joinEventsMutation = usePostEventJoin();
+
+  const joinEvent = () => {
+    joinEventsMutation.mutate({ eventId: pathId });
   };
 
   return (
@@ -372,6 +393,25 @@ const page = () => {
             <p className="text-gray5">등록된 후기가 없습니다</p>
           </div>
         )}
+      </div>
+      <div className="fixed bottom-[50px] right-[50px] flex flex-col gap-[10px]">
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={likeEvent}>
+          <AiOutlineHeart color="red" size={20} />
+        </div>
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={joinEvent}>
+          <span className="text-[12px] font-bold">
+            참가
+            <br />
+            하기
+          </span>
+        </div>
+        <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300">
+          <AiOutlineArrowUp />
+        </div>
       </div>
     </div>
   );

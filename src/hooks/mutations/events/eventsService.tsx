@@ -4,6 +4,8 @@ import { EventsWritePatchPayload, EventsWritePayload } from '@/api/events/type';
 import {
   deleteEventsApi,
   deleteEventsCommentApi,
+  joinEventsApi,
+  likeEventsApi,
   postEventsCommentApi,
   postEventsWriteApi,
   putEventsApi,
@@ -125,8 +127,28 @@ export const useUpdateEventsCommentService = () => {
     mutationFn: ({ eventId, commentId, content }: { eventId: number; commentId: number; content: string }) =>
       updateEventsCommentApi({ eventId, commentId, content }),
     onSuccess: () => {
-      hdQueryClient.invalidateQueries({ queryKey: ['evnets', true] });
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('댓글이 수정되었습니다.');
+    },
+  });
+};
+
+export const usePostEventLike = () => {
+  return useMutation({
+    mutationFn: ({ eventId }: { eventId: number }) => likeEventsApi({ eventId }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('이벤트 좋아요!');
+    },
+  });
+};
+
+export const usePostEventJoin = () => {
+  return useMutation({
+    mutationFn: ({ eventId }: { eventId: number }) => joinEventsApi({ eventId }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('이벤트 참여하기!');
     },
   });
 };

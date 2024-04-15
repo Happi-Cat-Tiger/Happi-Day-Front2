@@ -34,6 +34,7 @@ interface EventsList {
 
 const page = () => {
   const { data } = getAllEvents();
+  console.log('data', data);
   // const { data } = getOngoingEvents();
 
   // 로그인 상태
