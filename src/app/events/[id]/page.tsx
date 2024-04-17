@@ -409,6 +409,12 @@ const page = () => {
             하기
           </span>
         </div>
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer flex-col items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={joinEvent}>
+          <span className="prose-body-XXS font-bold">{data?.joinCount}명</span>
+          <span className="prose-body-XXS">참여중</span>
+        </div>
         <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300">
           <AiOutlineArrowUp />
         </div>

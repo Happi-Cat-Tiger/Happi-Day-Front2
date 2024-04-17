@@ -148,7 +148,7 @@ export const usePostEventJoin = () => {
     mutationFn: ({ eventId }: { eventId: number }) => joinEventsApi({ eventId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('이벤트 참여하기!');
+      toast('이벤트 참여하기 완료!');
     },
   });
 };
