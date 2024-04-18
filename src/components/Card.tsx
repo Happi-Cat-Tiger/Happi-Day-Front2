@@ -47,8 +47,6 @@ const Card = ({
     const day = date.getDate();
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
-
-  console.log('hast', hashtags);
   return (
     <div
       key={id}
@@ -61,13 +59,7 @@ const Card = ({
         <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center">
           <span className="prose-h6">{title}</span>
         </div>
-        <div className="w-full gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-          {hashtags?.map((el, idx) => (
-            <span className="prose-body-S mr-[5px] text-orange2" key={idx}>
-              #{el}
-            </span>
-          ))}
-        </div>
+        <span className="prose-body-S text-orange2">{artist}</span>
         {cardType === 'events' && <span className="prose-body-S">{location}</span>}
         <span className="prose-body-XS">{`${getDate(startTime)} ~ ${getDate(endTime)}`}</span>
         <div className="flex w-full flex-row justify-between text-gray5">

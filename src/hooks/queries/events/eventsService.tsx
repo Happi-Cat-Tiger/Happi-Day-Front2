@@ -1,4 +1,4 @@
-import { fetchEventsAllApi, fetchEventsApi, fetchOngoingEvents } from '@/api/events/eventsApi';
+import { fetchEventsAllApi, fetchEventsApi, fetchOngoingEvents, getEventsCommentApi } from '@/api/events/eventsApi';
 import { useQuery } from '@tanstack/react-query';
 
 export const getAllEvents = () => {
@@ -21,6 +21,14 @@ export const getOngoingEvents = () => {
   const query = useQuery({
     queryKey: ['ongoingEvents'],
     queryFn: () => fetchOngoingEvents(),
+  });
+  return query;
+};
+
+export const getAllEventsComment = ({ eventId }: { eventId: number }) => {
+  const query = useQuery({
+    queryKey: ['allEventsComment'],
+    queryFn: () => getEventsCommentApi({ eventId }),
   });
   return query;
 };

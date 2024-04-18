@@ -137,3 +137,13 @@ export const updateEventsCommentApi = async ({
 // 이벤트 댓글 삭제
 export const deleteEventsCommentApi = async ({ eventId, commentId }: { eventId: number; commentId: number }) =>
   await apiInstance.delete(`/events/${eventId}/comments/${commentId}`);
+
+// 이벤트 좋아요
+export const likeEventsApi = async ({ eventId }: { eventId: number }) => {
+  await apiInstance.post(`/events/${eventId}/eventLike`);
+};
+
+// 이벤트 참여하기
+export const joinEventsApi = async ({ eventId }: { eventId: number }) => {
+  await apiInstance.post(`/events/${eventId}/join`);
+};
