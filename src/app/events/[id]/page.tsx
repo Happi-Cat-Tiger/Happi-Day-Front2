@@ -33,6 +33,7 @@ import {
   usePostEventCommentService,
   usePostEventJoin,
   usePostEventLike,
+  usePostEventsReviewService,
   useUpdateEventsCommentService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
@@ -86,7 +87,6 @@ const page = () => {
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
   // 로그인 상태
@@ -187,6 +187,18 @@ const page = () => {
 
   const joinEvent = () => {
     joinEventsMutation.mutate({ eventId: pathId });
+  };
+
+  // 이벤트 리뷰 작성하기
+  const writeReviewMutation = usePostEventsReviewService();
+  const addReview = () => {
+    writeReviewMutation.mutate({
+      eventId: pathId,
+      description: reviewValue.description,
+      rating: reviewValue.rating,
+      imageFiles: reviewValue.imageFiles,
+    });
+    setReviewValue({ rating: 0, description: '', imageFiles: [] });
   };
 
   return (
@@ -353,7 +365,7 @@ const page = () => {
           setOpen={() => setIsModal(false)}
           children={<Reveiw />}
           buttonLabel="등록"
-          onClose={() => setAllReview([...allReview, { ...reviewValue }])}
+          onClose={() => addReview()}
         />
         {allReview.length > 0 ? (
           allReview.map((review) => (
@@ -361,19 +373,19 @@ const page = () => {
               <div className="flex items-center gap-[10px]">
                 <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
                 <p className="prose-body-S text-gray4">{userData.nickname}</p>
-                <p className="prose-body-XS text-gray5">{review.date}</p>
+                {/* <p className="prose-body-XS text-gray5">{review.date}</p> */}
               </div>
               <div className="flex">
-                {[...Array(review.starRate)].map((el, idx) => (
+                {[...Array(review.rating)].map((el, idx) => (
                   <IoStar color="gold" key={idx} />
                 ))}
-                {[...Array(5 - review.starRate)].map((el, idx) => (
+                {[...Array(5 - review.rating)].map((el, idx) => (
                   <IoStarOutline className="text-gray6" key={idx} />
                 ))}
               </div>
               <div className="h-[250px] w-[100%] overflow-hidden">
                 <Slick {...settings}>
-                  {review.reviewImage.map((el) => (
+                  {review.imageFiles.map((el) => (
                     <img
                       className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
                       src={el ? URL.createObjectURL(el) : ''}
@@ -382,7 +394,7 @@ const page = () => {
                 </Slick>
               </div>
               <div className="mt-[30px]">
-                <p className="w-[60%] min-w-[500px]">{review.review}</p>
+                <p className="w-[60%] min-w-[500px]">{review.description}</p>
               </div>
             </div>
           ))

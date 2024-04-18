@@ -7,6 +7,7 @@ import {
   joinEventsApi,
   likeEventsApi,
   postEventsCommentApi,
+  postEventsReviewApi,
   postEventsWriteApi,
   putEventsApi,
   updateEventsCommentApi,
@@ -149,6 +150,26 @@ export const usePostEventJoin = () => {
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('이벤트 참여하기 완료!');
+    },
+  });
+};
+
+export const usePostEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({
+      eventId,
+      description,
+      rating,
+      imageFiles,
+    }: {
+      eventId: number;
+      description: string;
+      rating: number;
+      imageFiles: File[];
+    }) => postEventsReviewApi({ eventId, description, rating, imageFiles }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('리뷰 작성이 완료되었습니다');
     },
   });
 };

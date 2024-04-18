@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 
 const Review = () => {
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
-  const { starRate, review, reviewImage } = reviewValue;
+  const { rating, description, imageFiles } = reviewValue;
 
   const getDate = () => {
     const date = new Date();
@@ -25,18 +25,18 @@ const Review = () => {
   const onChangeReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewValue({
       ...reviewValue,
-      review: e.target.value,
-      date: getDate(),
+      description: e.target.value,
+      // date: getDate(),
     });
   };
 
   const handleChangeThumbnail = (value: File, reviewValue: any) => {
-    const updatedImageArr = [...reviewValue.reviewImage];
+    const updatedImageArr = [...reviewValue.imageFiles];
     updatedImageArr.push(value);
 
     setReviewValue({
       ...reviewValue,
-      reviewImage: updatedImageArr,
+      imageFiles: updatedImageArr,
     });
   };
 
@@ -85,6 +85,8 @@ const Review = () => {
     [],
   );
 
+  console.log('reviewValue', reviewValue);
+
   return (
     <>
       <h1 className="prose-h4 mb-[20px] w-[100%] text-left">이벤트 후기 작성</h1>
@@ -92,21 +94,21 @@ const Review = () => {
         <div>
           <h1 className="prose-h5 mb-[20px] text-black">이벤트는 만족하셨나요?</h1>
           <div className="flex justify-center">
-            {[...Array(starRate)].map((el, idx) => (
+            {[...Array(rating)].map((el, idx) => (
               <IoStar
                 color="gold"
                 size="50"
                 className="cursor-pointer"
                 key={idx}
-                onClick={() => setReviewValue({ ...reviewValue, starRate: idx + 1 })}
+                onClick={() => setReviewValue({ ...reviewValue, rating: idx + 1 })}
               />
             ))}
-            {[...Array(5 - starRate)].map((el, idx) => (
+            {[...Array(5 - rating)].map((el, idx) => (
               <IoStarOutline
                 size="50"
                 className="cursor-pointer text-gray6"
                 key={idx}
-                onClick={() => setReviewValue({ ...reviewValue, starRate: starRate + idx + 1 })}
+                onClick={() => setReviewValue({ ...reviewValue, rating: rating + idx + 1 })}
               />
             ))}
           </div>
@@ -115,7 +117,7 @@ const Review = () => {
           <h1 className="prose-h5 mb-[20px] text-black">후기를 남겨주세요</h1>
           <textarea
             className="w-[100%] border-2 border-[#ddd] p-[20px] outline-none"
-            value={review}
+            value={description}
             onChange={(e) => onChangeReview(e)}
           />
         </div>
@@ -147,8 +149,8 @@ const Review = () => {
               />
             </label>
             <div className="mx-auto w-2/3 rounded-lg border-2 border-gray-300 bg-gray-100 p-5">
-              {reviewImage ? (
-                reviewImage.map((el) => (
+              {imageFiles ? (
+                imageFiles.map((el) => (
                   <img src={el ? URL.createObjectURL(el) : ''} className="mx-auto h-auto w-[250px]" />
                 ))
               ) : (

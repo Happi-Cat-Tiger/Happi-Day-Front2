@@ -147,3 +147,36 @@ export const likeEventsApi = async ({ eventId }: { eventId: number }) => {
 export const joinEventsApi = async ({ eventId }: { eventId: number }) => {
   await apiInstance.post(`/events/${eventId}/join`);
 };
+
+// 이벤트 리뷰 작성
+export const postEventsReviewApi = async ({
+  eventId,
+  description,
+  rating,
+  imageFiles,
+}: {
+  eventId: number;
+  description: string;
+  rating: number;
+  imageFiles: File[];
+}) => {
+  const formData = new FormData();
+  const eventReviewJson = new Blob(
+    [
+      JSON.stringify({
+        eventId: eventId,
+        description: description,
+        rating: rating,
+      }),
+    ],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('eventReview', eventReviewJson);
+  imageFiles.forEach((file, index) => {
+    formData.append(`imageFiles[${index}]`, file);
+  });
+
+  await apiInstance.post(`/events/${eventId}/reviews`);
+};
