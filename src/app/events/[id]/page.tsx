@@ -240,7 +240,9 @@ const page = () => {
         />
         <img src={data?.imageUrl} alt="썸네일 이미지" className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]" />
         <div className="my-[100px] sm:w-[400px] md:w-[600px] lg:w-[800px]">
-          <p className="sm:prose-body-S md:prose-body-L">{data?.description.replace('<p>', '').replace('</p>', '')}</p>
+          <p className="sm:prose-body-S md:prose-body-L">
+            {data?.description.replaceAll('<p>', '').replaceAll('</p>', '')}
+          </p>
         </div>
         <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]">
           <div className="flex flex-col items-center">
@@ -353,11 +355,7 @@ const page = () => {
           buttonLabel="등록"
           onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {!isLoggedIn ? (
-          <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
-            <p className="prose-subtitle-M text-gray5">로그인 후 후기를 작성해주세요!</p>
-          </div>
-        ) : allReview.length > 0 ? (
+        {allReview.length > 0 ? (
           allReview.map((review) => (
             <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
               <div className="flex items-center gap-[10px]">
