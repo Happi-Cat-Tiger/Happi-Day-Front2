@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 const BankAccountInput = () => {
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
 
-  const { bankAccount } = writingInfoValue;
+  const { accountName, accountUser, accountNumber } = writingInfoValue;
 
   return (
     <div className="flex flex-col gap-2">
@@ -15,11 +15,11 @@ const BankAccountInput = () => {
       <div className="flex gap-2">
         <input
           type="text"
-          defaultValue={bankAccount.bank}
+          defaultValue={accountName}
           onChange={(e) =>
             setWritingInfoValue({
               ...writingInfoValue,
-              bankAccount: { ...bankAccount, bank: e.target.value },
+              accountName: e.target.value,
             })
           }
           className="text-input w-[300px]"
@@ -27,11 +27,11 @@ const BankAccountInput = () => {
         />
         <input
           type="text"
-          defaultValue={bankAccount.name}
+          defaultValue={accountUser}
           onChange={(e) =>
             setWritingInfoValue({
               ...writingInfoValue,
-              bankAccount: { ...bankAccount, name: e.target.value },
+              accountUser: e.target.value,
             })
           }
           className="text-input w-[100px]"
@@ -40,11 +40,11 @@ const BankAccountInput = () => {
       </div>
       <input
         type="number"
-        defaultValue={bankAccount.number ?? undefined}
+        defaultValue={accountNumber ?? undefined}
         onChange={(e) =>
           setWritingInfoValue({
             ...writingInfoValue,
-            bankAccount: { ...bankAccount, number: e.target.value },
+            accountNumber: e.target.value,
           })
         }
         className="text-input"

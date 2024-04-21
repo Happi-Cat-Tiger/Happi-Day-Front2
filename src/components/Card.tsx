@@ -8,10 +8,11 @@ import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 interface CardProps {
   id: number;
   cardType: 'events' | 'sales' | 'board';
+  categoryId?: number;
   thumbnailUrl: string;
   title: string;
   artist: string;
-  hashtags: [];
+  hashtags: string[];
   location?: string;
   startTime: Date;
   endTime: Date;
@@ -27,6 +28,7 @@ const Card = ({
   cardType,
   thumbnailUrl,
   title,
+  categoryId,
   artist,
   hashtags,
   location,
@@ -50,7 +52,10 @@ const Card = ({
   return (
     <div
       key={id}
-      onClick={() => router.push(`${cardType}/${id}`)}
+      onClick={() => {
+        const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
+        router.push(url);
+      }}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       <div className="relative h-[170px] w-[100%]">
         {thumbnailUrl && <Image src={thumbnailUrl} fill alt="thumbnail" className="rounded-[4px]" priority />}
