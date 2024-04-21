@@ -23,7 +23,7 @@ const signIn = () => {
           <div>|</div>
           <div>비밀번호 찾기</div>
           <div>|</div>
-          <Link href="/auth/sign-up" className="hover:underline">
+          <Link href="/auth/terms" className="hover:underline">
             <div>회원가입</div>
           </Link>
         </div>

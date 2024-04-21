@@ -35,11 +35,9 @@ interface WritingInfoState {
   endTime: Date | null;
   productOptions: ProductOption[];
   shippingOptions: ShippingOption[];
-  bankAccount: {
-    bank: string;
-    name: string;
-    number: string;
-  };
+  accountName: string;
+  accountUser: string;
+  accountNumber: string;
   imageFile: File | null;
 }
 
@@ -53,7 +51,9 @@ export const writingInfoInitState: WritingInfoState = {
   endTime: new Date(),
   productOptions: [],
   shippingOptions: [],
-  bankAccount: { bank: '', name: '', number: '' },
+  accountName: '',
+  accountUser: '',
+  accountNumber: '',
   imageFile: null,
 };
 

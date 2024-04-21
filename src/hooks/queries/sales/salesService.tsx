@@ -9,7 +9,7 @@ import {
   getSalesSubscribeAndOngoingApi,
   getSalesArticleApi,
 } from '@/api/sales/salesApi';
-import { SalesProductList, SalesPostList, SalesCategoriesList, SalesArticle } from '@/types/sales';
+import { SalesProductList, SalesPostList, SalesAllResponse, SalesArticleResponse } from '@/types/sales';
 
 export const getSalesPostListService = () => {
   const query = useQuery<SalesPostList[], AxiosError>({
@@ -28,7 +28,7 @@ export const getSalesProductListService = ({ salesId }: { salesId: number }) => 
 
 // 카테고리별(굿즈/공구) 글 전체조회
 export const useGetSalesCategoriesListService = ({ categoryId }: { categoryId: number }) => {
-  return useQuery<SalesCategoriesList[], AxiosError>({
+  return useQuery<SalesAllResponse, Error>({
     queryKey: ['salesCategories'],
     queryFn: () => getSalesCategoriesListApi(categoryId),
   });
@@ -36,7 +36,7 @@ export const useGetSalesCategoriesListService = ({ categoryId }: { categoryId: n
 
 // 카테고리별(굿즈/공구) - 구독 중 아티스트 글만 조회
 export const useGetSalesSubscribeListService = ({ categoryId }: { categoryId: number }) => {
-  return useQuery<SalesCategoriesList[], AxiosError>({
+  return useQuery<SalesAllResponse, Error>({
     queryKey: ['getSalesSubscribeApi'],
     queryFn: () => getSalesSubscribeApi(categoryId),
   });
@@ -44,7 +44,7 @@ export const useGetSalesSubscribeListService = ({ categoryId }: { categoryId: nu
 
 // 카테고리별(굿즈/공구) - 현재 판매중인 글만 조회
 export const useGetSalesOngoingListService = ({ categoryId }: { categoryId: number }) => {
-  return useQuery<SalesCategoriesList[], AxiosError>({
+  return useQuery<SalesAllResponse, Error>({
     queryKey: ['getSalesOngoingApi'],
     queryFn: () => getSalesOngoingApi(categoryId),
   });
@@ -52,7 +52,7 @@ export const useGetSalesOngoingListService = ({ categoryId }: { categoryId: numb
 
 // 카테고리별(굿즈/공구) - 현재 판매중인 글 + 현재 판매중인 글만 조회
 export const useGetSalesSubscribeAndOngoingListService = ({ categoryId }: { categoryId: number }) => {
-  return useQuery<SalesCategoriesList[], AxiosError>({
+  return useQuery<SalesAllResponse, Error>({
     queryKey: ['getSalesSubscribeAndOngoingApi'],
     queryFn: () => getSalesSubscribeAndOngoingApi(categoryId),
   });
@@ -60,8 +60,9 @@ export const useGetSalesSubscribeAndOngoingListService = ({ categoryId }: { cate
 
 // 판매글 상세보기 (단일 조회)
 export const useGetSalesArticleService = ({ categoryId, salesId }: { categoryId: number; salesId: number }) => {
-  return useQuery<SalesArticle[], AxiosError>({
-    queryKey: ['getSalesArticleApi'],
-    queryFn: () => getSalesArticleApi(categoryId, salesId),
+  const skipToken = !!salesId;
+  return useQuery<boolean | SalesArticleResponse, Error>({
+    queryKey: ['sales', 'article', !!salesId],
+    queryFn: () => (salesId ? getSalesArticleApi(categoryId, salesId) : skipToken),
   });
 };
