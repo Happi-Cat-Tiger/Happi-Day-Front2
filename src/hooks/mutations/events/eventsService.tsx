@@ -134,9 +134,19 @@ export const useUpdateEventsCommentService = () => {
   });
 };
 
-export const usePostEventLike = () => {
+// export const usePostEventLike = ({ eventId }: { eventId: number }) => {
+//   return useMutation({
+//     mutationFn: ({ eventId }: { eventId: number }) => likeEventsApi({ eventId }),
+//     onSuccess: () => {
+//       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+//       toast('이벤트 좋아요!');
+//     },
+//   });
+// };
+
+export const usePostEventLike = ({ eventId }: { eventId: number }) => {
   return useMutation({
-    mutationFn: ({ eventId }: { eventId: number }) => likeEventsApi({ eventId }),
+    mutationFn: () => likeEventsApi({ eventId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('이벤트 좋아요!');
@@ -144,9 +154,9 @@ export const usePostEventLike = () => {
   });
 };
 
-export const usePostEventJoin = () => {
+export const usePostEventJoin = ({ eventId }: { eventId: number }) => {
   return useMutation({
-    mutationFn: ({ eventId }: { eventId: number }) => joinEventsApi({ eventId }),
+    mutationFn: () => joinEventsApi({ eventId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('이벤트 참여하기 완료!');

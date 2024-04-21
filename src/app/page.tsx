@@ -15,6 +15,8 @@ import { LoginState } from '@/atom/LoginState';
 import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
 import { getSalesPostListApi } from '@/api/sales/salesApi';
+import { getAllEvents } from '@/hooks/queries/events/eventsService';
+import { EventsList } from '@/types/events';
 
 interface MockData {
   id: number;
@@ -67,6 +69,8 @@ const Home = () => {
   // console.log(data);
   // const { data } = getSalesPostListService();
   // const { res } = getSalesPostListApi();
+  const eventsData = getAllEvents().data.content;
+  console.log('events', eventsData);
   const date = new Date();
   const mockData = [
     {
@@ -171,25 +175,30 @@ const Home = () => {
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
-          <div className="h-[340px]">
+          <div className="flex h-[340px] items-center justify-center">
             <Slick {...settings}>
-              {mockData.map((el: MockData, idx: number) => (
-                <Card
-                  key={idx}
-                  id={el.id}
-                  cardType="events"
-                  thumbnailUrl={el.thumbnailUrl}
-                  title={el.title}
-                  artist={el.artist}
-                  location={el.place}
-                  startTime={el.startDate}
-                  endTime={el.endDate}
-                  address={el.location}
-                  likeCount={el.like}
-                  commentCount={el.comment}
-                  viewCount={el.view}
-                />
-              ))}
+              {eventsData ? (
+                eventsData.map((el: EventsList, idx: number) => (
+                  <Card
+                    key={idx}
+                    id={el.id}
+                    cardType="events"
+                    thumbnailUrl={el.thumbnailUrl}
+                    title={el.title}
+                    artist={el.artists}
+                    hashtags={el.hashtags}
+                    location={el.location}
+                    startTime={el.startTime}
+                    endTime={el.endTime}
+                    address={el.location}
+                    likeCount={el.likeCount}
+                    commentCount={el.commentCount}
+                    viewCount={el.viewCount}
+                  />
+                ))
+              ) : (
+                <span className="prose-subtitle-L block">등록된 이벤트가 없습니다</span>
+              )}
             </Slick>
           </div>
         </div>

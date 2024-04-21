@@ -176,17 +176,17 @@ const page = () => {
   };
 
   // 이벤트 좋아요
-  const likeEventsMutation = usePostEventLike();
+  const likeEventsMutation = usePostEventLike({ eventId: pathId });
 
   const likeEvent = () => {
-    likeEventsMutation.mutate({ eventId: pathId });
+    likeEventsMutation.mutate();
   };
 
   // 이벤트 참여하기
-  const joinEventsMutation = usePostEventJoin();
+  const joinEventsMutation = usePostEventJoin({ eventId: pathId });
 
   const joinEvent = () => {
-    joinEventsMutation.mutate({ eventId: pathId });
+    joinEventsMutation.mutate();
   };
 
   // 이벤트 리뷰 작성하기
