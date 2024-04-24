@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { handleOptionSelectState, handleInputSelectState } from '@/atom/salesAtom';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useGetSalesArticleService } from '@/hooks/queries/sales/salesService';
 import { useDeleteSalesArticleService } from '@/hooks/mutations/sales/salesService';
 import { LoginState } from '@/atom/LoginState';
@@ -17,11 +17,19 @@ import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 import { ProfileResponse } from '@/api/user/type';
 import { SalesArticleResponse } from '@/types/sales';
 
-const Page = () => {
+const Page = ({ params }: { params: { categoryId: string; salesId: string } }) => {
   const router = useRouter();
-  const params = useSearchParams();
-  const categoryIdParams = params.get('categoryId');
-  const salesIdParams = params.get('salesId');
+  const categoryIdParams = parseInt(params.categoryId, 10);
+  const salesIdParams = parseInt(params.salesId, 10);
+  const { data: salesArticleData, isLoading } = useGetSalesArticleService({
+    categoryId: categoryIdParams,
+    salesId: salesIdParams,
+  }) as {
+    data: SalesArticleResponse | undefined;
+    isLoading: boolean;
+  };
+
+  console.log(salesArticleData);
 
   const isAllOptionsSelected = useRecoilValue(handleOptionSelectState);
   const isAllInputsSelected = useRecoilValue(handleInputSelectState);
@@ -31,19 +39,12 @@ const Page = () => {
 
   const isLoggedIn = useRecoilValue(LoginState);
 
-  const { data: salesArticle, isLoading } = useGetSalesArticleService({
-    categoryId: categoryIdParams ? parseInt(categoryIdParams) : 0,
-    salesId: salesIdParams ? parseInt(salesIdParams) : 0,
-  }) as {
-    data: SalesArticleResponse | undefined;
-    isLoading: boolean;
-  };
   const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
     data: ProfileResponse;
     isLoading: boolean;
   };
 
-  const deleteArticleMutation = useDeleteSalesArticleService({ salesId: salesIdParams ? parseInt(salesIdParams) : 0 });
+  const deleteArticleMutation = useDeleteSalesArticleService({ salesId: salesIdParams });
 
   const hashtag = [
     { value: 'tag1', label: '뉴진스' },
@@ -58,7 +59,7 @@ const Page = () => {
   if (isLoading || isAuthLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
-  const isAuthor: boolean = isLoggedIn ? salesArticle?.user === userData?.nickname : false;
+  const isAuthor: boolean = isLoggedIn ? salesArticleData?.user === userData?.nickname : false;
 
   return (
     <div className={`mb-[200px] flex w-full flex-col px-[8px] ${isModalOpen ? 'pointer-events-none invisible' : ''}`}>
@@ -137,19 +138,7 @@ const Page = () => {
         </div>
         <div className="m-auto my-[100px] w-[400px] md:w-[600px] lg:w-[800px]">
           <p className="sm:prose-body-S md:prose-body-L">
-            굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가
-            설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한
-            추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에
-            관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명
-            굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가
-            설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한
-            추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에
-            관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명
-            굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가
-            설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한
-            추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에
-            관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명
-            굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명
+            굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명 굿즈에 관한 추가 설명
           </p>
         </div>
       </div>
@@ -168,9 +157,9 @@ const Page = () => {
           </div>
           <div className="prose-subtitle-M flex w-[300px] flex-col gap-[18px] bg-gray7 p-5 md:prose-caption md:w-[550px] md:gap-[18px]">
             <div className="flex justify-center gap-3 ">
-              <div>${salesArticle?.accountName}</div>
-              <div>${salesArticle?.accountNumber}</div>
-              <div>${salesArticle?.accountUser}</div>
+              <div>${salesArticleData?.accountName}</div>
+              <div>${salesArticleData?.accountNumber}</div>
+              <div>${salesArticleData?.accountUser}</div>
             </div>
             <div className="flex justify-center gap-1 ">
               <div>금액:</div>

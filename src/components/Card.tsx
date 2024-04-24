@@ -11,7 +11,7 @@ interface CardProps {
   categoryId?: number;
   thumbnailUrl: string;
   title: string;
-  artist: string;
+  artist: string[];
   hashtags: string[];
   location?: string;
   startTime: Date;
@@ -26,9 +26,9 @@ interface CardProps {
 const Card = ({
   id,
   cardType,
+  categoryId,
   thumbnailUrl,
   title,
-  categoryId,
   artist,
   hashtags,
   location,
@@ -49,13 +49,11 @@ const Card = ({
     const day = date.getDate();
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
+
   return (
     <div
       key={id}
-      onClick={() => {
-        const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
-        router.push(url);
-      }}
+      onClick={() => (cardType === 'sales' ? router.push(`${categoryId}/${id}`) : router.push(`${cardType}/${id}`))}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       <div className="relative h-[170px] w-[100%]">
         {thumbnailUrl && <Image src={thumbnailUrl} fill alt="thumbnail" className="rounded-[4px]" priority />}

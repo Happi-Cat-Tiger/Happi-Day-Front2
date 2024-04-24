@@ -29,7 +29,7 @@ export const getSalesProductListService = ({ salesId }: { salesId: number }) => 
 // 카테고리별(굿즈/공구) 글 전체조회
 export const useGetSalesCategoriesListService = ({ categoryId }: { categoryId: number }) => {
   return useQuery<SalesAllResponse, Error>({
-    queryKey: ['salesCategories'],
+    queryKey: ['salesCategories', categoryId],
     queryFn: () => getSalesCategoriesListApi(categoryId),
   });
 };
@@ -60,9 +60,9 @@ export const useGetSalesSubscribeAndOngoingListService = ({ categoryId }: { cate
 
 // 판매글 상세보기 (단일 조회)
 export const useGetSalesArticleService = ({ categoryId, salesId }: { categoryId: number; salesId: number }) => {
-  const skipToken = !!salesId;
-  return useQuery<boolean | SalesArticleResponse, Error>({
-    queryKey: ['sales', 'article', !!salesId],
-    queryFn: () => (salesId ? getSalesArticleApi(categoryId, salesId) : skipToken),
+  return useQuery<SalesArticleResponse, Error>({
+    queryKey: ['sales', 'article', categoryId, salesId],
+    queryFn: () => getSalesArticleApi(categoryId, salesId),
+    enabled: !!categoryId && !!salesId, // categoryId와 salesId가 있는 경우에만 API 호출하도록 설정
   });
 };
