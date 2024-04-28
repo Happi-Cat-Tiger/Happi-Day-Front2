@@ -34,8 +34,8 @@ interface EventsList {
 
 const page = () => {
   const { data } = getAllEvents();
-  // const { data } = getOngoingEvents();
   console.log('data', data);
+  // const { data } = getOngoingEvents();
 
   // 로그인 상태
   const isLoggedIn = useRecoilValue(LoginState);

@@ -8,13 +8,15 @@ const SalesInputElements = () => {
   const setSalesSortValue = useSetRecoilState<string>(salesSortList);
   const setSearchFilter = useSetRecoilState<string>(salesSearchFilter);
 
-  const getSalesSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSalesSearch(e.target.value);
-  };
   const handleEnter = (e: ChangeEvent<HTMLInputElement> & KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
-      console.log('엔터', salesSearch);
-      getSalesSearch(e);
+      setSalesSearch(e.target.value);
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length === 0) {
+      setSalesSearch('');
     }
   };
 
@@ -64,6 +66,7 @@ const SalesInputElements = () => {
             type="search"
             placeholder="Search"
             onKeyDown={handleEnter}
+            onChange={handleChange}
             className="prose-subtitle-S rounded-[8px] bg-[#F0F5F9] px-4 py-2 outline-none placeholder:text-black sm:w-full md:w-[264px]"
           />
         </div>

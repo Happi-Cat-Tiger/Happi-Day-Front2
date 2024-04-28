@@ -8,10 +8,11 @@ import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 interface CardProps {
   id: number;
   cardType: 'events' | 'sales' | 'board';
+  categoryId?: number;
   thumbnailUrl: string;
   title: string;
   artist: string;
-  hashtags: [];
+  hashtags: string[];
   location?: string;
   startTime: Date;
   endTime: Date;
@@ -27,6 +28,7 @@ const Card = ({
   cardType,
   thumbnailUrl,
   title,
+  categoryId,
   artist,
   hashtags,
   location,
@@ -47,12 +49,13 @@ const Card = ({
     const day = date.getDate();
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
-
-  console.log('hast', hashtags);
   return (
     <div
       key={id}
-      onClick={() => router.push(`${cardType}/${id}`)}
+      onClick={() => {
+        const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
+        router.push(url);
+      }}
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       <div className="relative h-[170px] w-[100%]">
         {thumbnailUrl && <Image src={thumbnailUrl} fill alt="thumbnail" className="rounded-[4px]" priority />}
@@ -61,13 +64,7 @@ const Card = ({
         <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center">
           <span className="prose-h6">{title}</span>
         </div>
-        <div className="w-full gap-[10px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-          {hashtags?.map((el, idx) => (
-            <span className="prose-body-S mr-[5px] text-orange2" key={idx}>
-              #{el}
-            </span>
-          ))}
-        </div>
+        <span className="prose-body-S text-orange2">{artist}</span>
         {cardType === 'events' && <span className="prose-body-S">{location}</span>}
         <span className="prose-body-XS">{`${getDate(startTime)} ~ ${getDate(endTime)}`}</span>
         <div className="flex w-full flex-row justify-between text-gray5">

@@ -3,7 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
-import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
+import {
+  AiTwotoneEye,
+  AiOutlineClockCircle,
+  AiOutlineMessage,
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineArrowUp,
+} from 'react-icons/ai';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProps } from '@/atom/eventsAtom';
 import Slick from 'react-slick';
@@ -15,12 +22,20 @@ import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
-import { getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { getAllEventsComment, getEventsDetail } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
-import { useDeleteEventsService } from '@/hooks/mutations/events/eventsService';
+import {
+  useDeleteEventsCommentService,
+  useDeleteEventsService,
+  usePostEventCommentService,
+  usePostEventJoin,
+  usePostEventLike,
+  useUpdateEventsCommentService,
+} from '@/hooks/mutations/events/eventsService';
+import Image from 'next/image';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -53,9 +68,17 @@ const settings = {
   ],
 };
 
-const page = ({ params }: { params: any }) => {
-  const [comments, setComments] = useRecoilState(eventsCommentValue);
+const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
+
+  const path = usePathname();
+  const pathId = Number(path.replace('/events/', ''));
+
+  const { data } = getEventsDetail({ eventId: pathId });
+
+  const commentData = getAllEventsComment({ eventId: pathId });
+  const comments = commentData.data?.data.content;
+  const [isUpdate, setIsUpdate] = useState({ isEdit: false, editValue: '', editId: 0 });
 
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
@@ -66,9 +89,6 @@ const page = ({ params }: { params: any }) => {
     setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
-  console.log('comments', comments);
-  console.log('commentsValue', commentsValue);
-
   // 로그인 상태
   const isLoggedIn = useRecoilValue(LoginState);
 
@@ -76,46 +96,30 @@ const page = ({ params }: { params: any }) => {
     setCommentsValue(e.target.value);
   };
 
-  const addComments = () => {
-    if (commentsValue) {
-      const currentTime = new Date().toLocaleString();
-      const newComment = {
-        id: comments.length + 1,
-        user: userData.nickname,
-        comment: `${commentsValue}`,
-        date: `${currentTime}`,
-      };
-
-      setComments([...comments, newComment]);
-      setCommentsValue('');
-    } else {
-      alert('댓글을 입력해주세요 !');
-    }
-  };
-
-  const path = usePathname();
-  const pathId = Number(path.replace('/events/', ''));
-
-  const { data } = getEventsDetail({ eventId: pathId });
-
-  const getDate = (value: string) => {
+  // Date 변환 함수
+  const getDate = (value: string, type?: string) => {
     const date = new Date(value);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return type === 'all'
+      ? `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${(hours < 10 ? '0' : '') + hours}:${
+          (minutes < 10 ? '0' : '') + minutes
+        }:${(seconds < 10 ? '0' : '') + seconds}`
+      : `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
+  // 프로필 정보
   const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
     data: ProfileResponse;
     isLoading: boolean;
   };
 
-  console.log('user', userData);
-
-  // // 작성자만 수정/삭제 가능
+  // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? userData.nickname === data?.username : false;
-  console.log(data);
 
   // 이벤트 수정
   const router = useRouter();
@@ -134,7 +138,56 @@ const page = ({ params }: { params: any }) => {
     }
   };
 
-  console.log('allReview', allReview);
+  // 댓글 작성
+  const writeCommentMutation = usePostEventCommentService();
+
+  const addComments = () => {
+    if (commentsValue) {
+      const newComment = {
+        eventId: pathId,
+        content: `${commentsValue}`,
+      };
+
+      writeCommentMutation.mutate(newComment);
+    } else {
+      alert('댓글을 입력해주세요 !');
+    }
+  };
+
+  // 댓글 수정
+  const updateCommentMutation = useUpdateEventsCommentService();
+
+  const updateComment = (e: any) => {
+    const value = e.target.value;
+    setIsUpdate({ editValue: isUpdate.editValue, isEdit: !isUpdate.isEdit, editId: value });
+    isUpdate.editValue &&
+      updateCommentMutation.mutate({ eventId: pathId, commentId: e.target.value, content: isUpdate.editValue });
+  };
+
+  // 댓글 삭제
+  const deleteCommentMutation = useDeleteEventsCommentService();
+
+  const deleteComment = (e: any) => {
+    if (confirm('댓글을 삭제하시겠습니까?')) {
+      deleteCommentMutation.mutate({ eventId: pathId, commentId: e.target.value });
+    } else {
+      return;
+    }
+  };
+
+  // 이벤트 좋아요
+  const likeEventsMutation = usePostEventLike();
+
+  const likeEvent = () => {
+    likeEventsMutation.mutate({ eventId: pathId });
+  };
+
+  // 이벤트 참여하기
+  const joinEventsMutation = usePostEventJoin();
+
+  const joinEvent = () => {
+    joinEventsMutation.mutate({ eventId: pathId });
+  };
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -187,7 +240,9 @@ const page = ({ params }: { params: any }) => {
         />
         <img src={data?.imageUrl} alt="썸네일 이미지" className="my-[30px] sm:w-[300px] md:w-[600px] lg:w-[800px]" />
         <div className="my-[100px] sm:w-[400px] md:w-[600px] lg:w-[800px]">
-          <p className="sm:prose-body-S md:prose-body-L">{data?.description}</p>
+          <p className="sm:prose-body-S md:prose-body-L">
+            {data?.description.replaceAll('<p>', '').replaceAll('</p>', '')}
+          </p>
         </div>
         <div className="flex w-full flex-col items-center gap-[16px] bg-[#FEF9D0] py-[20px]">
           <div className="flex flex-col items-center">
@@ -217,13 +272,41 @@ const page = ({ params }: { params: any }) => {
           </li>
         </ul>
         <div className="my-[10px] flex flex-col gap-[5px]">
-          {comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
-              <p className="text-gray4 sm:prose-body-XS md:prose-body-S sm:w-[25%] md:w-[10%]">🧑 {comment.user}</p>
-              <p className="sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.comment}</p>
-              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">{comment.date}</p>
+          {comments.map((comment: { id: number; username: string; content: string; updatedAt: Date }, idx: number) => (
+            <div key={idx} className="relative flex gap-[20px] border-b-2 border-t-2 border-[#ddd] pb-[70px] pt-[30px]">
+              <div className="flex items-center gap-[5px] sm:w-[25%] md:w-[10%]">
+                <div className="h-[20px] w-[20px] rounded-[50%]">
+                  <Image width={30} height={30} alt="유저 프로필 이미지" src={userData.imageUrl} />
+                </div>
+                <p className="text-gray4 sm:prose-body-XS md:prose-body-S ">{comment.username}</p>
+              </div>
+              {isUpdate.isEdit && isUpdate.editId == comment.id ? (
+                <textarea
+                  className="w-[100%] border-2 border-gray-200"
+                  onChange={(e) => setIsUpdate({ ...isUpdate, editValue: e.target.value })}
+                />
+              ) : (
+                <p className="px-[30px] sm:prose-body-XS md:prose-body-S sm:w-[75%] md:w-[90%]">{comment.content}</p>
+              )}
+              <p className="prose-body-XXS absolute bottom-[10px] text-gray3">
+                {getDate(comment.updatedAt.toLocaleString(), 'all')}
+              </p>
+              {isAuthor && (
+                <div className="absolute bottom-[10px] right-0 flex gap-[10px]">
+                  <button
+                    value={comment.id}
+                    onClick={(e) => updateComment(e)}
+                    className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS">
+                    수정
+                  </button>
+                  <button
+                    value={comment.id}
+                    onClick={(e) => deleteComment(e)}
+                    className="md:prose-btn-s rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-XS">
+                    삭제
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -272,11 +355,7 @@ const page = ({ params }: { params: any }) => {
           buttonLabel="등록"
           onClose={() => setAllReview([...allReview, { ...reviewValue }])}
         />
-        {!isLoggedIn ? (
-          <div className="flex h-[200px] items-center justify-center border-2 border-gray6">
-            <p className="prose-subtitle-M text-gray5">로그인 후 후기를 작성해주세요!</p>
-          </div>
-        ) : allReview.length > 0 ? (
+        {allReview.length > 0 ? (
           allReview.map((review) => (
             <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
               <div className="flex items-center gap-[10px]">
@@ -312,6 +391,31 @@ const page = ({ params }: { params: any }) => {
             <p className="text-gray5">등록된 후기가 없습니다</p>
           </div>
         )}
+      </div>
+      <div className="fixed bottom-[50px] right-[50px] flex flex-col gap-[10px]">
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={likeEvent}>
+          <AiOutlineHeart color="red" size={20} />
+        </div>
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={joinEvent}>
+          <span className="text-[12px] font-bold">
+            참가
+            <br />
+            하기
+          </span>
+        </div>
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer flex-col items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={joinEvent}>
+          <span className="prose-body-XXS font-bold">{data?.joinCount}명</span>
+          <span className="prose-body-XXS">참여중</span>
+        </div>
+        <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300">
+          <AiOutlineArrowUp />
+        </div>
       </div>
     </div>
   );
