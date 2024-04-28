@@ -20,18 +20,10 @@ export const usePostSigninService = () => {
       }),
     onSuccess: (res) => {
       const { token } = res.data;
-
       localStorage.setItem('token', token);
 
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
       setIsLoggedIn(true);
-      const setTime = 60 * 1000 * 60;
-
-      setTimeout(() => {
-        setIsLoggedIn(false);
-        localStorage.removeItem('token');
-      }, setTime);
 
       router.push('/');
       toast('로그인에 성공했습니다.');
@@ -47,8 +39,8 @@ export const useHostSigninService = () => {
     mutationKey: ['signIn'],
     mutationFn: () =>
       postSigninApi({
-        username: 'qwer@email.com',
-        password: 'qwer',
+        username: 'eunji@g.com',
+        password: 'dmswl123!',
       }),
     onSuccess: (res) => {
       const { token } = res.data;
@@ -56,12 +48,7 @@ export const useHostSigninService = () => {
 
       apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setIsLoggedIn(true);
-      const setTime = 60 * 1000 * 60;
 
-      setTimeout(() => {
-        setIsLoggedIn(false);
-        localStorage.removeItem('token');
-      }, setTime);
       router.push('/');
       toast('로그인에 성공했습니다.');
     },
