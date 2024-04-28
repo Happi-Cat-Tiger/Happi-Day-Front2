@@ -14,6 +14,7 @@ import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/ev
 import { useRouter } from 'next/navigation';
 import { LoginState } from '@/atom/LoginState';
 import { EventsList } from '@/types/events';
+import { getDate } from '@/utils/GetDate';
 
 const page = () => {
   const { data } = getAllEvents();

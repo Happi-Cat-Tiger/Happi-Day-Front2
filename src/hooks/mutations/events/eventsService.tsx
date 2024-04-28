@@ -4,13 +4,13 @@ import { EventsWritePatchPayload, EventsWritePayload } from '@/api/events/type';
 import {
   deleteEventsApi,
   deleteEventsCommentApi,
-  joinEventsApi,
-  likeEventsApi,
   postEventsCommentApi,
   postEventsReviewApi,
   postEventsWriteApi,
   putEventsApi,
   updateEventsCommentApi,
+  postEventsLikeApi,
+  postEventsJoinApi,
 } from '@/api/events/eventsApi';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { toast } from 'react-toastify';
@@ -134,19 +134,9 @@ export const useUpdateEventsCommentService = () => {
   });
 };
 
-// export const usePostEventLike = ({ eventId }: { eventId: number }) => {
-//   return useMutation({
-//     mutationFn: ({ eventId }: { eventId: number }) => likeEventsApi({ eventId }),
-//     onSuccess: () => {
-//       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-//       toast('이벤트 좋아요!');
-//     },
-//   });
-// };
-
-export const usePostEventLike = ({ eventId }: { eventId: number }) => {
+export const usePostEventLikeService = () => {
   return useMutation({
-    mutationFn: () => likeEventsApi({ eventId }),
+    mutationFn: ({ eventId }: { eventId: number }) => postEventsLikeApi({ eventId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('이벤트 좋아요!');
@@ -154,9 +144,9 @@ export const usePostEventLike = ({ eventId }: { eventId: number }) => {
   });
 };
 
-export const usePostEventJoin = ({ eventId }: { eventId: number }) => {
+export const usePostEventJoinService = () => {
   return useMutation({
-    mutationFn: () => joinEventsApi({ eventId }),
+    mutationFn: ({ eventId }: { eventId: number }) => postEventsJoinApi({ eventId }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('이벤트 참여하기 완료!');

@@ -102,3 +102,9 @@ export const allEventsReviewValue = atom<reviewProps[]>({
   key: 'allEventsReviewValue',
   default: [],
 });
+
+// 이벤트 뱃지 상태
+export const badgeValue = atom({
+  key: 'badgeValue',
+  default: '',
+});

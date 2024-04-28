@@ -22,7 +22,7 @@ import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
-import { getAllEventsComment, getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { getAllEventsComment, getEventsDetail, getEventsReview } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
@@ -31,12 +31,14 @@ import {
   useDeleteEventsCommentService,
   useDeleteEventsService,
   usePostEventCommentService,
-  usePostEventJoin,
-  usePostEventLike,
+  usePostEventJoinService,
+  usePostEventLikeService,
   usePostEventsReviewService,
   useUpdateEventsCommentService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
+import { getDate } from '@/utils/GetDate';
+import Badge from '@/components/Badge/Badge';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -81,6 +83,9 @@ const page = () => {
   const comments = commentData.data?.data.content;
   const [isUpdate, setIsUpdate] = useState({ isEdit: false, editValue: '', editId: 0 });
 
+  const reviewData = getEventsReview({ eventId: pathId });
+  console.log('reviewData', reviewData.data?.data.content);
+
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const [allReview, setAllReview] = useRecoilState<reviewProps[]>(allEventsReviewValue);
@@ -94,22 +99,6 @@ const page = () => {
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
-  };
-
-  // Date 변환 함수
-  const getDate = (value: string, type?: string) => {
-    const date = new Date(value);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    return type === 'all'
-      ? `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${(hours < 10 ? '0' : '') + hours}:${
-          (minutes < 10 ? '0' : '') + minutes
-        }:${(seconds < 10 ? '0' : '') + seconds}`
-      : `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
   // 프로필 정보
@@ -176,31 +165,43 @@ const page = () => {
   };
 
   // 이벤트 좋아요
-  const likeEventsMutation = usePostEventLike({ eventId: pathId });
+  const likeEventsMutation = usePostEventLikeService();
 
   const likeEvent = () => {
-    likeEventsMutation.mutate();
+    likeEventsMutation.mutate({ eventId: pathId });
   };
 
   // 이벤트 참여하기
-  const joinEventsMutation = usePostEventJoin({ eventId: pathId });
+  const joinEventsMutation = usePostEventJoinService();
 
   const joinEvent = () => {
-    joinEventsMutation.mutate();
+    joinEventsMutation.mutate({ eventId: pathId });
   };
 
   // 이벤트 리뷰 작성하기
   const writeReviewMutation = usePostEventsReviewService();
+  const postData = {
+    eventId: pathId,
+    description: reviewValue.description,
+    rating: reviewValue.rating,
+    imageFiles: reviewValue.imageFiles,
+  };
   const addReview = () => {
-    writeReviewMutation.mutate({
-      eventId: pathId,
-      description: reviewValue.description,
-      rating: reviewValue.rating,
-      imageFiles: reviewValue.imageFiles,
-    });
-    setReviewValue({ rating: 0, description: '', imageFiles: [] });
+    writeReviewMutation.mutate(postData);
   };
 
+  const date = new Date();
+  const startTime = getDate(data.startTime);
+  const endTime = getDate(data.endTime);
+  const today = getDate(date);
+
+  if (today < startTime) {
+    console.log('시작전');
+  } else if (today >= startTime && today <= endTime) {
+    console.log('진행중');
+  } else {
+    console.log('종료');
+  }
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
       <div className="flex items-center justify-between">
@@ -240,6 +241,9 @@ const page = () => {
           <li className="flex items-center gap-[3px]">
             <AiOutlineClockCircle />
             {getDate(data?.updatedAt)}
+          </li>
+          <li>
+            <Badge state="진행중" />
           </li>
         </ul>
         <ul className="flex w-full gap-[16px] border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 sm:prose-body-XS md:prose-body-S">
@@ -348,66 +352,68 @@ const page = () => {
           </>
         )}
       </div>
-      <div className="mt-[100px]">
-        <div className="my-[20px] flex justify-between">
-          <p className="prose-h4">이벤트 후기</p>
-          {isLoggedIn && (
-            <StyledButton
-              label="후기 작성하기"
-              onClick={() => modalState()}
-              disabled={false}
-              className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
-            />
+      {today > endTime && (
+        <div className="mt-[100px]">
+          <div className="my-[20px] flex justify-between">
+            <p className="prose-h4">이벤트 후기</p>
+            {isLoggedIn && (
+              <StyledButton
+                label="후기 작성하기"
+                onClick={() => modalState()}
+                disabled={false}
+                className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
+              />
+            )}
+          </div>
+          <TwoButtonModal
+            isOpen={isModal}
+            setOpen={() => setIsModal(false)}
+            children={<Reveiw />}
+            buttonLabel="등록"
+            onClose={() => addReview()}
+          />
+          {allReview.length > 0 ? (
+            allReview.map((review) => (
+              <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+                <div className="flex items-center gap-[10px]">
+                  <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                  <p className="prose-body-S text-gray4">{userData.nickname}</p>
+                  {/* <p className="prose-body-XS text-gray5">{review.date}</p> */}
+                </div>
+                <div className="flex">
+                  {[...Array(review.rating)].map((el, idx) => (
+                    <IoStar color="gold" key={idx} />
+                  ))}
+                  {[...Array(5 - review.rating)].map((el, idx) => (
+                    <IoStarOutline className="text-gray6" key={idx} />
+                  ))}
+                </div>
+                <div className="h-[250px] w-[100%] overflow-hidden">
+                  <Slick {...settings}>
+                    {review.imageFiles.map((el) => (
+                      <img
+                        className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
+                        src={el ? URL.createObjectURL(el) : ''}
+                      />
+                    ))}
+                  </Slick>
+                </div>
+                <div className="mt-[30px]">
+                  <p className="w-[60%] min-w-[500px]">{review.description}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-center border-2 border-gray6 py-[50px]">
+              <p className="text-gray5">등록된 후기가 없습니다</p>
+            </div>
           )}
         </div>
-        <TwoButtonModal
-          isOpen={isModal}
-          setOpen={() => setIsModal(false)}
-          children={<Reveiw />}
-          buttonLabel="등록"
-          onClose={() => addReview()}
-        />
-        {allReview.length > 0 ? (
-          allReview.map((review) => (
-            <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
-              <div className="flex items-center gap-[10px]">
-                <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-                <p className="prose-body-S text-gray4">{userData.nickname}</p>
-                {/* <p className="prose-body-XS text-gray5">{review.date}</p> */}
-              </div>
-              <div className="flex">
-                {[...Array(review.rating)].map((el, idx) => (
-                  <IoStar color="gold" key={idx} />
-                ))}
-                {[...Array(5 - review.rating)].map((el, idx) => (
-                  <IoStarOutline className="text-gray6" key={idx} />
-                ))}
-              </div>
-              <div className="h-[250px] w-[100%] overflow-hidden">
-                <Slick {...settings}>
-                  {review.imageFiles.map((el) => (
-                    <img
-                      className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                      src={el ? URL.createObjectURL(el) : ''}
-                    />
-                  ))}
-                </Slick>
-              </div>
-              <div className="mt-[30px]">
-                <p className="w-[60%] min-w-[500px]">{review.description}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="flex items-center justify-center border-2 border-gray6 py-[50px]">
-            <p className="text-gray5">등록된 후기가 없습니다</p>
-          </div>
-        )}
-      </div>
+      )}
       <div className="fixed bottom-[50px] right-[50px] flex flex-col gap-[10px]">
         <div
           className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
-          onClick={likeEvent}>
+          onClick={() => likeEvent()}>
           <AiOutlineHeart color="red" size={20} />
         </div>
         <div

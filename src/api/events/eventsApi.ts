@@ -139,14 +139,12 @@ export const deleteEventsCommentApi = async ({ eventId, commentId }: { eventId: 
   await apiInstance.delete(`/events/${eventId}/comments/${commentId}`);
 
 // 이벤트 좋아요
-export const likeEventsApi = async ({ eventId }: { eventId: number }) => {
-  await apiInstance.post(`/events/${eventId}/eventLike`);
-};
+export const postEventsLikeApi = async ({ eventId }: { eventId: number }) =>
+  await apiInstance.post(`/events/${eventId}/like`);
 
 // 이벤트 참여하기
-export const joinEventsApi = async ({ eventId }: { eventId: number }) => {
+export const postEventsJoinApi = async ({ eventId }: { eventId: number }) =>
   await apiInstance.post(`/events/${eventId}/join`);
-};
 
 // 이벤트 리뷰 작성
 export const postEventsReviewApi = async ({
@@ -173,10 +171,14 @@ export const postEventsReviewApi = async ({
       type: 'application/json',
     },
   );
-  formData.append('eventReview', eventReviewJson);
+  formData.append('review', eventReviewJson);
   imageFiles.forEach((file, index) => {
     formData.append(`imageFiles[${index}]`, file);
   });
 
   await apiInstance.post(`/events/${eventId}/reviews`);
 };
+
+// 이벤트 리뷰 조회
+export const getEventsReviewApi = async ({ eventId }: { eventId: number }) =>
+  await apiInstance.get(`/events/${eventId}/reviews`);

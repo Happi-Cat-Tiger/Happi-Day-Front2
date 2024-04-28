@@ -4,23 +4,11 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
+import { getDate } from '@/utils/GetDate';
 
 const Review = () => {
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const { rating, description, imageFiles } = reviewValue;
-
-  const getDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const min = date.getMinutes();
-    const sec = date.getSeconds();
-    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${
-      (hour < 10 ? '0' : '') + hour
-    }:${(min < 10 ? '0' : '') + min}:${(sec < 10 ? '0' : '') + sec}`;
-  };
 
   const onChangeReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewValue({
@@ -84,8 +72,6 @@ const Review = () => {
     },
     [],
   );
-
-  console.log('reviewValue', reviewValue);
 
   return (
     <>
