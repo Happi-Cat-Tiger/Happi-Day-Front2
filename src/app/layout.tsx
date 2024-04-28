@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/global.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer/Footer';
+import { AuthProvider } from '@/context/AuthContext';
 
 export const metadata: Metadata = {
   title: 'Happi Day',
@@ -22,9 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RecoilRootWrapper>
           <ReactQueryWrapper>
-            <Nav />
-            {children}
-            <Footer />
+            <AuthProvider>
+              <Nav />
+              {children}
+              <Footer />
+            </AuthProvider>
             <ToastContainer />
           </ReactQueryWrapper>
         </RecoilRootWrapper>

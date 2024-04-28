@@ -14,14 +14,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Nav = () => {
   // ssr hybrate 랜더링
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-
+  const [isLoggedIn] = useRecoilState(LoginState);
   const [isClient, setIsClient] = useState(false);
-
-  if (!localStorage.getItem('token')) {
-    console.log('토큰이 없습니다');
-    setIsLoggedIn(false);
-  }
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -29,8 +24,6 @@ const Nav = () => {
 
   const pathname = usePathname();
   const firstPath = '/' + pathname.split('/')[1];
-
-  const [isOpen, setIsOpen] = useState(false);
 
   // isOpen 상태에서는 스크롤 제어
   useScrollControl(isOpen);
