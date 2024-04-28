@@ -1,38 +1,34 @@
 'use client';
 
 import React from 'react';
-import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import Image from 'next/image';
-import PrimaryButton from '@/components/Button/PrimaryButton';
 import { useRouter } from 'next/navigation';
-import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
-import { useDeleteBoardArticleService } from '@/hooks/mutations/board/boardService';
-import { LoginState } from '@/atom/LoginState';
-import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
-import LoadingSpinner from '../loading/LoadingSpinner';
+import PrimaryButton from '@/components/Button/PrimaryButton';
 import ArticleComments from '@/components/Article/ArticleComments';
+import { LoginState } from '@/atom/LoginState';
 import { ProfileResponse } from '@/api/user/type';
 import { BoardArticleResponse } from '@/api/board/type';
+import { useGetBoardArticleService } from '@/hooks/queries/board/boardServie';
+import { useDeleteBoardArticleService } from '@/hooks/mutations/board/boardService';
+import LoadingSpinner from '../loading/LoadingSpinner';
+import { hdQueryClient } from '@/shared/hdQueryClient';
+import { AiTwotoneEye, AiOutlineClockCircle, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
 
 const BoardArticlePage = ({ params }: { params: any }) => {
   const router = useRouter();
 
-  console.log('params', params);
-
   const isLoggedIn = useRecoilValue(LoginState);
 
+  // query
+  const userData = hdQueryClient.getQueryData(['profile', true]) as ProfileResponse;
   const { data: boardArticle, isLoading } = useGetBoardArticleService({ articleId: params.id }) as {
     data: BoardArticleResponse;
     isLoading: boolean;
   };
-  const { data: userData, isLoading: isAuthLoading } = useGetProfileInfoService({ isLoggedIn }) as {
-    data: ProfileResponse;
-    isLoading: boolean;
-  };
   const deleteArticleMutation = useDeleteBoardArticleService({ articleId: params.id });
 
-  if (isLoading || isAuthLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? boardArticle.user === userData?.nickname : false;
