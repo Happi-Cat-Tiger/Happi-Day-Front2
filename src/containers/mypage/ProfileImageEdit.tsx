@@ -13,7 +13,7 @@ const ProfileImageEdit = ({ imageUrl }: { imageUrl: string }) => {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm();
-
+  //프로필 삭제(기본프로필로 변경) 후 저장버튼 누르면 이전 preview 이미지로 post되어 프로필이 변경되어버림.
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgFile, setImgFile] = useState<File | null>();
   const [preview, setPreview] = useState<string | null>(imageUrl);
@@ -54,6 +54,10 @@ const ProfileImageEdit = ({ imageUrl }: { imageUrl: string }) => {
       setPreview(imageUrl);
     }
   }, [imgFile]);
+
+  useEffect(() => {
+    setPreview(imageUrl);
+  }, [imageUrl]);
 
   return (
     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>

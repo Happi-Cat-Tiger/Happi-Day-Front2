@@ -15,8 +15,8 @@ export type UpdateProfileInfo = {
   password?: string;
 };
 
-export const patchProfileInfoApi = async ({ nickname, phone, password }: UpdateProfileInfo) => {
-  return await apiInstance.patch('/user/info', { nickname, phone, password });
+export const patchProfileInfoApi = async (values: UpdateProfileInfo) => {
+  return await apiInstance.patch('/user/info', values);
 };
 
 export const patchProfileImageApi = async ({ formData }: { formData: FormData }) => {

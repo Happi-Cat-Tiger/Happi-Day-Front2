@@ -2,17 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { patchProfileInfoApi, patchProfileImageApi, patchBasicProfileImageApi } from '../../../api/user/userApi';
 
-export const usePatchProfileInfoService = ({
-  nickname,
-  phone,
-  password,
-}: {
-  nickname?: string;
-  phone?: string;
-  password?: string;
-}) => {
+export const usePatchProfileInfoService = () => {
   const mutation = useMutation({
-    mutationFn: () => patchProfileInfoApi({ nickname, phone, password }),
+    mutationFn: (values) => patchProfileInfoApi(values),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['profile'] });
     },
