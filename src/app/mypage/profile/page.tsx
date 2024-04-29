@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import FormLabel from '@/components/Form/FormLabel';
+import Input from '@/components/Input/Input';
 import basicProfileImage from '../../../../public/images/basicProfileImage.jpg';
 import ProfileEdit from '@/containers/mypage/ProfileEdit';
 import { SlArrowRight, SlArrowDown } from 'react-icons/sl';
@@ -11,10 +12,8 @@ import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 const Page = () => {
   const [open, setOpen] = useState(false);
   const { data } = useGetProfileInfoService();
-  useEffect(() => {
-    if (data) {
-    }
-  }, [data]);
+  const [passwordValue, setPasswordValue] = useState('');
+
   return (
     data && (
       <div>
@@ -59,14 +58,20 @@ const Page = () => {
                       </div>
                       <div className=" flex h-8 flex-row">
                         <div className="my-auto w-20 items-center">비밀번호</div>
-                        <input type="password" className="rounded-lg bg-gray7 px-2 outline-none"></input>
+                        <Input
+                          isReadOnly={false}
+                          value={passwordValue}
+                          type={'text'}
+                          onChange={(newValue) => {
+                            setPasswordValue(newValue);
+                          }}></Input>
                       </div>
                     </div>
                     <StyledSubmitButton
                       label="탈퇴"
                       isSubmitting={false}
                       type="submit"
-                      onClick={() => null}
+                      onClick={() => console.log(passwordValue)}
                       className={
                         'prose-btn-M flex h-10 w-[300px] items-center justify-center rounded-xl  bg-pink px-4 py-4 text-white md:prose-btn-M hover:bg-pink2 focus:outline-none disabled:bg-gray6'
                       }

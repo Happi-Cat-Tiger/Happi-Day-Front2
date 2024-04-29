@@ -1,9 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileImageEdit from '../../containers/mypage/ProfileImageEdit';
 import FormTextInput from '@/components/Form/FormTextInput';
 import FormLabel from '@/components/Form/FormLabel';
 import Input from '@/components/Input/Input';
+import { Profile } from '@/hooks/queries/user/userService';
 
 //TODO 전역 userData 가져오기
 
@@ -17,6 +18,14 @@ interface Props {
   nickname: string;
 }
 const ProfileEdit = ({ data }: { data: Props }) => {
+  const [profileInfoData, setProfileInfoData] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    if (data) {
+      setProfileInfoData(data);
+    }
+  }, [data]);
+
   return (
     data && (
       <div className="mx-2 rounded-lg md:mx-6 md:my-6 md:max-w-[1280px] md:border md:border-gray6">
@@ -46,7 +55,7 @@ const ProfileEdit = ({ data }: { data: Props }) => {
               name="phone"
               isReadOnly={false}
               valid={/^\d{3}-\d{4}-\d{4}$/}
-              errorMesage="휴대폰 번호를 8자리 숫자로 입력해주세요."
+              errorMesage="휴대폰 번호를 11자리 숫자로 입력해주세요."
               defaultValues={{ phone: data.phone }}
             />
             <FormTextInput

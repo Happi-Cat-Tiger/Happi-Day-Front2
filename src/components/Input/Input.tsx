@@ -1,24 +1,25 @@
-'use client';
 import React, { FC, InputHTMLAttributes, useState } from 'react';
-import { DefaultValue } from 'recoil';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface OnChangeHandler {
+  (newValue: string): void;
+}
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   isReadOnly: boolean;
-  value: string | number;
+  value: string;
   type: 'number' | 'text' | 'email';
   placeholder?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: OnChangeHandler;
 }
+
 const Input: FC<Props> = ({ isReadOnly, value, type, placeholder, onChange }) => {
-  const [inputValue, setInputValue] = useState(value.toString());
+  const [inputValue, setInputValue] = useState(value);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setInputValue(newValue);
 
-    if (onChange) {
-      onChange(event); // 상위 컴포넌트로 변경된 값을 전달
-    }
+    // 외부로 입력된 값을 전달
+    onChange(newValue);
   };
 
   return (

@@ -35,11 +35,11 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
   const [hyphen, setHyphen] = useState<string>('');
   const watchAllFields = watch('phone');
 
-  const mutationPatch = usePatchProfileInfoService({});
+  const mutationPatch = usePatchProfileInfoService();
 
   const onSubmit = () => {
     const values = getValues();
-    mutationPatch.mutate({ values });
+    mutationPatch.mutate(values);
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
@@ -78,7 +78,7 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
                   label="변경"
                   isSubmitting={isSubmitting}
                   onClick={() => {}}
-                  className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-orange2  px-4 py-4 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6 "
+                  className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-orange2  px-4 py-4 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6"
                 />
               </div>
             </div>
