@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import {
@@ -73,6 +73,7 @@ const settings = {
 
 const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
+  const [eventState, setEventState] = useState('');
 
   const path = usePathname();
   const pathId = Number(path.replace('/events/', ''));
@@ -190,18 +191,25 @@ const page = () => {
     writeReviewMutation.mutate(postData);
   };
 
+  // 이벤트 상태
   const date = new Date();
   const startTime = getDate(data.startTime);
   const endTime = getDate(data.endTime);
   const today = getDate(date);
 
-  if (today < startTime) {
-    console.log('시작전');
-  } else if (today >= startTime && today <= endTime) {
-    console.log('진행중');
-  } else {
-    console.log('종료');
-  }
+  useEffect(() => {
+    const badgeState = (today: any, start: any, end: any) => {
+      if (today < start) {
+        setEventState('진행 예정');
+      } else if (today >= start && today <= end) {
+        setEventState('진행중');
+      } else {
+        setEventState('종료');
+      }
+    };
+    badgeState(getDate(date), getDate(startTime), getDate(endTime));
+  }, []);
+
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
       <div className="flex items-center justify-between">
@@ -243,7 +251,7 @@ const page = () => {
             {getDate(data?.updatedAt)}
           </li>
           <li>
-            <Badge state="진행중" />
+            <Badge state={eventState} />
           </li>
         </ul>
         <ul className="flex w-full gap-[16px] border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 sm:prose-body-XS md:prose-body-S">

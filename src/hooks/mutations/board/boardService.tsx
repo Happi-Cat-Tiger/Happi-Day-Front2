@@ -26,8 +26,6 @@ export const usePostWriteBoardService = ({ categoryId }: { categoryId: number })
       const { categoryId, id } = data;
       const categoryPath = BOARD.CATEGORY[categoryId - 1].path;
       router.push(`/board/${categoryPath}/${id}`);
-
-      toast('글이 작성되었습니다.');
     },
   });
 };

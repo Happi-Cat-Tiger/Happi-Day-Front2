@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 import { getDate } from '@/utils/GetDate';
 import Badge from './Badge/Badge';
-import { useRecoilValue } from 'recoil';
 
 interface CardProps {
   id: number;
@@ -15,7 +14,7 @@ interface CardProps {
   thumbnailUrl: string;
   title: string;
   artist: string;
-  hashtags: string[];
+  hashtags?: string[];
   location?: string;
   startTime: Date;
   endTime: Date;
@@ -44,13 +43,14 @@ const Card = ({
   viewCount,
 }: CardProps) => {
   const [eventState, setEventState] = useState('');
+
   const router = useRouter();
   const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
 
   // 이벤트 기간 뱃지 (진행 예정, 진행중, 종료)
   const date = new Date();
   useEffect(() => {
-    const badgeState = (today: any, start: any, end: any) => {
+    const getBadgeState = (today: any, start: any, end: any) => {
       if (today < start) {
         setEventState('진행 예정');
       } else if (today >= start && today <= end) {
@@ -59,7 +59,7 @@ const Card = ({
         setEventState('종료');
       }
     };
-    badgeState(getDate(date), getDate(startTime), getDate(endTime));
+    getBadgeState(getDate(date), getDate(startTime), getDate(endTime));
   }, []);
 
   return (

@@ -162,7 +162,6 @@ export const postEventsReviewApi = async ({
   const eventReviewJson = new Blob(
     [
       JSON.stringify({
-        eventId: eventId,
         description: description,
         rating: rating,
       }),
@@ -173,7 +172,7 @@ export const postEventsReviewApi = async ({
   );
   formData.append('review', eventReviewJson);
   imageFiles.forEach((file, index) => {
-    formData.append(`imageFiles[${index}]`, file);
+    formData.append(`imageFiles`, file);
   });
 
   await apiInstance.post(`/events/${eventId}/reviews`);

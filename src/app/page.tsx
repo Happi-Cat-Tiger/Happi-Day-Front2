@@ -1,12 +1,13 @@
 'use client';
-import StyledButton from '@/components/Button/StyledButton';
 import HappiDayBanner from '../../public/images/happiDayBanner.png';
 import SubBanner from '../../public/images/subscriptionBanner.png';
 import Image from 'next/image';
 import Card from '@/components/Card';
-import { useEffect, useState } from 'react';
 import ArticleList from '@/components/List/ArticleList';
+import LinkButton from '@/components/Button/LinkButton';
+import { MOCKDATA } from '@/constants/mockdata';
 import Slick from 'react-slick';
+import { settings } from '@/slider/setting';
 import '../slider/slick.css';
 import '../slider/slick-theme.css';
 import { useRouter } from 'next/navigation';
@@ -17,6 +18,7 @@ import { getSalesPostListService } from '@/hooks/queries/sales/salesService';
 import { getSalesPostListApi } from '@/api/sales/salesApi';
 import { getAllEvents } from '@/hooks/queries/events/eventsService';
 import { EventsList } from '@/types/events';
+import { useEffect, useState } from 'react';
 
 interface MockData {
   id: number;
@@ -33,37 +35,6 @@ interface MockData {
   joinCount: number;
 }
 
-const settings = {
-  dots: true, // 슬라이더 하단 점
-  infinite: false, // 마지막 콘텐츠와 처음 콘텐츠 연결
-  speed: 500, // 콘텐츠 전환 속도. 작아질수록 속도가 빠르다
-  slidesToShow: 5, // 보여지는 컨텐츠 개수
-  slideToScroll: 1, // 한번에 넘어가는 콘텐츠의 개수
-  arrows: true, // 좌우 화살표
-  draggable: false, // 슬라이더 드래그 활성화
-  fade: false, // fade 효과
-  responsive: [
-    {
-      breakpoint: 1280,
-      settings: {
-        slidesToShow: 4,
-      },
-    },
-    {
-      breakpoint: 910,
-      settings: {
-        slidesToShow: 3,
-      },
-    },
-    {
-      breakpoint: 650,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-  ],
-};
-
 const Home = () => {
   // const { data } = usegetSubscribedListService();
   // console.log(data);
@@ -72,80 +43,80 @@ const Home = () => {
   const eventsData = getAllEvents().data.content;
   console.log('events', eventsData);
   const date = new Date();
-  const mockData = [
-    {
-      id: 1,
-      thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
-      title: '방탄소년단 생일 카페1',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 1,
-      comment: 1,
-      view: 1,
-      joinCount: 1,
-    },
-    {
-      id: 2,
-      thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
-      title: '방탄소년단 생일 카페2',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 2,
-      comment: 2,
-      view: 2,
-      joinCount: 2,
-    },
-    {
-      id: 3,
-      thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
-      title: '방탄소년단 생일 카페3',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 3,
-      comment: 3,
-      view: 3,
-      joinCount: 3,
-    },
-    {
-      id: 4,
-      thumbnailUrl:
-        'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
-      title: '방탄소년단 생일 카페4',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 4,
-      comment: 4,
-      view: 4,
-      joinCount: 4,
-    },
-    {
-      id: 5,
-      thumbnailUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
-      title: '방탄소년단 생일 카페5',
-      artist: '방탄소년단',
-      place: '용산 슈퍼스타 떡볶이',
-      startDate: date,
-      endDate: date,
-      location: '서울시 용산구',
-      like: 5,
-      comment: 5,
-      view: 5,
-      joinCount: 5,
-    },
-  ];
+  // const mockData = [
+  //   {
+  //     id: 1,
+  //     thumbnailUrl: 'https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png',
+  //     title: '방탄소년단 생일 카페1',
+  //     artist: '방탄소년단',
+  //     place: '용산 슈퍼스타 떡볶이',
+  //     startDate: date,
+  //     endDate: date,
+  //     location: '서울시 용산구',
+  //     like: 1,
+  //     comment: 1,
+  //     view: 1,
+  //     joinCount: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     thumbnailUrl: 'https://blog.kakaocdn.net/dn/tEMUl/btrDc6957nj/NwJoDw0EOapJNDSNRNZK8K/img.jpg',
+  //     title: '방탄소년단 생일 카페2',
+  //     artist: '방탄소년단',
+  //     place: '용산 슈퍼스타 떡볶이',
+  //     startDate: date,
+  //     endDate: date,
+  //     location: '서울시 용산구',
+  //     like: 2,
+  //     comment: 2,
+  //     view: 2,
+  //     joinCount: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     thumbnailUrl: 'https://ichef.bbci.co.uk/news/640/cpsprodpb/E172/production/_126241775_getty_cats.png',
+  //     title: '방탄소년단 생일 카페3',
+  //     artist: '방탄소년단',
+  //     place: '용산 슈퍼스타 떡볶이',
+  //     startDate: date,
+  //     endDate: date,
+  //     location: '서울시 용산구',
+  //     like: 3,
+  //     comment: 3,
+  //     view: 3,
+  //     joinCount: 3,
+  //   },
+  //   {
+  //     id: 4,
+  //     thumbnailUrl:
+  //       'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg',
+  //     title: '방탄소년단 생일 카페4',
+  //     artist: '방탄소년단',
+  //     place: '용산 슈퍼스타 떡볶이',
+  //     startDate: date,
+  //     endDate: date,
+  //     location: '서울시 용산구',
+  //     like: 4,
+  //     comment: 4,
+  //     view: 4,
+  //     joinCount: 4,
+  //   },
+  //   {
+  //     id: 5,
+  //     thumbnailUrl:
+  //       'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/kVe/image/i16oISROMcKXVyuQUWEY26qjF5E.jpg',
+  //     title: '방탄소년단 생일 카페5',
+  //     artist: '방탄소년단',
+  //     place: '용산 슈퍼스타 떡볶이',
+  //     startDate: date,
+  //     endDate: date,
+  //     location: '서울시 용산구',
+  //     like: 5,
+  //     comment: 5,
+  //     view: 5,
+  //     joinCount: 5,
+  //   },
+  // ];
 
   // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
   const isLoggedIn = useRecoilValue(LoginState);
@@ -160,6 +131,7 @@ const Home = () => {
 
   if (!isClient) return <LoadingSpinner />;
 
+  const mockData = MOCKDATA.appPage;
   return (
     <div className="my-32 h-auto sm:my-10 sm:px-[8px] lg:my-20">
       <div className="m-auto flex flex-col gap-16 md:max-w-[1280px]">
@@ -169,9 +141,9 @@ const Home = () => {
         <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 이벤트</h3>
-            <StyledButton
+            <LinkButton
               label="More+"
-              onClick={() => router.push('/events')}
+              href="/events"
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
@@ -205,9 +177,9 @@ const Home = () => {
         <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 굿즈</h3>
-            <StyledButton
+            <LinkButton
               label="More+"
-              onClick={() => router.push('/sales/1')}
+              href="/events"
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
@@ -236,9 +208,9 @@ const Home = () => {
         <div className="flex h-[420px] max-w-[1280px] flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="border-b-[3px] border-orange2 p-[8px] sm:prose-h6 md:prose-h3">인기 공구</h3>
-            <StyledButton
+            <LinkButton
               label="More+"
-              onClick={() => router.push('/sales/2')}
+              href="/events"
               className="prose-subtitle-M rounded-[16px] bg-orange2 px-[13px] py-[4px] text-white"
             />
           </div>
