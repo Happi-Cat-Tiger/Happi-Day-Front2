@@ -17,7 +17,7 @@ import LinkButton from '@/components/Button/LinkButton';
 import PaginationComponent from '@/components/Pagination/PaginationComponent';
 import { AiOutlineSearch } from 'react-icons/ai';
 import SubBanner from 'public/images/subscriptionBanner.png';
-import BoardCard from '@/components/Dropdowns/Card/BoardCard';
+import BoardCard from '@/components/Card/BoardCard';
 
 const BoardArticleListPage = ({ categoryId }: { categoryId: number }) => {
   const isLoggedIn = useRecoilValue(LoginState);
