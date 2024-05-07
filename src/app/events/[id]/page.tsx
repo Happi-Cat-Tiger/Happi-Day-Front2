@@ -39,6 +39,7 @@ import {
 import Image from 'next/image';
 import { getDate } from '@/utils/GetDate';
 import Badge from '@/components/Badge/Badge';
+import { PostponedPathnameNormalizer } from 'next/dist/server/future/normalizers/request/postponed';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -188,6 +189,7 @@ const page = () => {
     imageFiles: reviewValue.imageFiles,
   };
   const addReview = () => {
+    console.log('post', postData);
     writeReviewMutation.mutate(postData);
   };
 

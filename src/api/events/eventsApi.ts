@@ -175,7 +175,16 @@ export const postEventsReviewApi = async ({
     formData.append(`imageFiles`, file);
   });
 
-  await apiInstance.post(`/events/${eventId}/reviews`);
+  return await apiInstance
+    .post(`/events/${eventId}/reviews`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
 };
 
 // 이벤트 리뷰 조회
