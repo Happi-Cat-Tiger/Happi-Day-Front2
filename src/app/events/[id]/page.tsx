@@ -86,7 +86,8 @@ const page = () => {
   const [isUpdate, setIsUpdate] = useState({ isEdit: false, editValue: '', editId: 0 });
 
   const reviewData = getEventsReview({ eventId: pathId });
-  console.log('reviewData', reviewData.data?.data.content);
+  const reviews = reviewData.data?.data.content;
+  console.log('reviewData', reviews);
 
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
@@ -382,13 +383,13 @@ const page = () => {
             buttonLabel="등록"
             onClose={() => addReview()}
           />
-          {allReview.length > 0 ? (
-            allReview.map((review) => (
+          {reviews.length > 0 ? (
+            reviews.map((review: any) => (
               <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
                 <div className="flex items-center gap-[10px]">
                   <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
                   <p className="prose-body-S text-gray4">{userData.nickname}</p>
-                  {/* <p className="prose-body-XS text-gray5">{review.date}</p> */}
+                  <p className="prose-body-XS text-gray5">{getDate(review.date)}</p>
                 </div>
                 <div className="flex">
                   {[...Array(review.rating)].map((el, idx) => (
@@ -400,11 +401,8 @@ const page = () => {
                 </div>
                 <div className="h-[250px] w-[100%] overflow-hidden">
                   <Slick {...settings}>
-                    {review.imageFiles.map((el) => (
-                      <img
-                        className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                        src={el ? URL.createObjectURL(el) : ''}
-                      />
+                    {review.imageUrlList.map((el: any) => (
+                      <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src={el ? el : ''} />
                     ))}
                   </Slick>
                 </div>
