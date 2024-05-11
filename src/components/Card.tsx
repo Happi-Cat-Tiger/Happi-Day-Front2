@@ -53,7 +53,9 @@ const Card = ({
   return (
     <div
       key={id}
-      onClick={() => (cardType === 'sales' ? router.push(`${categoryId}/${id}`) : router.push(`${cardType}/${id}`))}
+      onClick={() =>
+        cardType === 'sales' ? router.push(`/sales/${categoryId}/${id}`) : router.push(`/${cardType}/${id}`)
+      }
       className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       <div className="relative h-[170px] w-[100%]">
         {thumbnailUrl && <Image src={thumbnailUrl} fill alt="thumbnail" className="rounded-[4px]" priority />}

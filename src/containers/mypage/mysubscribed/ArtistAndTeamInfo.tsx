@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Label from '@/containers/mypage/mygoods/Label';
@@ -29,7 +31,7 @@ const ArtistAndTeamInfo = ({ data, type }: Props) => {
 
   //TODO userType 전역에서 가져오기
   const userType = 'admin';
-
+  console.log('zzzzzzzzz');
   const { id, name, description, subscribed, sales, events } = data;
 
   const profileOrLogoUrl = type == 'artist' ? (data as ArtistInfo).profileUrl : (data as TeamInfo).logoUrl;

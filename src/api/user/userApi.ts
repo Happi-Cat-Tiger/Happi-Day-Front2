@@ -1,5 +1,5 @@
 import apiInstance from '@/api/api';
-import { Profile } from '@/hooks/queries/user/userService';
+// import { Profile } from '@/hooks/queries/user/userService';
 
 export type UpdateProfileInfo = {
   nickname?: string;
@@ -11,7 +11,7 @@ export type DeleteAccount = {
   password: string;
 };
 
-export const patchProfileInfoApi = async ({ values }: { values: UpdateProfileInfo }) => {
+export const patchProfileInfoApi = async (values: UpdateProfileInfo) => {
   return await apiInstance.patch('/user/info', values);
 };
 
@@ -33,10 +33,10 @@ export const patchBasicProfileImageApi = async () => {
 };
 
 export const getProfileInfoApi = async () => {
-  const response = await apiInstance.get<Profile>('/user/info');
+  const response = await apiInstance.get('/user/info');
   return response.data;
 };
 
-export const deleteAccountApi = async ({ password }: { password: DeleteAccount }) => {
-  return await apiInstance.delete('/user/withdrawal', password);
+export const deleteAccountApi = async (password: DeleteAccount) => {
+  return await apiInstance.delete('/user/withdrawal', { data: { password } });
 };

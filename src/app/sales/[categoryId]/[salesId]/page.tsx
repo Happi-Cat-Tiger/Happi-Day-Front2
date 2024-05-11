@@ -58,7 +58,7 @@ const Page = ({ params }: { params: { categoryId: string; salesId: string } }) =
     <div className={`mb-[200px] flex w-full flex-col px-[8px] ${isModalOpen ? 'pointer-events-none invisible' : ''}`}>
       <div
         className="icon-default flex h-10 w-10 cursor-pointer items-center justify-center text-[30px]"
-        onClick={() => window.history.back()}>
+        onClick={() => history.back()}>
         ←
       </div>
       {isAuthor && (

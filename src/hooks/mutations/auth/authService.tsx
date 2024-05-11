@@ -39,8 +39,8 @@ export const useHostSigninService = () => {
     mutationKey: ['signIn'],
     mutationFn: () =>
       postSigninApi({
-        username: 'eunji@g.com',
-        password: 'dmswl123!',
+        username: 'qwer@email.com',
+        password: 'qwer',
       }),
     onSuccess: (res) => {
       const { token } = res.data;
