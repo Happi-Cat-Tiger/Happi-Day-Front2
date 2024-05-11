@@ -8,11 +8,17 @@ import { SlArrowRight, SlArrowDown } from 'react-icons/sl';
 import SubmitButton from '@/components/Button/SubmitButton';
 import StyledSubmitButton from '@/components/Button/StyledSubmitButton';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
+import { useDeleteAccountService } from '@/hooks/mutations/user/userService';
 
 const Page = () => {
   const [open, setOpen] = useState(false);
   const { data } = useGetProfileInfoService();
-  const [passwordValue, setPasswordValue] = useState('');
+  const [password, setPassword] = useState('');
+  const mutationPatch = useDeleteAccountService();
+
+  const onSubmit = () => {
+    mutationPatch.mutate(password);
+  };
 
   return (
     data && (
@@ -60,18 +66,19 @@ const Page = () => {
                         <div className="my-auto w-20 items-center">비밀번호</div>
                         <Input
                           isReadOnly={false}
-                          value={passwordValue}
+                          value={password}
                           type={'text'}
                           onChange={(newValue) => {
-                            setPasswordValue(newValue);
+                            setPassword(newValue);
                           }}></Input>
                       </div>
                     </div>
+
                     <StyledSubmitButton
                       label="탈퇴"
                       isSubmitting={false}
                       type="submit"
-                      onClick={() => console.log(passwordValue)}
+                      onClick={() => onSubmit()}
                       className={
                         'prose-btn-M flex h-10 w-[300px] items-center justify-center rounded-xl  bg-pink px-4 py-4 text-white md:prose-btn-M hover:bg-pink2 focus:outline-none disabled:bg-gray6'
                       }
