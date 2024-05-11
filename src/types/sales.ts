@@ -20,13 +20,15 @@ export interface PostContent {
   id: number;
   thumbnailImage: string;
   name: string;
-  artists: string;
+  artists: string[];
   startTime: Date;
   endTime: Date;
   orderNum: number;
   likeNum: number;
   viewCount: number;
-  hashtags: string[];
+  teams?: [];
+  hashtags: [];
+  nickname: string;
 }
 
 // 카테고리별(굿즈/공구) 글 전체조회
@@ -51,6 +53,20 @@ export interface SalesAllResponse {
   totalPages: number;
 }
 
+interface ProductOption {
+  id: number;
+  name: string;
+  price: number;
+  productStatus: string;
+  stock: number;
+}
+
+interface ShippingOptions {
+  id: number;
+  name: string;
+  price: number;
+}
+
 // 판매글 상세보기 (단일 조회)
 export interface SalesArticleResponse {
   id: number;
@@ -59,14 +75,14 @@ export interface SalesArticleResponse {
   name: string;
   description: string;
   salesStatus: string;
-  products: string[];
+  products: ProductOption[];
   artists: string[];
-  teams: string[];
+  teams?: string[];
   hashtags: string[];
   likeNum: number;
-  imageList: File[] | null;
-  thumbnailImage: File | null;
-  deliveries: string[];
+  imageList: string[];
+  thumbnailImage: string[];
+  deliveries: ShippingOptions[];
   startTime: Date;
   endTime: Date;
   viewCount: number;
@@ -80,16 +96,16 @@ export interface SalesWritePayload {
   name: string;
   description: string;
   hashtags: string[];
-  products: string[];
-  thumbnailImage: File | null;
-  imageList: File[] | null;
-  startTime: Date;
+  products: ProductOption[];
+  thumbnailImage: string;
+  imageList: string[];
+  startTime?: Date;
   endTime: Date;
   namePrice: number;
   accountName: string;
   accountUser: string;
   accountNumber: string;
-  deliveries: string[];
+  deliveries: ShippingOptions[];
 }
 
 export interface SalesWritePostPayload extends SalesWritePayload {

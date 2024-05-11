@@ -3,21 +3,36 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import Select from 'react-select';
 import { AiOutlineClockCircle } from 'react-icons/ai';
-import { handleOptionSelectState } from '@/atom/salesAtom';
+import { handleOptionSelectState, totalPayState } from '@/atom/salesAtom';
+import { SalesArticleResponse } from '@/types/sales';
 
-const Page = () => {
-  const salesOptions = [
-    { value: 'optionTitle', label: '옵션선택(필수)*', price: 0 },
-    { value: 'option1', label: '옵션1. 귀여운 인형 1SET', price: 10000 },
-    { value: 'option2', label: '옵션2. 사랑스러운 인형 1SET', price: 20000 },
-  ];
-  const [selectOptions, setSelectOptions] = useState(salesOptions[0]);
+interface PageProps {
+  salesArticleData?: SalesArticleResponse;
+}
+
+const Page = ({ salesArticleData }: PageProps) => {
+  const getCurrentDateTime = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear().toString();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  const salesOptions = salesArticleData?.products.map((product) => ({
+    value: product.id,
+    label: product.name,
+    price: product.price,
+  }));
+
+  const [selectOptions, setSelectOptions] = useState({ value: 0, label: '옵션선택(필수)*', price: 0 });
   const [selectedContents, setSelectedContents] = useState<{ label: string; price: number }[]>([]);
 
   const [totalQuantity, setTotalQuantity] = useState(0);
 
-  const handleSelectChange = (selectedItem: { value: string; label: string; price: number }) => {
-    const isExcludedOption = selectedItem.value === 'optionTitle';
+  const handleSelectChange = (selectedItem: { value: number; label: string; price: number }) => {
+    const isExcludedOption = selectedItem.value === 0;
 
     if (!isExcludedOption) {
       const isAlreadySelected = selectedContents.some((content) => content.label === selectedItem.label);
@@ -30,7 +45,7 @@ const Page = () => {
         });
         setTotalQuantity((prevQuantity) => prevQuantity + 1);
       }
-      setSelectOptions(salesOptions[0]);
+      setSelectOptions({ value: 0, label: '옵션선택(필수)*', price: 0 });
     }
   };
 
@@ -50,16 +65,23 @@ const Page = () => {
     });
   };
 
-  const deliveryOptions = [
-    { value: 'optionTitle', label: '배송비 선택', price: 0 },
-    { value: 'option1', label: '일반배송(+3,000)', price: 3000 },
-    { value: 'option1', label: '총알배송(+5,000)', price: 5000 },
-  ];
-  const [deliverySelectOptions, setDeliverySelectOptions] = useState(deliveryOptions[0]);
+  const deliveryOptions = salesArticleData?.deliveries.map((delivery) => {
+    return {
+      value: delivery.id,
+      label: delivery.name,
+      price: delivery.price,
+    };
+  });
+
+  const [deliverySelectOptions, setDeliverySelectOptions] = useState({
+    value: 0,
+    label: '배송비 선택',
+    price: 0,
+  });
   const [deliverySelected, setDeliverySelected] = useState(false);
 
-  const handleDeliveryFeeChange = (deliveryItem: { value: string; label: string; price: number }) => {
-    if (deliveryItem.value !== 'optionTitle') {
+  const handleDeliveryFeeChange = (deliveryItem: { value: number; label: string; price: number }) => {
+    if (deliveryItem.value !== 0) {
       setDeliverySelectOptions(deliveryItem);
       setDeliverySelected(true);
     }
@@ -67,14 +89,14 @@ const Page = () => {
 
   const [quantities, setQuantities] = useState([1, 1, 1]);
 
-  const increaseQuantity = (index) => {
+  const increaseQuantity = (index: number) => {
     const newQuantities = [...quantities];
     newQuantities[index]++;
     setQuantities(newQuantities);
     setTotalQuantity((prevQuantity) => prevQuantity + 1);
   };
 
-  const decreaseQuantity = (index) => {
+  const decreaseQuantity = (index: number) => {
     const newQuantities = [...quantities];
     if (newQuantities[index] > 1) {
       newQuantities[index]--;
@@ -88,28 +110,27 @@ const Page = () => {
   }, 0);
 
   const [isAllOptionsSelected, setIsAllOptionsSelected] = useRecoilState(handleOptionSelectState);
+  const [totalPay, setTotalPay] = useRecoilState(totalPayState);
 
   useEffect(() => {
-    if (totalPrice > 0 && deliverySelectOptions.price > 0) {
-      setIsAllOptionsSelected(true);
-    } else {
-      setIsAllOptionsSelected(false);
-    }
-  }, [totalPrice, deliverySelectOptions.price]);
+    const calculatedTotalPay = totalPrice + deliverySelectOptions.price;
+    setTotalPay(calculatedTotalPay);
+    setIsAllOptionsSelected(totalPrice > 0 && deliverySelectOptions.price > 0);
+  }, [totalPrice, deliverySelectOptions.price, setTotalPay, setIsAllOptionsSelected]);
 
   return (
     <div className="mt-10 flex w-full flex-col gap-4 p-2 md:mt-0 md:gap-8 md:p-[35px]">
       <div className="flex flex-col gap-3">
         <div className="prose-subtitle-M flex items-center justify-between text-gray5">
-          <div>닉네임</div>
+          <div></div>
           <div className="flex items-center gap-2">
             <AiOutlineClockCircle />
-            23-12-01 22:55
+            {getCurrentDateTime()}
           </div>
         </div>
-        <div className="prose-h4">뉴진스 하니 포카</div>
+        <div className="prose-h4">{salesArticleData?.name}</div>
         <div className="prose-h3 flex items-center justify-end gap-1">
-          <div>12000</div>
+          <div>{salesArticleData?.namePrice}</div>
           <div className="prose-h4">원</div>
         </div>
       </div>
@@ -117,8 +138,8 @@ const Page = () => {
         <Select
           options={salesOptions}
           onChange={(selectedItem) => {
-            setSelectOptions(selectedItem || salesOptions[0]);
-            handleSelectChange(selectedItem || salesOptions[0]);
+            setSelectOptions(selectedItem || { value: 0, label: '옵션선택(필수)*', price: 0 });
+            handleSelectChange(selectedItem || { value: 0, label: '옵션선택(필수)*', price: 0 });
           }}
           value={selectOptions}
           isSearchable={false}
@@ -134,8 +155,8 @@ const Page = () => {
           <Select
             options={deliveryOptions}
             onChange={(deliveryItem) => {
-              setDeliverySelectOptions(deliveryItem || deliveryOptions[0]);
-              handleDeliveryFeeChange(deliveryItem || deliveryOptions[0]);
+              setDeliverySelectOptions(deliveryItem || { value: 0, label: '배송비 선택', price: 0 });
+              handleDeliveryFeeChange(deliveryItem || { value: 0, label: '배송비 선택', price: 0 });
             }}
             value={deliverySelectOptions}
             isSearchable={false}
@@ -204,7 +225,7 @@ const Page = () => {
         <div className="flex items-center justify-between">
           <div className="prose-h6 md:prose-h5">총 결제금액</div>
           <div className="flex items-center gap-2">
-            <div className="prose-h6 text-[#D80000] md:prose-h4">{totalPrice + deliverySelectOptions.price}</div>
+            <div className="prose-h6 text-[#D80000] md:prose-h4">{totalPay}</div>
             <div className="prose-h5">원</div>
           </div>
         </div>

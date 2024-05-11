@@ -4,6 +4,7 @@ const nextConfig = {};
 module.exports = {
   images: {
     domains: [
+      'happi-day-bucket.s3.ap-northeast-2.amazonaws.com',
       'www.fitpetmall.com',
       'blog.kakaocdn.net',
       'ichef.bbci.co.uk',
