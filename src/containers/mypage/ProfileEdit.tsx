@@ -18,14 +18,6 @@ interface Props {
   nickname: string;
 }
 const ProfileEdit = ({ data }: { data: Props }) => {
-  const [profileInfoData, setProfileInfoData] = useState<Profile | null>(null);
-
-  useEffect(() => {
-    if (data) {
-      setProfileInfoData(data);
-    }
-  }, [data]);
-
   return (
     data && (
       <div className="mx-2 rounded-lg md:mx-6 md:my-6 md:max-w-[1280px] md:border md:border-gray6">
@@ -54,7 +46,7 @@ const ProfileEdit = ({ data }: { data: Props }) => {
               type="text"
               name="phone"
               isReadOnly={false}
-              valid={/^\d{3}-\d{4}-\d{4}$/}
+              valid={/^\d{3}\d{4}\d{4}$/}
               errorMesage="휴대폰 번호를 11자리 숫자로 입력해주세요."
               defaultValues={{ phone: data.phone }}
             />

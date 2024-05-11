@@ -46,15 +46,15 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
       }, 100);
     });
   };
-
-  useEffect(() => {
-    if (watchAllFields && watchAllFields.length === 11) {
-      setHyphen(watch('phone').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
-      setTimeout(() => {
-        setValue('phone', hyphen);
-      }, 0.00001);
-    }
-  }, [hyphen, watchAllFields]);
+  // 하이픈 자동 기입 기능
+  // useEffect(() => {
+  //   if (watchAllFields && watchAllFields.length === 11) {
+  //     setHyphen(watch('phone').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
+  //     setTimeout(() => {
+  //       setValue('phone', hyphen);
+  //     }, 0.00001);
+  //   }
+  // }, [hyphen, watchAllFields]);
 
   return (
     <>

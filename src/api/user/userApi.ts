@@ -1,21 +1,17 @@
 import apiInstance from '@/api/api';
-import { ProfileResponse, UpdateProfilePayload } from './type';
+import { Profile } from '@/hooks/queries/user/userService';
 
-<<<<<<< HEAD
-export const updateProfileInfoApi = async ({ nickName, phone, profileImage }: UpdateProfilePayload) => {
-  return await apiInstance.patch('/user/info', { nickName, phone, profileImage });
-};
-
-export const getProfileInfoApi = async (): Promise<ProfileResponse> =>
-  apiInstance.get('/user/info').then((response) => response.data);
-=======
 export type UpdateProfileInfo = {
   nickname?: string;
   phone?: string;
   password?: string;
 };
 
-export const patchProfileInfoApi = async (values: UpdateProfileInfo) => {
+export type DeleteAccount = {
+  password: string;
+};
+
+export const patchProfileInfoApi = async ({ values }: { values: UpdateProfileInfo }) => {
   return await apiInstance.patch('/user/info', values);
 };
 
@@ -40,4 +36,7 @@ export const getProfileInfoApi = async () => {
   const response = await apiInstance.get<Profile>('/user/info');
   return response.data;
 };
->>>>>>> f681639 (Feat : 프로필 수정 api 연결)
+
+export const deleteAccountApi = async ({ password }: { password: DeleteAccount }) => {
+  return await apiInstance.delete('/user/withdrawal', password);
+};
