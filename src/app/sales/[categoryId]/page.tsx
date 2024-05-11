@@ -107,8 +107,6 @@ const Page = () => {
     }
   };
 
-  console.log('카테고리데이터', data);
-
   return (
     <div className="w-full px-[8px] md:max-w-[1024px]">
       <div className="flex">
@@ -161,21 +159,21 @@ const Page = () => {
           countPerPage={itemsPerPage}
         />
       </div>
-      {isLoggedIn && (
-        <div className="flex justify-end">
-          <Link href="/sales/write" passHref legacyBehavior>
-            <LinkButton
-              label="글쓰기"
-              href="#"
-              className="prose-btn-M rounded-2xl bg-orange2 px-5 py-3 text-white md:prose-btn-L hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
-              onClick={() => {
-                setWriteValue(writeInitState);
-                setWritingInfoValue(writingInfoInitState);
-              }}
-            />
-          </Link>
-        </div>
-      )}
+      {/* {isLoggedIn && ( */}
+      <div className="flex justify-end">
+        <Link href={`/sales/write`} passHref legacyBehavior>
+          <LinkButton
+            label="글쓰기"
+            href="#"
+            className="prose-btn-M rounded-2xl bg-orange2 px-5 py-3 text-white md:prose-btn-L hover:bg-orange1 focus:outline-none disabled:bg-gray6 md:px-6 md:py-4"
+            onClick={() => {
+              setWriteValue(writeInitState);
+              setWritingInfoValue(writingInfoInitState);
+            }}
+          />
+        </Link>
+      </div>
+      {/* )} */}
     </div>
   );
 };

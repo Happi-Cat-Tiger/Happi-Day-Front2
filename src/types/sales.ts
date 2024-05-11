@@ -97,8 +97,8 @@ export interface SalesWritePayload {
   description: string;
   hashtags: string[];
   products: ProductOption[];
-  thumbnailImage: File | null;
-  imageList: File[] | null;
+  thumbnailImage: string;
+  imageList: string[];
   startTime?: Date;
   endTime: Date;
   namePrice: number;

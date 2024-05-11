@@ -10,12 +10,20 @@ import { useGetSalesArticleService } from '@/hooks/queries/sales/salesService';
 import { usePostWriteSalesService, usePutSalesArticleService } from '@/hooks/mutations/sales/salesService';
 import { writeState, writingInfoState } from '@/atom/write';
 import SalesPreviewWritingStep from '@/containers/write/SalesPreviewWritingStep';
-import LoadingSpinner from '@/containers/loading/LoadingSpinner';
+// import LoadingSpinner from '@/containers/loading/LoadingSpinner';
 
 const WritePage = () => {
+  const [step, setStep] = useState<number>(1);
+
+  const searchParams = useSearchParams();
+  const mod = searchParams.get('mod') || null;
+  const id = searchParams.get('id') || null;
+  const salesId = id ? +id : null;
+
   const [writeValue, setWriteValue] = useRecoilState(writeState);
-  const { articleTitle, editValue, category } = writeValue;
   const [writingInfoValue, setWritingInfoValue] = useRecoilState(writingInfoState);
+
+  const { articleTitle, editValue, category } = writeValue;
   const {
     hashtag,
     thumbnailImage,
@@ -30,13 +38,6 @@ const WritePage = () => {
     imageFile,
   } = writingInfoValue;
 
-  const [step, setStep] = useState<number>(1);
-
-  const searchParams = useSearchParams();
-  const mod = searchParams.get('mod') || null;
-  const id = searchParams.get('id') || null;
-  const salesId = id ? +id : null;
-
   const writeSalesMutation = usePostWriteSalesService({ categoryId: category.id });
   const modifySalesMutation = usePutSalesArticleService({ salesId });
 
@@ -46,15 +47,12 @@ const WritePage = () => {
     }
     if (step === 2) {
       if (
-        !hashtag ||
         hashtag.length === 0 ||
         !thumbnailImage ||
         !titleProduct.price ||
         !startTime ||
         !endTime ||
-        !productOptions ||
         productOptions.length === 0 ||
-        !shippingOptions ||
         shippingOptions.length === 0 ||
         !accountName ||
         !accountUser ||
@@ -73,9 +71,13 @@ const WritePage = () => {
         name: articleTitle,
         description: editValue,
         hashtags: hashtag,
-        products: productOptions,
+        products: productOptions.map((option) => ({
+          label: option.label,
+          stock: option.stock,
+          price: option.price,
+        })),
         thumbnailImage: thumbnailImage,
-        imageList: imageFile ? [imageFile] : [],
+        imageList: imageFile ? imageFile : null,
         startTime: startTime,
         endTime: endTime,
         namePrice: titleProduct.price,
@@ -93,7 +95,7 @@ const WritePage = () => {
     } else setStep(step + 1);
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  // if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="mx-auto my-[40px] flex h-full w-full flex-col items-center justify-center md:my-[60px] md:max-w-[1280px]">

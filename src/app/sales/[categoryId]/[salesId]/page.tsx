@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { handleOptionSelectState, handleInputSelectState } from '@/atom/salesAtom';
+import { handleOptionSelectState, handleInputSelectState, totalPayState } from '@/atom/salesAtom';
 import { useRouter } from 'next/navigation';
 import { useGetSalesArticleService } from '@/hooks/queries/sales/salesService';
 import { useDeleteSalesArticleService } from '@/hooks/mutations/sales/salesService';
@@ -29,10 +29,9 @@ const Page = ({ params }: { params: { categoryId: string; salesId: string } }) =
     isLoading: boolean;
   };
 
-  console.log(salesArticleData);
-
   const isAllOptionsSelected = useRecoilValue(handleOptionSelectState);
   const isAllInputsSelected = useRecoilValue(handleInputSelectState);
+  const tatalPay = useRecoilValue(totalPayState);
   const [isChecked, setIsChecked] = useState(false);
   const canPurchase = isChecked && isAllOptionsSelected && isAllInputsSelected;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,20 +45,14 @@ const Page = ({ params }: { params: { categoryId: string; salesId: string } }) =
 
   const deleteArticleMutation = useDeleteSalesArticleService({ salesId: salesIdParams });
 
-  const hashtag = [
-    { value: 'tag1', label: '뉴진스' },
-    { value: 'tag2', label: '하니' },
-    { value: 'tag3', label: '포카' },
-  ];
-
-  const myPageSales = () => {
-    router.push('/mypage/my-orders');
-  };
-
   if (isLoading || isAuthLoading) return <LoadingSpinner />;
 
   // 작성자만 수정/삭제 가능
   const isAuthor: boolean = isLoggedIn ? salesArticleData?.user === userData?.nickname : false;
+
+  const myPageSales = () => {
+    router.push('/mypage/my-orders');
+  };
 
   return (
     <div className={`mb-[200px] flex w-full flex-col px-[8px] ${isModalOpen ? 'pointer-events-none invisible' : ''}`}>
@@ -85,24 +78,26 @@ const Page = ({ params }: { params: { categoryId: string; salesId: string } }) =
           <div className="flex w-full border-b-[1px] border-gray6 pb-[30px] sm:flex-col md:flex-row md:justify-between">
             <div className="h-full w-full">
               <div className="flex flex-col items-center gap-[7px]">
-                <div className="h-[308px] w-full bg-gray6 md:h-[580px]">사진</div>
+                <div className="h-[308px] w-full bg-gray6 md:h-[580px]">
+                  <img src={salesArticleData?.thumbnailImage} alt="Thumbnail" className="h-full w-full" />
+                </div>
                 <div className="flex w-full justify-between px-1">
                   <div className="prose-body-M flex gap-1 text-gray4">
-                    {hashtag.map((content, index) => (
-                      <div key={index} className="rounded-2xl border-[1px] border-gray4 px-2">
-                        <div>#{content.label}</div>
+                    {salesArticleData?.hashtags.map((hashtag) => (
+                      <div key={hashtag} className="rounded-2xl border-[1px] border-gray4 px-2">
+                        <div>#{hashtag}</div>
                       </div>
                     ))}
                   </div>
                   <div className="flex flex-none items-center gap-1">
                     <AiFillHeart className="text-[#D80000]" />
                     <div>찜하기</div>
-                    <div className="font-extrabold">12</div>
+                    <div className="font-extrabold">{salesArticleData?.likeNum}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <OptionsSelect />
+            <OptionsSelect salesArticleData={salesArticleData} />
           </div>
           <SalesInformation />
           <div className="flex flex-col items-center gap-[35px] py-[30px]">
@@ -157,13 +152,13 @@ const Page = ({ params }: { params: { categoryId: string; salesId: string } }) =
           </div>
           <div className="prose-subtitle-M flex w-[300px] flex-col gap-[18px] bg-gray7 p-5 md:prose-caption md:w-[550px] md:gap-[18px]">
             <div className="flex justify-center gap-3 ">
-              <div>${salesArticleData?.accountName}</div>
-              <div>${salesArticleData?.accountNumber}</div>
-              <div>${salesArticleData?.accountUser}</div>
+              <div>{salesArticleData?.accountName}</div>
+              <div>{salesArticleData?.accountNumber}</div>
+              <div>{salesArticleData?.accountUser}</div>
             </div>
             <div className="flex justify-center gap-1 ">
               <div>금액:</div>
-              <div>15000</div>
+              <div>{tatalPay}</div>
               <div>원</div>
             </div>
           </div>

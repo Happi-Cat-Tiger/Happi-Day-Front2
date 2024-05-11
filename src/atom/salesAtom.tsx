@@ -35,3 +35,9 @@ export const salesSortList = atom({
   key: 'salesSortList',
   default: 'new',
 });
+
+// 굿즈/공구 총 구매금액
+export const totalPayState = atom({
+  key: 'totalPayState',
+  default: 0,
+});
