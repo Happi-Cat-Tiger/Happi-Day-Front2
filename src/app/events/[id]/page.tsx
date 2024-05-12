@@ -29,12 +29,14 @@ import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
 import {
   useDeleteEventsCommentService,
+  useDeleteEventsReviewService,
   useDeleteEventsService,
   usePostEventCommentService,
   usePostEventJoinService,
   usePostEventLikeService,
   usePostEventsReviewService,
   useUpdateEventsCommentService,
+  useUpdateEventsReviewService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
 import { getDate } from '@/utils/GetDate';
@@ -183,15 +185,32 @@ const page = () => {
 
   // 이벤트 리뷰 작성하기
   const writeReviewMutation = usePostEventsReviewService();
-  const postData = {
+  const postReview = {
     eventId: pathId,
     description: reviewValue.description,
     rating: reviewValue.rating,
     imageFiles: reviewValue.imageFiles,
   };
   const addReview = () => {
-    console.log('post', postData);
-    writeReviewMutation.mutate(postData);
+    console.log('post', postReview);
+    writeReviewMutation.mutate(postReview);
+  };
+
+  // 이벤트 리뷰 수정하기
+  // const updateReviewMutation = useUpdateEventsReviewService();
+  // const postReviewUpdate = {eventId: pathId, reviewId: 1, imageFiles: , description: "dd", rating: 3}
+  // const updateReview = () => {
+  //   updateReviewMutation.mutate(postReviewUpdate)
+  // }
+
+  // 이벤트 리뷰 삭제하기
+  const deleteReviewMutation = useDeleteEventsReviewService();
+  const deleteReview = (e: any) => {
+    if (confirm('리뷰를 삭제하시겠습니까?')) {
+      deleteReviewMutation.mutate({ eventId: pathId, reviewId: e.target.value });
+    } else {
+      return;
+    }
   };
 
   // 이벤트 상태
@@ -385,11 +404,11 @@ const page = () => {
           />
           {reviews.length > 0 ? (
             reviews.map((review: any) => (
-              <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+              <div className="relative flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
                 <div className="flex items-center gap-[10px]">
-                  <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-                  <p className="prose-body-S text-gray4">{userData.nickname}</p>
-                  <p className="prose-body-XS text-gray5">{getDate(review.date)}</p>
+                  <img src={review.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                  <p className="prose-body-S text-gray4">{review.username}</p>
+                  <p className="prose-body-XS text-gray5">{getDate(review.updatedAt)}</p>
                 </div>
                 <div className="flex">
                   {[...Array(review.rating)].map((el, idx) => (
@@ -409,6 +428,21 @@ const page = () => {
                 <div className="mt-[30px]">
                   <p className="w-[60%] min-w-[500px]">{review.description}</p>
                 </div>
+                {isAuthor && (
+                  <div className="absolute right-0 top-[50px] flex gap-[10px]">
+                    <button
+                      className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                      value={review.id}>
+                      수정
+                    </button>
+                    <button
+                      className="md:prose-btn-s rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                      value={review.id}
+                      onClick={(e) => deleteReview(e)}>
+                      삭제
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           ) : (

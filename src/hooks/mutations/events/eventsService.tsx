@@ -11,6 +11,8 @@ import {
   updateEventsCommentApi,
   postEventsLikeApi,
   postEventsJoinApi,
+  updateEventsReviewApi,
+  deleteEventsReviewApi,
 } from '@/api/events/eventsApi';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { toast } from 'react-toastify';
@@ -170,6 +172,39 @@ export const usePostEventsReviewService = () => {
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
       toast('리뷰 작성이 완료되었습니다');
+    },
+  });
+};
+
+export const useUpdateEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({
+      eventId,
+      reviewId,
+      imageFiles,
+      description,
+      rating,
+    }: {
+      eventId: number;
+      reviewId: number;
+      imageFiles: File[];
+      description: string;
+      rating: number;
+    }) => updateEventsReviewApi({ eventId, reviewId, imageFiles, description, rating }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('후기가 수정되었습니다.');
+    },
+  });
+};
+
+export const useDeleteEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({ eventId, reviewId }: { eventId: number; reviewId: number }) =>
+      deleteEventsReviewApi({ eventId, reviewId }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('리뷰가 삭제되었습니다.');
     },
   });
 };

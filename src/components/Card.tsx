@@ -13,8 +13,8 @@ interface CardProps {
   categoryId?: number;
   thumbnailUrl: string;
   title: string;
-  artist: string;
-  hashtags?: string[];
+  artist: string[];
+  hashtags: string[];
   location?: string;
   startTime: Date;
   endTime: Date;
@@ -28,9 +28,9 @@ interface CardProps {
 const Card = ({
   id,
   cardType,
+  categoryId,
   thumbnailUrl,
   title,
-  categoryId,
   artist,
   hashtags,
   location,
@@ -46,6 +46,14 @@ const Card = ({
 
   const router = useRouter();
   const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
+
+  const getDate = (value: Date) => {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
+  };
 
   // 이벤트 기간 뱃지 (진행 예정, 진행중, 종료)
   const date = new Date();
@@ -65,9 +73,7 @@ const Card = ({
   return (
     <div
       key={id}
-      onClick={() => {
-        router.push(url);
-      }}
+      onClick={() => router.push(url)}
       className="relative flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
       {cardType === 'events' && (
         <div className="absolute left-[5px] top-[5px] z-10">

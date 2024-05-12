@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const apiInstance = axios.create({
   baseURL: `${API_BASE_URL}/`,
-  timeout: 1000,
+  timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true, // 서버와 클라이언트가 다른 도메인일 경우 필수
 });

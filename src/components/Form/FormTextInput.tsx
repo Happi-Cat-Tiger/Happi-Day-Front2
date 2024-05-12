@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import FormErrorMessage from './FormErrorMessage';
 import StyledSubmitButton from '@/components/Button/StyledSubmitButton';
 import { UserProfileInfo } from '@/types/useProfile';
+import { usePatchProfileInfoService } from '@/hooks/mutations/user/userService';
 
 interface Props {
   label: string;
@@ -24,6 +25,7 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
     handleSubmit,
     setValue,
     watch,
+    getValues,
   } = useForm<UserProfileInfo>({
     mode: 'onBlur',
     defaultValues,
@@ -33,31 +35,26 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
   const [hyphen, setHyphen] = useState<string>('');
   const watchAllFields = watch('phone');
 
-  // const mutationPatch = useServiceMutation(updateProfileService, { userId })
+  const mutationPatch = usePatchProfileInfoService();
 
-  const onSubmit = (formData: UserProfileInfo) => {
-    //TODO 서버 전송 코드 작성 + 공통 에러핸들링
-
-    // mutationPatch.mutate(formData, {
-    //   onSuccess: () => {
-    //     callback();
-    //   },
-    // });
+  const onSubmit = () => {
+    const values = getValues();
+    mutationPatch.mutate(values);
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 600);
+      }, 100);
     });
   };
-
-  useEffect(() => {
-    if (watchAllFields && watchAllFields.length === 11) {
-      setHyphen(watch('phone').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
-      setTimeout(() => {
-        setValue('phone', hyphen);
-      }, 0.00001);
-    }
-  }, [hyphen, watchAllFields]);
+  // 하이픈 자동 기입 기능
+  // useEffect(() => {
+  //   if (watchAllFields && watchAllFields.length === 11) {
+  //     setHyphen(watch('phone').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
+  //     setTimeout(() => {
+  //       setValue('phone', hyphen);
+  //     }, 0.00001);
+  //   }
+  // }, [hyphen, watchAllFields]);
 
   return (
     <>
@@ -80,8 +77,8 @@ const FormTextInput = ({ valid, errorMesage, defaultValues, name, placeholder, l
                   type="submit"
                   label="변경"
                   isSubmitting={isSubmitting}
-                  onClick={() => null}
-                  className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-orange2  px-4 py-4 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6 "
+                  onClick={() => {}}
+                  className="prose-btn-S flex h-10 w-[65px] items-center justify-center rounded-xl bg-orange2  px-4 py-4 text-white md:prose-btn-M hover:bg-orange1 focus:outline-none disabled:bg-gray6"
                 />
               </div>
             </div>

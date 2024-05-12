@@ -5,7 +5,7 @@ export const REACT_QUERY_FETCH_OPTIONS = {
   // staleTime: 0,
   // cacheTime: 0,
   staleTime: 1000 * 60 * 5,
-  cacheTime: 1000,
+  gcTime: 1000,
   enabled: true,
 };
 

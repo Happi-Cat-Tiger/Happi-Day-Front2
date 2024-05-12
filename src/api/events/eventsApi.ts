@@ -190,3 +190,22 @@ export const postEventsReviewApi = async ({
 // 이벤트 리뷰 조회
 export const getEventsReviewApi = async ({ eventId }: { eventId: number }) =>
   await apiInstance.get(`/events/${eventId}/reviews`);
+
+// 이벤트 리뷰 수정
+export const updateEventsReviewApi = async ({
+  eventId,
+  reviewId,
+  imageFiles,
+  description,
+  rating,
+}: {
+  eventId: number;
+  reviewId: number;
+  imageFiles: File[];
+  description: string;
+  rating: number;
+}) => await apiInstance.put(`/events/${eventId}/reviews/${reviewId}`, { imageFiles, description, rating });
+
+// 이벤트 리뷰 삭제
+export const deleteEventsReviewApi = async ({ eventId, reviewId }: { eventId: number; reviewId: number }) =>
+  await apiInstance.delete(`/events/${eventId}/reviews/${reviewId}`);
