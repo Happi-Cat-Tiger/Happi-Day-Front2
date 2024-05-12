@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import StyledButton from '@/components/Button/StyledButton';
 import {
@@ -22,20 +22,26 @@ import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
 import KakaoMap from '@/components/Map/KakaoMap';
 import { usePathname } from 'next/navigation';
-import { getAllEventsComment, getEventsDetail } from '@/hooks/queries/events/eventsService';
+import { getAllEventsComment, getEventsDetail, getEventsReview } from '@/hooks/queries/events/eventsService';
 import { LoginState } from '@/atom/LoginState';
 import { useGetProfileInfoService } from '@/hooks/queries/user/userService';
 import { ProfileResponse } from '@/api/user/type';
 import { useRouter } from 'next/navigation';
 import {
   useDeleteEventsCommentService,
+  useDeleteEventsReviewService,
   useDeleteEventsService,
   usePostEventCommentService,
-  usePostEventJoin,
-  usePostEventLike,
+  usePostEventJoinService,
+  usePostEventLikeService,
+  usePostEventsReviewService,
   useUpdateEventsCommentService,
+  useUpdateEventsReviewService,
 } from '@/hooks/mutations/events/eventsService';
 import Image from 'next/image';
+import { getDate } from '@/utils/GetDate';
+import Badge from '@/components/Badge/Badge';
+import { PostponedPathnameNormalizer } from 'next/dist/server/future/normalizers/request/postponed';
 
 const settings = {
   dots: false, // 슬라이더 하단 점
@@ -70,6 +76,7 @@ const settings = {
 
 const page = () => {
   const [commentsValue, setCommentsValue] = useState<string>();
+  const [eventState, setEventState] = useState('');
 
   const path = usePathname();
   const pathId = Number(path.replace('/events/', ''));
@@ -80,13 +87,16 @@ const page = () => {
   const comments = commentData.data?.data.content;
   const [isUpdate, setIsUpdate] = useState({ isEdit: false, editValue: '', editId: 0 });
 
+  const reviewData = getEventsReview({ eventId: pathId });
+  const reviews = reviewData.data?.data.content;
+  console.log('reviewData', reviews);
+
   // 이벤트 후기 목록
   const [reviewValue, setReviewValue] = useRecoilState(eventsReviewValue);
   const [allReview, setAllReview] = useRecoilState<reviewProps[]>(allEventsReviewValue);
   const [isModal, setIsModal] = useState(false);
   const modalState = () => {
     setIsModal(true);
-    setReviewValue({ starRate: 0, review: '', date: '', reviewImage: [] });
   };
 
   // 로그인 상태
@@ -94,22 +104,6 @@ const page = () => {
 
   const getComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentsValue(e.target.value);
-  };
-
-  // Date 변환 함수
-  const getDate = (value: string, type?: string) => {
-    const date = new Date(value);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    return type === 'all'
-      ? `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day} ${(hours < 10 ? '0' : '') + hours}:${
-          (minutes < 10 ? '0' : '') + minutes
-        }:${(seconds < 10 ? '0' : '') + seconds}`
-      : `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
   // 프로필 정보
@@ -176,18 +170,67 @@ const page = () => {
   };
 
   // 이벤트 좋아요
-  const likeEventsMutation = usePostEventLike();
+  const likeEventsMutation = usePostEventLikeService();
 
   const likeEvent = () => {
     likeEventsMutation.mutate({ eventId: pathId });
   };
 
   // 이벤트 참여하기
-  const joinEventsMutation = usePostEventJoin();
+  const joinEventsMutation = usePostEventJoinService();
 
   const joinEvent = () => {
     joinEventsMutation.mutate({ eventId: pathId });
   };
+
+  // 이벤트 리뷰 작성하기
+  const writeReviewMutation = usePostEventsReviewService();
+  const postReview = {
+    eventId: pathId,
+    description: reviewValue.description,
+    rating: reviewValue.rating,
+    imageFiles: reviewValue.imageFiles,
+  };
+  const addReview = () => {
+    console.log('post', postReview);
+    writeReviewMutation.mutate(postReview);
+  };
+
+  // 이벤트 리뷰 수정하기
+  // const updateReviewMutation = useUpdateEventsReviewService();
+  // const postReviewUpdate = {eventId: pathId, reviewId: 1, imageFiles: , description: "dd", rating: 3}
+  // const updateReview = () => {
+  //   updateReviewMutation.mutate(postReviewUpdate)
+  // }
+
+  // 이벤트 리뷰 삭제하기
+  const deleteReviewMutation = useDeleteEventsReviewService();
+  const deleteReview = (e: any) => {
+    if (confirm('리뷰를 삭제하시겠습니까?')) {
+      deleteReviewMutation.mutate({ eventId: pathId, reviewId: e.target.value });
+    } else {
+      return;
+    }
+  };
+
+  // 이벤트 상태
+  const date = new Date();
+  const startTime = getDate(data.startTime);
+  const endTime = getDate(data.endTime);
+  const today = getDate(date);
+
+  useEffect(() => {
+    const badgeState = (today: any, start: any, end: any) => {
+      if (today < start) {
+        setEventState('진행 예정');
+      } else if (today >= start && today <= end) {
+        setEventState('진행중');
+      } else {
+        setEventState('종료');
+      }
+    };
+    badgeState(getDate(date), getDate(startTime), getDate(endTime));
+  }, []);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -228,6 +271,9 @@ const page = () => {
           <li className="flex items-center gap-[3px]">
             <AiOutlineClockCircle />
             {getDate(data?.updatedAt)}
+          </li>
+          <li>
+            <Badge state={eventState} />
           </li>
         </ul>
         <ul className="flex w-full gap-[16px] border-b-[1px] border-t-[1px] border-gray6 p-[10px] text-gray4 sm:prose-body-XS md:prose-body-S">
@@ -336,66 +382,80 @@ const page = () => {
           </>
         )}
       </div>
-      <div className="mt-[100px]">
-        <div className="my-[20px] flex justify-between">
-          <p className="prose-h4">이벤트 후기</p>
-          {isLoggedIn && (
-            <StyledButton
-              label="후기 작성하기"
-              onClick={() => modalState()}
-              disabled={false}
-              className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
-            />
+      {today > endTime && (
+        <div className="mt-[100px]">
+          <div className="my-[20px] flex justify-between">
+            <p className="prose-h4">이벤트 후기</p>
+            {isLoggedIn && (
+              <StyledButton
+                label="후기 작성하기"
+                onClick={() => modalState()}
+                disabled={false}
+                className=" bg-orange1 px-[20px] py-[10px] text-white sm:prose-btn-XS md:prose-btn-S"
+              />
+            )}
+          </div>
+          <TwoButtonModal
+            isOpen={isModal}
+            setOpen={() => setIsModal(false)}
+            children={<Reveiw />}
+            buttonLabel="등록"
+            onClose={() => addReview()}
+          />
+          {reviews.length > 0 ? (
+            reviews.map((review: any) => (
+              <div className="relative flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
+                <div className="flex items-center gap-[10px]">
+                  <img src={review.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
+                  <p className="prose-body-S text-gray4">{review.username}</p>
+                  <p className="prose-body-XS text-gray5">{getDate(review.updatedAt)}</p>
+                </div>
+                <div className="flex">
+                  {[...Array(review.rating)].map((el, idx) => (
+                    <IoStar color="gold" key={idx} />
+                  ))}
+                  {[...Array(5 - review.rating)].map((el, idx) => (
+                    <IoStarOutline className="text-gray6" key={idx} />
+                  ))}
+                </div>
+                <div className="h-[250px] w-[100%] overflow-hidden">
+                  <Slick {...settings}>
+                    {review.imageUrlList.map((el: any) => (
+                      <img className="h-[200px] w-[200px] cursor-pointer rounded-[10px]" src={el ? el : ''} />
+                    ))}
+                  </Slick>
+                </div>
+                <div className="mt-[30px]">
+                  <p className="w-[60%] min-w-[500px]">{review.description}</p>
+                </div>
+                {isAuthor && (
+                  <div className="absolute right-0 top-[50px] flex gap-[10px]">
+                    <button
+                      className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                      value={review.id}>
+                      수정
+                    </button>
+                    <button
+                      className="md:prose-btn-s rounded-[10px] bg-gray5 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                      value={review.id}
+                      onClick={(e) => deleteReview(e)}>
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-center border-2 border-gray6 py-[50px]">
+              <p className="text-gray5">등록된 후기가 없습니다</p>
+            </div>
           )}
         </div>
-        <TwoButtonModal
-          isOpen={isModal}
-          setOpen={() => setIsModal(false)}
-          children={<Reveiw />}
-          buttonLabel="등록"
-          onClose={() => setAllReview([...allReview, { ...reviewValue }])}
-        />
-        {allReview.length > 0 ? (
-          allReview.map((review) => (
-            <div className="flex flex-col gap-[10px] border-t-4 border-gray-300 py-[50px]">
-              <div className="flex items-center gap-[10px]">
-                <img src={data?.userProfileUrl} className="h-[20px] w-[20px] rounded-[50px] bg-gray-300" />
-                <p className="prose-body-S text-gray4">{userData.nickname}</p>
-                <p className="prose-body-XS text-gray5">{review.date}</p>
-              </div>
-              <div className="flex">
-                {[...Array(review.starRate)].map((el, idx) => (
-                  <IoStar color="gold" key={idx} />
-                ))}
-                {[...Array(5 - review.starRate)].map((el, idx) => (
-                  <IoStarOutline className="text-gray6" key={idx} />
-                ))}
-              </div>
-              <div className="h-[250px] w-[100%] overflow-hidden">
-                <Slick {...settings}>
-                  {review.reviewImage.map((el) => (
-                    <img
-                      className="h-[200px] w-[200px] cursor-pointer rounded-[10px]"
-                      src={el ? URL.createObjectURL(el) : ''}
-                    />
-                  ))}
-                </Slick>
-              </div>
-              <div className="mt-[30px]">
-                <p className="w-[60%] min-w-[500px]">{review.review}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="flex items-center justify-center border-2 border-gray6 py-[50px]">
-            <p className="text-gray5">등록된 후기가 없습니다</p>
-          </div>
-        )}
-      </div>
+      )}
       <div className="fixed bottom-[50px] right-[50px] flex flex-col gap-[10px]">
         <div
           className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
-          onClick={likeEvent}>
+          onClick={() => likeEvent()}>
           <AiOutlineHeart color="red" size={20} />
         </div>
         <div

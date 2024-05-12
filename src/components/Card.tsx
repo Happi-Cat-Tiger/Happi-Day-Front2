@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
+import { getDate } from '@/utils/GetDate';
+import Badge from './Badge/Badge';
 
 interface CardProps {
   id: number;
@@ -40,7 +42,10 @@ const Card = ({
   commentCount,
   viewCount,
 }: CardProps) => {
+  const [eventState, setEventState] = useState('');
+
   const router = useRouter();
+  const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
 
   const getDate = (value: Date) => {
     const date = new Date(value);
@@ -50,11 +55,31 @@ const Card = ({
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
 
+  // 이벤트 기간 뱃지 (진행 예정, 진행중, 종료)
+  const date = new Date();
+  useEffect(() => {
+    const getBadgeState = (today: any, start: any, end: any) => {
+      if (today < start) {
+        setEventState('진행 예정');
+      } else if (today >= start && today <= end) {
+        setEventState('진행중');
+      } else {
+        setEventState('종료');
+      }
+    };
+    getBadgeState(getDate(date), getDate(startTime), getDate(endTime));
+  }, []);
+
   return (
     <div
       key={id}
-      onClick={() => (cardType === 'sales' ? router.push(`${categoryId}/${id}`) : router.push(`${cardType}/${id}`))}
-      className="flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
+      onClick={() => router.push(url)}
+      className="relative flex h-[300px] w-[224px] cursor-pointer flex-col gap-[12px] p-[12px] shadow-lg">
+      {cardType === 'events' && (
+        <div className="absolute left-[5px] top-[5px] z-10">
+          <Badge state={eventState} />
+        </div>
+      )}
       <div className="relative h-[170px] w-[100%]">
         {thumbnailUrl && <Image src={thumbnailUrl} fill alt="thumbnail" className="rounded-[4px]" priority />}
       </div>
