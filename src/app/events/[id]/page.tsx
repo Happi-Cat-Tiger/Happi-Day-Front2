@@ -16,7 +16,7 @@ import { allEventsReviewValue, eventsCommentValue, eventsReviewValue, reviewProp
 import Slick from 'react-slick';
 import '../../../slider/slick.css';
 import '../../../slider/slick-theme.css';
-import Reveiw from '../review/Review';
+import Review from '../review/Review';
 import { IoStar } from 'react-icons/io5';
 import { IoStarOutline } from 'react-icons/io5';
 import TwoButtonModal from '@/components/Modal/TwoButtonModal';
@@ -197,11 +197,19 @@ const page = () => {
   };
 
   // 이벤트 리뷰 수정하기
-  // const updateReviewMutation = useUpdateEventsReviewService();
-  // const postReviewUpdate = {eventId: pathId, reviewId: 1, imageFiles: , description: "dd", rating: 3}
-  // const updateReview = () => {
-  //   updateReviewMutation.mutate(postReviewUpdate)
-  // }
+  const updateReviewMutation = useUpdateEventsReviewService();
+  console.log('test', reviews[0].id);
+
+  const updateReview = () => {
+    modalState();
+    updateReviewMutation.mutate({
+      eventId: pathId,
+      reviewId: reviews[0].id,
+      imageFiles: reviewValue.imageFiles,
+      description: reviewValue.description,
+      rating: reviewValue.rating,
+    });
+  };
 
   // 이벤트 리뷰 삭제하기
   const deleteReviewMutation = useDeleteEventsReviewService();
@@ -398,9 +406,9 @@ const page = () => {
           <TwoButtonModal
             isOpen={isModal}
             setOpen={() => setIsModal(false)}
-            children={<Reveiw />}
-            buttonLabel="등록"
-            onClose={() => addReview()}
+            children={<Review />}
+            buttonLabel={reviewData ? '수정' : '등록'}
+            onClose={reviewData ? updateReview : addReview}
           />
           {reviews.length > 0 ? (
             reviews.map((review: any) => (
@@ -432,6 +440,7 @@ const page = () => {
                   <div className="absolute right-0 top-[50px] flex gap-[10px]">
                     <button
                       className="md:prose-btn-s rounded-[10px] bg-orange1 px-[18px] py-[10px] text-white sm:prose-btn-XS"
+                      onClick={() => setIsModal(true)}
                       value={review.id}>
                       수정
                     </button>
