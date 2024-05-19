@@ -193,7 +193,7 @@ export const useUpdateEventsReviewService = () => {
     }) => updateEventsReviewApi({ eventId, reviewId, imageFiles, description, rating }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('후기가 수정되었습니다.');
+      toast('리뷰 수정이 완료되었습니다.');
     },
   });
 };

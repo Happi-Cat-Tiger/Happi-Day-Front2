@@ -204,7 +204,34 @@ export const updateEventsReviewApi = async ({
   imageFiles: File[];
   description: string;
   rating: number;
-}) => await apiInstance.put(`/events/${eventId}/reviews/${reviewId}`, { imageFiles, description, rating });
+}) => {
+  const formData = new FormData();
+  const eventReviewJson = new Blob(
+    [
+      JSON.stringify({
+        description: description,
+        rating: rating,
+      }),
+    ],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('review', eventReviewJson);
+  imageFiles.forEach((file, index) => {
+    formData.append(`imageFiles`, file);
+  });
+  await apiInstance
+    .put(`/events/${eventId}/reviews/${reviewId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
+};
 
 // 이벤트 리뷰 삭제
 export const deleteEventsReviewApi = async ({ eventId, reviewId }: { eventId: number; reviewId: number }) =>
