@@ -198,7 +198,6 @@ const page = () => {
 
   // 이벤트 리뷰 수정하기
   const updateReviewMutation = useUpdateEventsReviewService();
-  console.log('test', reviews[0].id);
 
   const updateReview = () => {
     modalState();

@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
 import { getDate } from '@/utils/GetDate';
 import Badge from './Badge/Badge';
+import { eventsSortList } from '@/atom/eventsAtom';
+import { useRecoilValue } from 'recoil';
 
 interface CardProps {
   id: number;
@@ -23,6 +25,7 @@ interface CardProps {
   likeCount: number;
   commentCount: number;
   viewCount: number;
+  badge?: string;
 }
 
 const Card = ({
@@ -41,8 +44,10 @@ const Card = ({
   likeCount,
   commentCount,
   viewCount,
+  badge,
 }: CardProps) => {
   const [eventState, setEventState] = useState('');
+  const eventSort = useRecoilValue(eventsSortList);
 
   const router = useRouter();
   const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
@@ -68,7 +73,7 @@ const Card = ({
       }
     };
     getBadgeState(getDate(date), getDate(startTime), getDate(endTime));
-  }, []);
+  }, [eventSort]);
 
   return (
     <div
