@@ -30,6 +30,10 @@ const page = () => {
   const onDisable = () => {
     if (step === 1) {
       if (!articleTitle || !editValue) return true;
+    } else if (step === 2) {
+      if (!hashtag || !location || !imageFile || !thumbnailImage || !eventAddress) {
+        return true;
+      }
     }
   };
 

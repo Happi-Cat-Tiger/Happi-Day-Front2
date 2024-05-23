@@ -180,7 +180,11 @@ const page = () => {
   const joinEventsMutation = usePostEventJoinService();
 
   const joinEvent = () => {
-    joinEventsMutation.mutate({ eventId: pathId });
+    if (eventState === '진행중') {
+      joinEventsMutation.mutate({ eventId: pathId });
+    } else {
+      alert('진행중인 이벤트에만 참여 가능합니다 !');
+    }
   };
 
   // 이벤트 리뷰 작성하기
@@ -198,7 +202,6 @@ const page = () => {
 
   // 이벤트 리뷰 수정하기
   const updateReviewMutation = useUpdateEventsReviewService();
-  console.log('test', reviews[0].id);
 
   const updateReview = () => {
     modalState();
@@ -239,6 +242,9 @@ const page = () => {
     };
     badgeState(getDate(date), getDate(startTime), getDate(endTime));
   }, []);
+
+  console.log('이벤트 상태', eventState);
+  console.log('review', reviews);
 
   return (
     <div className="mb-[200px] flex w-full flex-col px-[8px] sm:mt-[50px]">
@@ -407,8 +413,8 @@ const page = () => {
             isOpen={isModal}
             setOpen={() => setIsModal(false)}
             children={<Review />}
-            buttonLabel={reviewData ? '수정' : '등록'}
-            onClose={reviewData ? updateReview : addReview}
+            buttonLabel={reviews.length >= 1 ? '수정' : '등록'}
+            onClose={reviews.length >= 1 ? updateReview : addReview}
           />
           {reviews.length > 0 ? (
             reviews.map((review: any) => (
@@ -476,9 +482,7 @@ const page = () => {
             하기
           </span>
         </div>
-        <div
-          className="flex h-[40px] w-[40px] cursor-pointer flex-col items-center justify-center rounded-[50%] border border-gray-300"
-          onClick={joinEvent}>
+        <div className="flex h-[40px] w-[40px] cursor-pointer flex-col items-center justify-center rounded-[50%] border border-gray-300">
           <span className="prose-body-XXS font-bold">{data?.joinCount}명</span>
           <span className="prose-body-XXS">참여중</span>
         </div>

@@ -139,9 +139,13 @@ export const useUpdateEventsCommentService = () => {
 export const usePostEventLikeService = () => {
   return useMutation({
     mutationFn: ({ eventId }: { eventId: number }) => postEventsLikeApi({ eventId }),
-    onSuccess: () => {
+    onSuccess: (response) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('이벤트 좋아요!');
+      if (response && response.includes('cancel')) {
+        toast('이벤트 좋아요 취소 😭');
+      } else {
+        toast('이벤트 좋아요 ♥️');
+      }
     },
   });
 };
@@ -149,9 +153,14 @@ export const usePostEventLikeService = () => {
 export const usePostEventJoinService = () => {
   return useMutation({
     mutationFn: ({ eventId }: { eventId: number }) => postEventsJoinApi({ eventId }),
-    onSuccess: () => {
+    onSuccess: (response) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('이벤트 참여하기 완료!');
+
+      if (response && response.includes('cancel')) {
+        toast('이벤트 참여하기 취소 😭');
+      } else {
+        toast('이벤트 참여하기 완료 🏃');
+      }
     },
   });
 };
