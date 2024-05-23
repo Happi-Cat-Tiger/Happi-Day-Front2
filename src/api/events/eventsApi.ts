@@ -140,11 +140,11 @@ export const deleteEventsCommentApi = async ({ eventId, commentId }: { eventId: 
 
 // 이벤트 좋아요
 export const postEventsLikeApi = async ({ eventId }: { eventId: number }) =>
-  await apiInstance.post(`/events/${eventId}/like`);
+  await apiInstance.post(`/events/${eventId}/like`).then((response) => response.data);
 
 // 이벤트 참여하기
 export const postEventsJoinApi = async ({ eventId }: { eventId: number }) =>
-  await apiInstance.post(`/events/${eventId}/join`);
+  await apiInstance.post(`/events/${eventId}/join`).then((response) => response.data);
 
 // 이벤트 리뷰 작성
 export const postEventsReviewApi = async ({

@@ -108,3 +108,15 @@ export const badgeValue = atom({
   key: 'badgeValue',
   default: '',
 });
+
+// 이벤트 참여 상태
+export const eventsJoinValue = atom({
+  key: 'eventsJoinValue',
+  default: '',
+});
+
+// 이벤트 좋아요 상태
+export const eventsLikeValue = atom({
+  key: 'eventsLikeValue',
+  default: '',
+});
