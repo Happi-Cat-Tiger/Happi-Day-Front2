@@ -26,7 +26,7 @@ const ArtistList = () => {
   const { data, fetchNextPage, isFetching } = useInfiniteArtists();
   const artistList = useMemo(() => data?.pages.flatMap((page) => page.content), [data?.pages]);
 
-  const isLastPage: boolean = artistList && data?.pages[0].last;
+  const isLastPage = artistList && data?.pages[data.pageParams.length - 1].last;
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;

@@ -26,7 +26,7 @@ const TeamList = () => {
 
   const teamList = useMemo(() => data?.pages.flatMap((page) => page.content), [data?.pages]);
 
-  const isLastPage: boolean = teamList && data?.pages[0].last;
+  const isLastPage = teamList && data?.pages[data.pageParams.length - 1].last;
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;
