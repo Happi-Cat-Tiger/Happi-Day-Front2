@@ -35,7 +35,7 @@ const TeamList = () => {
   }, [isIntersecting]);
 
   return (
-    <>
+    <div className="h-[500px] overflow-hidden overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
       <div className="flex flex-wrap">
         {teamList?.map((item) => (
           <ArtistProfileCard
@@ -55,7 +55,7 @@ const TeamList = () => {
           <div className=" text- h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
