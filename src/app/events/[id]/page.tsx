@@ -243,6 +243,13 @@ const page = () => {
     badgeState(getDate(date), getDate(startTime), getDate(endTime));
   }, []);
 
+  // scroll top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+    });
+  };
+
   console.log('이벤트 상태', eventState);
   console.log('review', reviews);
 
@@ -486,7 +493,9 @@ const page = () => {
           <span className="prose-body-XXS font-bold">{data?.joinCount}명</span>
           <span className="prose-body-XXS">참여중</span>
         </div>
-        <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300">
+        <div
+          className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[50%] border border-gray-300"
+          onClick={scrollToTop}>
           <AiOutlineArrowUp />
         </div>
       </div>
