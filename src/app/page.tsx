@@ -40,7 +40,7 @@ const Home = () => {
   // const { data } = getSalesPostListService();
   // const { res } = getSalesPostListApi();
   const eventsData = getAllEvents().data.content;
-  console.log(eventsData);
+  const sortedEvents = eventsData.sort((a: any, b: any) => b.likeCount - a.likeCount);
 
   // 유저 정보 가져오기 (로그인 정보 => get통신까지 시간이 오래 걸림ㅠㅠ)
   const isLoggedIn = useRecoilValue(LoginState);
@@ -73,8 +73,8 @@ const Home = () => {
           </div>
           <div className="flex h-[340px] items-center justify-center">
             <Slick {...settings}>
-              {eventsData ? (
-                eventsData.map((el: EventsList, idx: number) => (
+              {sortedEvents ? (
+                sortedEvents.map((el: EventsList, idx: number) => (
                   <Card
                     key={idx}
                     id={el.id}
