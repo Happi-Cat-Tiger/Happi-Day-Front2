@@ -6,6 +6,7 @@ import ArtistAndTeamInfo from '@/containers/mypage/mysubscribed/ArtistAndTeamInf
 const page = ({ params }: { params: { id: string; type: string } }) => {
   const id = parseInt(params.id, 10);
   const type = params.type;
+
   const { data: teamInfo } = getTeamInfoService({ teamId: id, type });
   const { data: artistInfo } = getArtistInfoService({ artistId: id, type });
   const isDataAvailable = artistInfo && teamInfo;

@@ -32,7 +32,7 @@ const ArtistAndTeamInfo = ({ data, type }: Props) => {
   //TODO userType 전역에서 가져오기
   const userType = 'admin';
   console.log('zzzzzzzzz');
-  const { id, name, description, subscribed, sales, events } = data;
+  const { id, name, description, subscribed, sales, events, teams, artists } = data;
 
   const profileOrLogoUrl = type == 'artist' ? (data as ArtistInfo).profileUrl : (data as TeamInfo).logoUrl;
 
@@ -130,7 +130,35 @@ const ArtistAndTeamInfo = ({ data, type }: Props) => {
       <Section>
         <Label>소속 {type == 'artist' ? '팀' : '아티스트'} </Label>
         <ArtistProfileList>
-          <ArtistProfileCard id={id} type={type} imageUrl={profileOrLogoUrl} imageAlt={name} size={'m'} title={name} />
+          <div className="h-[500px] overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
+            <div className="flex flex-wrap">
+              {type == 'artist'
+                ? teams?.map((data) => {
+                    return (
+                      <ArtistProfileCard
+                        id={id}
+                        type={type}
+                        imageUrl={data.logoUrl}
+                        imageAlt={data.name}
+                        size={'m'}
+                        title={data.name}
+                      />
+                    );
+                  })
+                : artists?.map((data) => {
+                    return (
+                      <ArtistProfileCard
+                        id={id}
+                        type={type}
+                        imageUrl={data.profileUrl}
+                        imageAlt={data.name}
+                        size={'m'}
+                        title={data.name}
+                      />
+                    );
+                  })}
+            </div>
+          </div>
         </ArtistProfileList>
       </Section>
       {/** TODO 스크롤 구현 */}

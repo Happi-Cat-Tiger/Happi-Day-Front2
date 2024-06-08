@@ -20,7 +20,7 @@ export const getTeamInfoService = ({ teamId, type }: { teamId: number; type: str
 
 export const getArtistInfoService = ({ artistId, type }: { artistId: number; type: string }) => {
   return useQuery<ArtistInfo>({
-    queryKey: ['artist'],
+    queryKey: ['artist', 'team'],
     queryFn: () => getArtistInfoApi({ artistId }),
   });
 };

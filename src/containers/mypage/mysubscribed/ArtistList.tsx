@@ -35,7 +35,7 @@ const ArtistList = () => {
   }, [isIntersecting]);
 
   return (
-    <div className="h-[500px] overflow-hidden overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
+    <div className="h-[500px] overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
       <div className="flex flex-wrap">
         {artistList?.map((item) => (
           <ArtistProfileCard
