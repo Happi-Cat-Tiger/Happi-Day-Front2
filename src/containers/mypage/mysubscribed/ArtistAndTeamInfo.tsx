@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Label from '@/containers/mypage/mygoods/Label';
 import Section from '@/containers/mypage/mygoods/Section';
-import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
+import ArtistProfileCard from '@/components/Dropdowns/Card/ArtistProfileCard';
 import ArtistProfileList from '@/components/List/ArtistProfileList';
 import { ArtistInfo, TeamInfo } from '@/types/artist';
 import {
@@ -17,7 +17,7 @@ import {
 } from '@/hooks/mutations/artist/artistService';
 import ArtistProfileImage from '@/components/Image/ArtistProfileImage';
 import StyledButton from '@/components/Button/StyledButton';
-import SimpleCard from '@/components/Card/SimpleCard';
+import SimpleCard from '@/components/Dropdowns/Card/SimpleCard';
 import { FaHeartCircleCheck } from 'react-icons/fa6';
 import { TbHandClick } from 'react-icons/tb';
 

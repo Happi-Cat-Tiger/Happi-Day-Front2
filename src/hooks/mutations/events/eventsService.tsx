@@ -4,12 +4,15 @@ import { EventsWritePatchPayload, EventsWritePayload } from '@/api/events/type';
 import {
   deleteEventsApi,
   deleteEventsCommentApi,
-  joinEventsApi,
-  likeEventsApi,
   postEventsCommentApi,
+  postEventsReviewApi,
   postEventsWriteApi,
   putEventsApi,
   updateEventsCommentApi,
+  postEventsLikeApi,
+  postEventsJoinApi,
+  updateEventsReviewApi,
+  deleteEventsReviewApi,
 } from '@/api/events/eventsApi';
 import { hdQueryClient } from '@/shared/hdQueryClient';
 import { toast } from 'react-toastify';
@@ -133,22 +136,84 @@ export const useUpdateEventsCommentService = () => {
   });
 };
 
-export const usePostEventLike = () => {
+export const usePostEventLikeService = () => {
   return useMutation({
-    mutationFn: ({ eventId }: { eventId: number }) => likeEventsApi({ eventId }),
-    onSuccess: () => {
+    mutationFn: ({ eventId }: { eventId: number }) => postEventsLikeApi({ eventId }),
+    onSuccess: (response) => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('이벤트 좋아요!');
+      if (response && response.includes('cancel')) {
+        toast('이벤트 좋아요 취소 😭');
+      } else {
+        toast('이벤트 좋아요 ♥️');
+      }
     },
   });
 };
 
-export const usePostEventJoin = () => {
+export const usePostEventJoinService = () => {
   return useMutation({
-    mutationFn: ({ eventId }: { eventId: number }) => joinEventsApi({ eventId }),
+    mutationFn: ({ eventId }: { eventId: number }) => postEventsJoinApi({ eventId }),
+    onSuccess: (response) => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+
+      if (response && response.includes('cancel')) {
+        toast('이벤트 참여하기 취소 😭');
+      } else {
+        toast('이벤트 참여하기 완료 🏃');
+      }
+    },
+  });
+};
+
+export const usePostEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({
+      eventId,
+      description,
+      rating,
+      imageFiles,
+    }: {
+      eventId: number;
+      description: string;
+      rating: number;
+      imageFiles: File[];
+    }) => postEventsReviewApi({ eventId, description, rating, imageFiles }),
     onSuccess: () => {
       hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
-      toast('이벤트 참여하기 완료!');
+      toast('리뷰 작성이 완료되었습니다');
+    },
+  });
+};
+
+export const useUpdateEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({
+      eventId,
+      reviewId,
+      imageFiles,
+      description,
+      rating,
+    }: {
+      eventId: number;
+      reviewId: number;
+      imageFiles: File[];
+      description: string;
+      rating: number;
+    }) => updateEventsReviewApi({ eventId, reviewId, imageFiles, description, rating }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('리뷰 수정이 완료되었습니다.');
+    },
+  });
+};
+
+export const useDeleteEventsReviewService = () => {
+  return useMutation({
+    mutationFn: ({ eventId, reviewId }: { eventId: number; reviewId: number }) =>
+      deleteEventsReviewApi({ eventId, reviewId }),
+    onSuccess: () => {
+      hdQueryClient.invalidateQueries({ queryKey: ['events', true] });
+      toast('리뷰가 삭제되었습니다.');
     },
   });
 };

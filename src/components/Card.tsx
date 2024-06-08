@@ -1,9 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { AiFillHeart, AiOutlineMessage, AiTwotoneEye } from 'react-icons/ai';
+import { getDate } from '@/utils/GetDate';
+import Badge from './Badge/Badge';
+import { eventsSortList } from '@/atom/eventsAtom';
+import { useRecoilValue } from 'recoil';
 
 interface CardProps {
   id: number;
@@ -21,6 +25,7 @@ interface CardProps {
   likeCount: number;
   commentCount: number;
   viewCount: number;
+  badge?: string;
 }
 
 const Card = ({
@@ -39,8 +44,13 @@ const Card = ({
   likeCount,
   commentCount,
   viewCount,
+  badge,
 }: CardProps) => {
+  const [eventState, setEventState] = useState('');
+  const eventSort = useRecoilValue(eventsSortList);
+
   const router = useRouter();
+  const url = cardType === 'sales' ? `/sales/${categoryId}/${id}` : `/${cardType}/${id}`;
 
   const getDate = (value: Date) => {
     const date = new Date(value);
@@ -49,6 +59,21 @@ const Card = ({
     const day = date.getDate();
     return `${year}.${(month < 10 ? '0' : '') + month}.${(day < 10 ? '0' : '') + day}`;
   };
+
+  // 이벤트 기간 뱃지 (진행 예정, 진행중, 종료)
+  const date = new Date();
+  useEffect(() => {
+    const getBadgeState = (today: any, start: any, end: any) => {
+      if (today < start) {
+        setEventState('진행 예정');
+      } else if (today >= start && today <= end) {
+        setEventState('진행중');
+      } else {
+        setEventState('종료');
+      }
+    };
+    getBadgeState(getDate(date), getDate(startTime), getDate(endTime));
+  }, [eventSort]);
 
   return (
     <div

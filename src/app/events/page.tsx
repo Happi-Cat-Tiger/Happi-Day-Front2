@@ -13,24 +13,8 @@ import { getAllEvents, getOngoingEvents } from '@/hooks/queries/events/eventsSer
 import { eventsSearchState, eventsSortList, eventsSearchFilter } from '@/atom/eventsAtom';
 import { useRouter } from 'next/navigation';
 import { LoginState } from '@/atom/LoginState';
-
-interface EventsList {
-  id: number;
-  thumbnailUrl: string;
-  title: string;
-  artists: string;
-  startTime: Date;
-  endTime: Date;
-  location: string;
-  updatedAt: string;
-  likeCount: number;
-  commentCount: number;
-  viewCount: number;
-  reviewCount: number;
-  teams?: [];
-  hashtags: [];
-  nickname: string;
-}
+import { EventsList } from '@/types/events';
+import { getDate } from '@/utils/GetDate';
 
 const page = () => {
   const { data } = getAllEvents();

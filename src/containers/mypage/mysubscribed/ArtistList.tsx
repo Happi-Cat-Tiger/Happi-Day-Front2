@@ -2,7 +2,7 @@
 
 import React, { useMemo, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
+import ArtistProfileCard from '@/components/Dropdowns/Card/ArtistProfileCard';
 import { getArtistListApi } from '@/api/artist/artistApi';
 import useIntersectingState from '@/hooks/useIntersectingState';
 

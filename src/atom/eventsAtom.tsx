@@ -84,23 +84,39 @@ export const eventsListState = atom({
 
 // 이벤트 후기
 export interface reviewProps {
-  starRate: number;
-  review: string;
-  date: string;
-  reviewImage: [];
+  rating: number;
+  description: string;
+  imageFiles: File[];
 }
 
 export const eventsReviewValue = atom({
   key: 'eventsReviewValue',
   default: {
-    starRate: 0,
-    review: '',
-    date: '',
-    reviewImage: [],
+    rating: 0,
+    description: '',
+    imageFiles: [],
   } as reviewProps,
 });
 
 export const allEventsReviewValue = atom<reviewProps[]>({
   key: 'allEventsReviewValue',
   default: [],
+});
+
+// 이벤트 뱃지 상태
+export const badgeValue = atom({
+  key: 'badgeValue',
+  default: '',
+});
+
+// 이벤트 참여 상태
+export const eventsJoinValue = atom({
+  key: 'eventsJoinValue',
+  default: '',
+});
+
+// 이벤트 좋아요 상태
+export const eventsLikeValue = atom({
+  key: 'eventsLikeValue',
+  default: '',
 });

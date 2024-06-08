@@ -1,5 +1,5 @@
 import React from 'react';
-import ArtistProfileCard from '@/components/Card/ArtistProfileCard';
+import ArtistProfileCard from '@/components/Dropdowns/Card/ArtistProfileCard';
 import ArtistProfileList from '@/components/List/ArtistProfileList';
 import { usegetSubscribedListService } from '@/hooks/queries/artist/artistService';
 

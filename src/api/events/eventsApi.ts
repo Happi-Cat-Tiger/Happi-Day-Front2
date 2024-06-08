@@ -139,11 +139,100 @@ export const deleteEventsCommentApi = async ({ eventId, commentId }: { eventId: 
   await apiInstance.delete(`/events/${eventId}/comments/${commentId}`);
 
 // 이벤트 좋아요
-export const likeEventsApi = async ({ eventId }: { eventId: number }) => {
-  await apiInstance.post(`/events/${eventId}/eventLike`);
-};
+export const postEventsLikeApi = async ({ eventId }: { eventId: number }) =>
+  await apiInstance.post(`/events/${eventId}/like`).then((response) => response.data);
 
 // 이벤트 참여하기
-export const joinEventsApi = async ({ eventId }: { eventId: number }) => {
-  await apiInstance.post(`/events/${eventId}/join`);
+export const postEventsJoinApi = async ({ eventId }: { eventId: number }) =>
+  await apiInstance.post(`/events/${eventId}/join`).then((response) => response.data);
+
+// 이벤트 리뷰 작성
+export const postEventsReviewApi = async ({
+  eventId,
+  description,
+  rating,
+  imageFiles,
+}: {
+  eventId: number;
+  description: string;
+  rating: number;
+  imageFiles: File[];
+}) => {
+  const formData = new FormData();
+  const eventReviewJson = new Blob(
+    [
+      JSON.stringify({
+        description: description,
+        rating: rating,
+      }),
+    ],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('review', eventReviewJson);
+  imageFiles.forEach((file, index) => {
+    formData.append(`imageFiles`, file);
+  });
+
+  return await apiInstance
+    .post(`/events/${eventId}/reviews`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
 };
+
+// 이벤트 리뷰 조회
+export const getEventsReviewApi = async ({ eventId }: { eventId: number }) =>
+  await apiInstance.get(`/events/${eventId}/reviews`);
+
+// 이벤트 리뷰 수정
+export const updateEventsReviewApi = async ({
+  eventId,
+  reviewId,
+  imageFiles,
+  description,
+  rating,
+}: {
+  eventId: number;
+  reviewId: number;
+  imageFiles: File[];
+  description: string;
+  rating: number;
+}) => {
+  const formData = new FormData();
+  const eventReviewJson = new Blob(
+    [
+      JSON.stringify({
+        description: description,
+        rating: rating,
+      }),
+    ],
+    {
+      type: 'application/json',
+    },
+  );
+  formData.append('review', eventReviewJson);
+  imageFiles.forEach((file, index) => {
+    formData.append(`imageFiles`, file);
+  });
+  await apiInstance
+    .put(`/events/${eventId}/reviews/${reviewId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', accept: 'application/json' },
+      transformRequest: [
+        function () {
+          return formData;
+        },
+      ],
+    })
+    .then((response) => response.data);
+};
+
+// 이벤트 리뷰 삭제
+export const deleteEventsReviewApi = async ({ eventId, reviewId }: { eventId: number; reviewId: number }) =>
+  await apiInstance.delete(`/events/${eventId}/reviews/${reviewId}`);
