@@ -4,7 +4,6 @@ import ProfileImageEdit from '../../containers/mypage/ProfileImageEdit';
 import FormTextInput from '@/components/Form/FormTextInput';
 import FormLabel from '@/components/Form/FormLabel';
 import Input from '@/components/Input/Input';
-import { Profile } from '@/hooks/queries/user/userService';
 
 //TODO 전역 userData 가져오기
 

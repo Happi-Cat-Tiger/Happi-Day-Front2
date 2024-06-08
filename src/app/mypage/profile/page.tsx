@@ -12,7 +12,8 @@ import { useDeleteAccountService } from '@/hooks/mutations/user/userService';
 
 const Page = () => {
   const [open, setOpen] = useState(false);
-  const { data } = useGetProfileInfoService();
+  const [isValid, setIsValid] = useState(true);
+  const { data } = useGetProfileInfoService({ isLoggedIn: isValid });
   const [password, setPassword] = useState('');
   const mutationPatch = useDeleteAccountService();
 

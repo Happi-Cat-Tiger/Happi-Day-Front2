@@ -16,15 +16,12 @@ export const getSubscribedListApi = async () => {
   return data;
 };
 
-export const getTeamInfoApi = async ({ teamId }: { teamId: number }) => {
-  const { data } = await apiInstance.get(`/teams/${teamId}`);
-  return data;
-};
+export const getTeamInfoApi = async ({ teamId }: { teamId: number }) =>
+  await apiInstance.get(`/teams/${teamId}`).then((res) => res.data);
 
-export const getArtistInfoApi = async ({ artistId }: { artistId: number }) => {
-  const { data } = await apiInstance.get(`/artists/${artistId}`);
-  return data;
-};
+export const getArtistInfoApi = async ({ artistId }: { artistId: number }) =>
+  await apiInstance.get(`/artists/${artistId}`).then((res) => res.data);
+
 export const postSubscribeTeamApi = async ({ teamId }: { teamId: number }) => {
   const { data } = await apiInstance.post(`/teams/${teamId}/subscribe`);
   return data;

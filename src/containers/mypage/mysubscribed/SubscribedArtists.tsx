@@ -12,28 +12,32 @@ const SubscribedArtists = () => {
 
   return (
     <ArtistProfileList>
-      {subscribedListData?.subscribedArtists.map((item) => (
-        <ArtistProfileCard
-          key={item.id}
-          id={item.id}
-          type={'artist'}
-          imageUrl={item.profileUrl}
-          imageAlt={item.name}
-          size={'m'}
-          title={item.name}
-        />
-      ))}
-      {subscribedListData?.subscribedTeams.map((item) => (
-        <ArtistProfileCard
-          key={item.id}
-          id={item.id}
-          type={'team'}
-          imageUrl={item.logoUrl}
-          imageAlt={item.name}
-          size={'m'}
-          title={item.name}
-        />
-      ))}
+      <div className="h-[500px] overflow-hidden overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
+        <div className="flex flex-wrap">
+          {subscribedListData?.subscribedArtists.map((item) => (
+            <ArtistProfileCard
+              key={item.id}
+              id={item.id}
+              type={'artist'}
+              imageUrl={item.profileUrl}
+              imageAlt={item.name}
+              size={'m'}
+              title={item.name}
+            />
+          ))}
+          {subscribedListData?.subscribedTeams.map((item) => (
+            <ArtistProfileCard
+              key={item.id}
+              id={item.id}
+              type={'team'}
+              imageUrl={item.logoUrl}
+              imageAlt={item.name}
+              size={'m'}
+              title={item.name}
+            />
+          ))}
+        </div>
+      </div>
     </ArtistProfileList>
   );
 };

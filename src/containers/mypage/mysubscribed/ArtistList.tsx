@@ -23,10 +23,10 @@ const useInfiniteArtists = () => {
 
 const ArtistList = () => {
   const [isIntersecting, observerRef] = useIntersectingState<HTMLDivElement>();
-  const { data, fetchNextPage, isFetching } = useInfiniteArtists();
+  const { data, fetchNextPage, isLoading } = useInfiniteArtists();
   const artistList = useMemo(() => data?.pages.flatMap((page) => page.content), [data?.pages]);
 
-  const isLastPage: boolean = artistList && data?.pages[0].last;
+  const isLastPage = artistList && data?.pages[data.pageParams.length - 1].last;
 
   useEffect(() => {
     if (!isIntersecting || data === undefined) return;
@@ -35,7 +35,7 @@ const ArtistList = () => {
   }, [isIntersecting]);
 
   return (
-    <>
+    <div className="h-[500px] overflow-scroll overflow-x-hidden md:h-[340px] md:border md:border-solid">
       <div className="flex flex-wrap">
         {artistList?.map((item) => (
           <ArtistProfileCard
@@ -48,14 +48,14 @@ const ArtistList = () => {
             title={item.name}
           />
         ))}
+        {!isLastPage && <div aria-hidden ref={observerRef} />}
+        <div className="flex h-16 items-center justify-center">
+          {isLoading && (
+            <div className=" h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+          )}
+        </div>
       </div>
-      {!isLastPage && <div aria-hidden ref={observerRef} />}
-      <div className="flex h-16 items-center justify-center">
-        {isFetching && (
-          <div className=" h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
-        )}
-      </div>
-    </>
+    </div>
   );
 };
 

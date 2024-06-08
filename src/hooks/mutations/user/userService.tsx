@@ -1,5 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { hdQueryClient } from '@/shared/hdQueryClient';
+import { useRouter } from 'next/navigation';
+import { LoginState } from '@/atom/LoginState';
+import { useRecoilState } from 'recoil';
 import {
   patchProfileInfoApi,
   patchProfileImageApi,
@@ -38,10 +41,22 @@ export const usePatchBasicProfileImageService = () => {
 };
 
 export const useDeleteAccountService = () => {
+  const router = useRouter();
   const mutation = useMutation({
     mutationFn: (password) => deleteAccountApi(password),
     onSuccess: () => {
-      confirm('정말 탈퇴하시겠습니까?');
+      const [, setIsLoggedIn] = useRecoilState(LoginState);
+      const callConfirm = () => {
+        if (confirm('정말 탈퇴하시겠습니까?')) {
+          return true;
+        }
+      };
+      const answer = callConfirm();
+      if (answer == true) {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        router.push('/');
+      }
       hdQueryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
